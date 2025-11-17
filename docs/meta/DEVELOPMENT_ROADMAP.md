@@ -12,9 +12,9 @@ This template should provide **70% of the work out-of-the-box**, not just a skel
 
 ## Status Overview
 
-- ✅ **Completed**: EPICs 1-3 (Foundation, Common UI Components, Authentication System)
-- 🚧 **In Progress**: EPIC 4 - Onboarding Flow
-- ⏳ **Pending**: EPICs 5-7
+- ✅ **Completed**: EPICs 1-4 (Foundation, Common UI, Authentication, Onboarding)
+- 🚧 **In Progress**: EPIC 5 - Subscription & Monetization
+- ⏳ **Pending**: EPICs 6-7
 
 ---
 
@@ -91,20 +91,28 @@ This template should provide **70% of the work out-of-the-box**, not just a skel
 
 ---
 
-## EPIC 4: Onboarding Flow
+## EPIC 4: Onboarding Flow ✅
 **Goal**: First-time user experience
 
 ### Tasks
-- [ ] Onboarding screen 1: Welcome (app intro)
-- [ ] Onboarding screen 2: Features (key features showcase)
-- [ ] Onboarding screen 3: Permissions (notifications, location if needed)
-- [ ] Pagination dots and skip/next logic
+- [x] Onboarding screen 1: Welcome (app intro)
+- [x] Onboarding screen 2: Features (key features showcase)
+- [x] Onboarding screen 3: Get Started (final call-to-action)
+- [x] Pagination dots and skip/next logic
+- [x] AsyncStorage tracking and routing logic
 
 ### Acceptance Criteria
-- Smooth transitions between screens
-- Skip button on all screens
-- Completion tracked in AsyncStorage
-- Only shown once (or when cleared)
+- ✅ Smooth transitions between screens with FlatList horizontal paging
+- ✅ Skip button on all screens
+- ✅ Completion tracked in AsyncStorage via useOnboarding hook
+- ✅ Only shown once (or when cleared via resetOnboarding)
+- ✅ Animated entrance with Reanimated
+- ✅ Glassmorphic design consistent with app
+
+### Files Created
+- [app/onboarding.tsx](../../app/onboarding.tsx) - Swipeable onboarding carousel
+- [app/index.tsx](../../app/index.tsx) - Root entry with routing logic
+- [lib/hooks/useOnboarding.ts](../../lib/hooks/useOnboarding.ts) - Onboarding state management
 
 ---
 
@@ -207,10 +215,10 @@ This template should provide **70% of the work out-of-the-box**, not just a skel
 ## Progress Tracking
 
 - **Total EPICs**: 7
-- **Completed**: 3 (EPICs 1-3)
+- **Completed**: 4 (EPICs 1-4)
 - **In Progress**: 0
-- **Remaining**: 4
-- **Overall Completion**: ~43%
+- **Remaining**: 3
+- **Overall Completion**: ~57%
 
 ---
 
@@ -219,8 +227,9 @@ This template should provide **70% of the work out-of-the-box**, not just a skel
 1. ✅ ~~Complete EPIC 1 (Foundation & Utilities)~~
 2. ✅ ~~Complete EPIC 2 (Common UI Components)~~
 3. ✅ ~~Complete EPIC 3 (Authentication System)~~
-4. 🚧 Next: EPIC 4 (Onboarding Flow)
-5. Continue systematically through EPICs 5-7
+4. ✅ ~~Complete EPIC 4 (Onboarding Flow)~~
+5. 🚧 Next: EPIC 5 (Subscription & Monetization)
+6. Continue systematically through EPICs 6-7
 
 ---
 
@@ -252,6 +261,19 @@ This template should provide **70% of the work out-of-the-box**, not just a skel
 ## Changelog
 
 ### 2025-11-17
+
+#### EPIC 4 COMPLETED: Onboarding Flow
+- ✅ Created swipeable onboarding carousel with 3 screens
+  - Screen 1: Welcome - App introduction
+  - Screen 2: Powerful Features - Key features showcase
+  - Screen 3: Get Started - Call-to-action
+- Horizontal FlatList with pagination and smooth transitions
+- Skip button accessible on all screens
+- useOnboarding hook: Manages completion state with AsyncStorage
+- app/index.tsx: Smart routing (onboarding → auth → app)
+- Animated entrance using Reanimated (FadeInDown, FadeInUp)
+- Pagination dots with active state indicator
+- Next/Get Started button that adapts to current screen
 
 #### EPIC 3 COMPLETED: Authentication System
 - ✅ Created complete authentication flow with Supabase
