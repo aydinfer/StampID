@@ -12,9 +12,9 @@ This template should provide **70% of the work out-of-the-box**, not just a skel
 
 ## Status Overview
 
-- ✅ **Completed**: EPICs 1-4 (Foundation, Common UI, Authentication, Onboarding)
-- 🚧 **In Progress**: EPIC 5 - Subscription & Monetization
-- ⏳ **Pending**: EPICs 6-7
+- ✅ **Completed**: EPICs 1-5 (Foundation, Common UI, Authentication, Onboarding, Subscription)
+- 🚧 **In Progress**: EPIC 6 - Core Application Screens
+- ⏳ **Pending**: EPIC 7
 
 ---
 
@@ -116,13 +116,13 @@ This template should provide **70% of the work out-of-the-box**, not just a skel
 
 ---
 
-## EPIC 5: Subscription & Monetization
+## EPIC 5: Subscription & Monetization ✅
 **Goal**: Revenue generation ready to go
 
 ### Tasks
-- [ ] **SKIP Paywall UI** - RevenueCat has PaywallView component
-- [ ] Update useSubscription hook (complete RevenueCat integration)
-- [ ] Subscription management screen (current plan, cancel, restore)
+- [x] **SKIP Paywall UI** - RevenueCat has PaywallView component (noted in docs)
+- [x] Update useSubscription hook (complete RevenueCat integration)
+- [x] Subscription management screen (current plan, cancel, restore)
 
 ### Important Notes
 **RevenueCat provides the paywall UI!** We should use their official PaywallView:
@@ -130,10 +130,15 @@ This template should provide **70% of the work out-of-the-box**, not just a skel
 - [React Native Purchases SDK](https://www.revenuecat.com/docs/getting-started/installation/reactnative)
 
 ### Acceptance Criteria
-- RevenueCat is configured with app-specific API keys
-- Subscription status is properly tracked
-- Restore purchases works
-- Graceful handling of subscription errors
+- ✅ RevenueCat SDK initialized with API keys
+- ✅ Subscription status tracking with getSubscriptionStatus()
+- ✅ Restore purchases functionality
+- ✅ Graceful error handling for subscription operations
+- ✅ Manage subscription links to App Store/Play Store
+
+### Files Created
+- [lib/hooks/useSubscription.ts](../../lib/hooks/useSubscription.ts) - Enhanced with status tracking and management
+- [app/subscription.tsx](../../app/subscription.tsx) - Subscription management screen
 
 ### Official Docs Used
 - [RevenueCat React Native SDK](https://www.revenuecat.com/docs/getting-started/installation/reactnative)
@@ -215,10 +220,10 @@ This template should provide **70% of the work out-of-the-box**, not just a skel
 ## Progress Tracking
 
 - **Total EPICs**: 7
-- **Completed**: 4 (EPICs 1-4)
+- **Completed**: 5 (EPICs 1-5)
 - **In Progress**: 0
-- **Remaining**: 3
-- **Overall Completion**: ~57%
+- **Remaining**: 2
+- **Overall Completion**: ~71%
 
 ---
 
@@ -228,8 +233,9 @@ This template should provide **70% of the work out-of-the-box**, not just a skel
 2. ✅ ~~Complete EPIC 2 (Common UI Components)~~
 3. ✅ ~~Complete EPIC 3 (Authentication System)~~
 4. ✅ ~~Complete EPIC 4 (Onboarding Flow)~~
-5. 🚧 Next: EPIC 5 (Subscription & Monetization)
-6. Continue systematically through EPICs 6-7
+5. ✅ ~~Complete EPIC 5 (Subscription & Monetization)~~
+6. 🚧 Next: EPIC 6 (Core Application Screens)
+7. Continue with EPIC 7
 
 ---
 
@@ -261,6 +267,25 @@ This template should provide **70% of the work out-of-the-box**, not just a skel
 ## Changelog
 
 ### 2025-11-17
+
+#### EPIC 5 COMPLETED: Subscription & Monetization
+- ✅ Enhanced useSubscription hook with complete RevenueCat integration
+  - purchasePackage(): Purchase subscription packages
+  - restorePurchases(): Restore previous purchases
+  - refreshCustomerInfo(): Manually refresh subscription state
+  - manageSubscription(): Open App Store/Play Store settings
+  - getSubscriptionStatus(): Get detailed subscription info
+  - hasActiveSubscription: Check for any active subscription
+  - Debug logging enabled in development
+- ✅ Created subscription management screen (app/subscription.tsx)
+  - View current plan and status
+  - See renewal/expiration dates
+  - Manage subscription (links to store)
+  - Restore purchases functionality
+  - Upgrade to Pro CTA for free users
+  - Pro features list
+  - Help and support section
+- Note: Paywall UI should use RevenueCat's PaywallView component (not custom built)
 
 #### EPIC 4 COMPLETED: Onboarding Flow
 - ✅ Created swipeable onboarding carousel with 3 screens
