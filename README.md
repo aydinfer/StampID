@@ -33,6 +33,62 @@ A production-ready Expo starter template with **glassmorphic UI design system**.
 11. **GlassEmptyState** - Empty state templates
 12. **GlassLoadingSpinner** - Full-screen and inline loaders
 
+## 🎯 Choose Your Variant
+
+This template comes in **3 flavors** to suit different app requirements:
+
+### ✅ **Full Stack** (Default - What You Cloned)
+
+**Best for:** Most production apps, SaaS, social apps, multi-device apps
+
+**Includes:**
+- ✅ Supabase authentication & database
+- ✅ RevenueCat subscriptions
+- ✅ Multi-device sync
+- ✅ Cloud storage
+
+**Setup time:** 1-2 days
+
+---
+
+### ⚡ **Anonymous** (Simplest)
+
+**Best for:** Games, utilities, tools, content apps that don't need user accounts
+
+**Includes:**
+- ✅ RevenueCat subscriptions (works without auth!)
+- ✅ All 13 glass components
+- ❌ No login/signup
+- ❌ No cloud storage
+
+**Pros:** Fastest to ship, no backend configuration, still fully monetizable
+
+**Setup time:** < 1 day
+
+📖 **[Anonymous Setup Guide](./docs/variants/ANONYMOUS.md)**
+
+---
+
+### 🔒 **Local Auth** (Privacy-First)
+
+**Best for:** Privacy-focused apps, offline-first apps, regulated industries
+
+**Includes:**
+- ✅ RevenueCat subscriptions
+- ✅ Local authentication (encrypted with SecureStore)
+- ✅ SQLite database (all data on-device)
+- ❌ No cloud sync
+
+**Pros:** Maximum privacy, 100% offline, no backend costs, still fully monetizable
+
+**Setup time:** 2-3 days
+
+📖 **[Local Auth Setup Guide](./docs/variants/LOCAL_AUTH.md)**
+
+---
+
+**📊 [Complete Variant Comparison & Decision Guide](./docs/VARIANTS.md)**
+
 ## ⚠️ CRITICAL: Installation
 
 This project uses **React 19.1.0** (required by Expo SDK 54). You **MUST** use `--legacy-peer-deps`:
@@ -143,6 +199,7 @@ Then press:
 ### Quick Links
 
 - [Getting Started](./docs/01-getting-started.md) - Installation and setup
+- [**Template Variants**](./docs/VARIANTS.md) - Choose Full Stack, Anonymous, or Local Auth
 - [Project Structure](./docs/02-project-structure.md) - Understanding the codebase
 - [Design System](./docs/03-design-system.md) - Customizing theme and colors
 - [Components](./docs/04-components.md) - Component API reference
