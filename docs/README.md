@@ -12,20 +12,21 @@ Complete documentation for the Expo Starter template.
 ### Core Features
 4. [Components Guide](./04-components.md) - Building reusable components
 5. [Animations](./05-animations.md) - Using React Native Reanimated
-6. [Supabase Setup](./06-supabase-setup.md) - Authentication and database
-7. [RevenueCat Setup](./07-revenuecat-setup.md) - In-app purchases
+6. [Glassmorphism](./06-glassmorphism.md) - Liquid Glass & blur effects
+7. [Supabase Setup](./06-supabase-setup.md) - Authentication and database
+8. [RevenueCat Setup](./07-revenuecat-setup.md) - In-app purchases
 
 ### Advanced Topics
-8. [State Management](./08-state-management.md) - React Query + Zustand
-9. [Routing Guide](./09-routing.md) - Expo Router patterns
-10. [Building & Deployment](./10-deployment.md) - EAS Build and app stores
-11. [Testing](./11-testing.md) - Unit and integration tests
-12. [Performance](./12-performance.md) - Optimization tips
+9. [State Management](./08-state-management.md) - React Query + Zustand
+10. [Routing Guide](./09-routing.md) - Expo Router patterns
+11. [Building & Deployment](./10-deployment.md) - EAS Build and app stores
+12. [Testing](./11-testing.md) - Unit and integration tests
+13. [Performance](./12-performance.md) - Optimization tips
 
 ### Reference
-13. [Troubleshooting](./13-troubleshooting.md) - Common issues and fixes
-14. [Best Practices](./14-best-practices.md) - Code standards
-15. [API Reference](./15-api-reference.md) - Hooks and utilities
+14. [Troubleshooting](./13-troubleshooting.md) - Common issues and fixes
+15. [Best Practices](./14-best-practices.md) - Code standards
+16. [API Reference](./15-api-reference.md) - Hooks and utilities
 
 ### Meta Documentation
 - [Coding Guide](./meta/CODING_GUIDE.md) - Opinionated best practices (DRY, YAGNI, KISS)
@@ -37,6 +38,8 @@ Complete documentation for the Expo Starter template.
 **First time?** Start with [Getting Started](./01-getting-started.md)
 
 **Building a feature?** Check [Components Guide](./04-components.md)
+
+**Want glassmorphic UI?** See [Glassmorphism Guide](./06-glassmorphism.md) and [/components-demo](/components-demo)
 
 **Having issues?** See [Troubleshooting](./13-troubleshooting.md)
 

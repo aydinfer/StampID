@@ -1,76 +1,214 @@
-# Expo Starter - Production Ready Template
+# Expo Starter - Production Ready Template with Glassmorphic UI
 
 > LLM-optimized project documentation for AI assistants
 
 ## Project Overview
 
-A production-ready Expo starter template using only official Expo packages and best practices. Built for rapid mobile app development with TypeScript, NativeWind (Tailwind CSS), Supabase backend, and RevenueCat monetization.
+A production-ready Expo starter template with **glassmorphic UI design system**. Built using only official Expo packages and best practices. Features React 19, TypeScript strict mode, NativeWind v4 (Tailwind CSS), Supabase backend, and RevenueCat monetization.
+
+## ⚠️ CRITICAL: React 19 Setup
+
+**This project uses React 19.1.0 (required by Expo SDK 54)**
+
+### Initial Setup - MUST USE --legacy-peer-deps
+
+```bash
+# Clone repo
+git clone <repo-url>
+cd clean-build
+
+# CRITICAL: Install with legacy peer deps (React 19 ecosystem catch-up)
+npm install --legacy-peer-deps
+
+# Start development server
+npx expo start
+```
+
+### Why --legacy-peer-deps?
+
+- Expo SDK 54 requires **React 19.1.0** specifically
+- React ecosystem is catching up to React 19
+- Some packages show peer dependency warnings but work correctly
+- **NEVER downgrade to React 18** - Expo 54 expects React 19
+
+### Common Installation Issues
+
+**1. Missing babel-preset-expo:**
+```bash
+npm install --save-dev babel-preset-expo --legacy-peer-deps
+```
+
+**2. Missing react-native-worklets-core (Reanimated dependency):**
+```bash
+npm install react-native-worklets-core --legacy-peer-deps
+```
+
+Both are already in package.json but may need manual installation on fresh clones.
 
 ## Tech Stack
 
 **Core Framework:**
-- Expo SDK 54 (latest stable)
+- Expo SDK 54.0.24 (latest)
+- React 19.1.0 (FIXED VERSION - do not upgrade/downgrade)
 - React Native 0.81.5
-- TypeScript (strict mode)
+- TypeScript 5.9.2 (strict mode)
 - Node.js 18+
 
 **UI & Styling:**
-- NativeWind v4 (Tailwind CSS for React Native)
-- Tailwind CSS v3.4.17 (peer dependency)
-- React Native Reanimated v4 (animations)
-- expo-blur (native blur effects)
+- NativeWind v4.2.1 (Tailwind CSS for React Native)
+- **Glassmorphic Design System** (7 custom components)
+- React Native Reanimated 4.1.1 (60fps animations)
+- expo-blur 15.0.7 (native blur effects)
+
+**Glass Components Built:**
+1. GlassCard - Base glassmorphic container
+2. GlassButton - Interactive buttons with variants
+3. GlassInput - Form inputs with floating labels
+4. GlassModal - Full-screen modal dialogs
+5. GlassSwitch - Animated toggle switches
+6. GlassSegmentedControl - Tab selectors
+7. GlassSheet - Draggable bottom sheets
 
 **Backend & Data:**
 - Supabase (auth, database, storage)
-- React Query v5 (data fetching)
-- Zustand (global state)
+- React Query v5.90.10 (server state)
+- Zustand v5.0.8 (client state)
 
 **Monetization:**
-- RevenueCat (in-app purchases)
+- RevenueCat 9.6.5 (in-app purchases)
 
 **Routing:**
-- Expo Router v6 (file-based routing)
+- Expo Router v6.0.15 (file-based routing)
 
 ## Directory Structure
 
 ```
 clean-build/
-├── app/                    # Expo Router screens (file-based routing)
-│   ├── (tabs)/            # Tab navigation group
-│   │   ├── _layout.tsx    # Tab navigator config
-│   │   ├── index.tsx      # Home screen
-│   │   └── settings.tsx   # Settings screen
-│   ├── (auth)/            # Auth screens group
-│   │   └── _layout.tsx    # Auth layout
-│   └── _layout.tsx        # Root layout with providers
-├── lib/                   # Business logic (separated from UI)
-│   ├── supabase/          # Supabase client config
-│   │   └── client.ts      # Configured Supabase instance
-│   ├── hooks/             # Custom React hooks
-│   │   ├── useAuth.ts     # Auth hook (sign in, sign up, sign out)
+├── app/                         # Expo Router screens (file-based routing)
+│   ├── (tabs)/                 # Tab navigation group
+│   │   ├── _layout.tsx         # Tab navigator config
+│   │   ├── index.tsx           # Home screen (showcase with tech stack)
+│   │   └── settings.tsx        # Settings screen
+│   ├── (auth)/                 # Auth screens group
+│   │   └── _layout.tsx         # Auth layout
+│   ├── components-demo.tsx     # Glass components showcase
+│   ├── example-login.tsx       # Login screen example
+│   ├── example-profile.tsx     # Profile screen example
+│   ├── example-settings.tsx    # Settings screen example
+│   └── _layout.tsx             # Root layout with providers
+├── components/ui/glass/         # Glassmorphic UI components
+│   ├── GlassCard.tsx           # Base container with blur
+│   ├── GlassButton.tsx         # Interactive buttons
+│   ├── GlassInput.tsx          # Form inputs
+│   ├── GlassModal.tsx          # Full-screen modals
+│   ├── GlassSwitch.tsx         # Animated toggles
+│   ├── GlassSegmentedControl.tsx # Tab selectors
+│   ├── GlassSheet.tsx          # Bottom sheets
+│   └── index.ts                # Barrel exports
+├── lib/                        # Business logic (separated from UI)
+│   ├── supabase/               # Supabase client config
+│   │   └── client.ts           # Configured Supabase instance
+│   ├── hooks/                  # Custom React hooks
+│   │   ├── useAuth.ts          # Auth hook (sign in, sign up, sign out)
 │   │   ├── useSubscription.ts  # RevenueCat hook
-│   │   └── useData.ts     # React Query data hooks
-│   ├── store/             # Zustand stores
-│   │   └── appStore.ts    # Global app state
-│   └── utils/             # Utility functions
-│       ├── helpers.ts     # Common helpers
-│       ├── api.ts         # HTTP client
-│       └── colors.ts      # Design tokens for React Native
-├── components/            # Reusable UI components
-├── assets/                # Images, fonts, icons
-├── docs/                  # Comprehensive documentation
-├── .env.example           # Environment variables template
-├── tailwind.config.js     # Design system (single source of truth)
-├── metro.config.js        # Metro bundler with NativeWind plugin
-├── babel.config.js        # Babel with NativeWind + Reanimated
-├── tsconfig.json          # TypeScript config with path aliases
-└── global.css             # Tailwind directives
+│   │   └── useData.ts          # React Query data hooks
+│   ├── store/                  # Zustand stores
+│   │   └── appStore.ts         # Global app state
+│   └── utils/                  # Utility functions
+│       ├── helpers.ts          # Common helpers
+│       ├── api.ts              # HTTP client
+│       └── colors.ts           # Design tokens for React Native
+├── docs/                       # Comprehensive documentation
+│   ├── 01-getting-started.md
+│   ├── 02-project-structure.md
+│   ├── 03-design-system.md
+│   ├── 04-components.md
+│   ├── 05-animations.md
+│   ├── 06-supabase-setup.md
+│   ├── 07-revenuecat-setup.md
+│   ├── 08-state-management.md
+│   ├── 09-routing.md
+│   ├── 10-deployment.md
+│   ├── 11-testing.md
+│   ├── 12-performance.md
+│   ├── 13-troubleshooting.md   # CRITICAL installation fixes
+│   ├── 14-best-practices.md
+│   └── 15-api-reference.md
+├── .env.example                # Environment variables template
+├── tailwind.config.js          # Design system (single source of truth)
+├── metro.config.js             # Metro bundler with NativeWind plugin
+├── babel.config.js             # Babel with NativeWind + Reanimated
+├── tsconfig.json               # TypeScript config with path aliases
+└── global.css                  # Tailwind directives
 ```
+
+## Glassmorphic Design System
+
+### Design Principles
+- **Frosted glass aesthetic** (blur + transparency)
+- **60fps animations** (React Native Reanimated)
+- **Consistent spacing** (Tailwind scale)
+- **3 visual weights** (base, elevated, premium)
+
+### Glass Component Variants
+
+**GlassCard:**
+- `base` (80% blur, subtle border)
+- `elevated` (90% blur, stronger border, shadow)
+- `premium` (95% blur, gradient border)
+
+**GlassButton:**
+- `primary` (solid background)
+- `secondary` (semi-transparent)
+- `ghost` (transparent)
+- Loading states with spinners
+
+**GlassInput:**
+- Floating labels
+- Error states with red borders
+- Secure text entry support
+- Multiline support
+
+### Usage Example
+
+```tsx
+import { GlassCard, GlassButton, GlassInput } from '@/components/ui/glass';
+
+<ImageBackground source={{uri: 'background.jpg'}}>
+  <View className="bg-black/50"> {/* Dark overlay */}
+    <GlassCard variant="premium" intensity={80}>
+      <GlassInput
+        label="Email"
+        placeholder="you@example.com"
+        value={email}
+        onChangeText={setEmail}
+      />
+      <GlassButton
+        title="Sign In"
+        variant="primary"
+        onPress={handleSignIn}
+      />
+    </GlassCard>
+  </View>
+</ImageBackground>
+```
+
+### Performance Best Practices
+
+**BlurView Limitations:**
+- Limit to 2-3 BlurViews per screen (GPU intensive)
+- Use single container BlurView when possible
+- Avoid BlurView in FlatList items
+
+**Animation Optimization:**
+- All animations use Reanimated (runs on UI thread)
+- Spring physics for natural feel
+- Color interpolation for smooth transitions
 
 ## Key Design Decisions
 
-### 1. NativeWind vs Hardcoded Styles
-**Decision:** Use NativeWind (Tailwind CSS) for all styling
+### 1. NativeWind for All Styling
+**Decision:** Use NativeWind (Tailwind CSS) exclusively
 **Rationale:**
 - Single source of truth for design tokens
 - Consistent spacing/color scales
@@ -95,7 +233,7 @@ import { colors } from '@/lib/utils/colors';
 
 **Why two locations?**
 - Tailwind config: Used by NativeWind for className styling
-- colors.ts: Used by React Native components that don't support className (Tab Navigator, StatusBar, etc.)
+- colors.ts: Used by React Native components that don't support className
 
 **Color scales:** 50 (lightest) to 950 (darkest)
 - Primary: Blue (#3b82f6)
@@ -104,13 +242,26 @@ import { colors } from '@/lib/utils/colors';
 - Error: Red (#ef4444)
 - Gray: Neutral (#6b7280)
 
-### 3. State Management
+### 3. State Management Architecture
 **Server State:** React Query (useQuery, useMutation)
 **Client State:** Zustand (theme, onboarding, UI state)
 
 **Why separated?**
 - React Query: Handles caching, refetching, loading states
-- Zustand: Lightweight, no boilerplate
+- Zustand: Lightweight, no boilerplate, perfect for UI state
+
+**Pattern:**
+```tsx
+// Server state - use React Query
+const { data, isLoading } = useQuery({
+  queryKey: ['profile', userId],
+  queryFn: () => fetchProfile(userId),
+});
+
+// Client state - use Zustand
+const theme = useAppStore((state) => state.theme);
+const setTheme = useAppStore((state) => state.setTheme);
+```
 
 ### 4. File-Based Routing (Expo Router)
 **Pattern:**
@@ -125,17 +276,19 @@ app/
 │   ├── _layout.tsx     # Tab navigator
 │   ├── index.tsx       # /
 │   └── settings.tsx    # /settings
-└── (auth)/             # Group (not in URL)
-    ├── sign-in.tsx     # /sign-in
-    └── sign-up.tsx     # /sign-up
+├── (auth)/             # Group (not in URL)
+│   ├── sign-in.tsx     # /sign-in
+│   └── sign-up.tsx     # /sign-up
+├── components-demo.tsx  # /components-demo
+└── example-login.tsx    # /example-login
 ```
 
 ## Installation Commands
 
-**All packages installed via official Expo commands:**
+**CRITICAL: All installations require --legacy-peer-deps with React 19**
 
 ```bash
-# Core
+# Initial setup (already done in this project)
 npx create-expo-app@latest clean-build --template expo-template-blank-typescript
 
 # Routing
@@ -143,10 +296,11 @@ npx expo install expo-router react-native-safe-area-context react-native-screens
 
 # Styling
 npx expo install nativewind
-npm install --save-dev tailwindcss@3.4.17
+npm install --save-dev tailwindcss@3.4.17 --legacy-peer-deps
 
-# Animations
+# Animations (includes worklets-core)
 npx expo install react-native-reanimated react-native-gesture-handler
+npm install react-native-worklets-core --legacy-peer-deps
 
 # Blur
 npx expo install expo-blur
@@ -155,16 +309,45 @@ npx expo install expo-blur
 npx expo install @supabase/supabase-js @react-native-async-storage/async-storage react-native-url-polyfill
 
 # Data fetching
-npm install @tanstack/react-query
+npm install @tanstack/react-query --legacy-peer-deps
 
 # State
-npm install zustand
+npm install zustand --legacy-peer-deps
 
 # Monetization
 npx expo install react-native-purchases
+
+# Dev dependencies
+npm install --save-dev babel-preset-expo --legacy-peer-deps
 ```
 
 ## Configuration Files
+
+### package.json (exact versions)
+```json
+{
+  "dependencies": {
+    "expo": "~54.0.24",
+    "expo-router": "~6.0.15",
+    "expo-linking": "~8.0.9",
+    "expo-splash-screen": "~31.0.11",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "react-native": "0.81.5",
+    "react-native-reanimated": "~4.1.1",
+    "react-native-worklets-core": "^1.6.2",
+    "nativewind": "^4.2.1",
+    "@tanstack/react-query": "^5.90.10",
+    "zustand": "^5.0.8"
+  },
+  "devDependencies": {
+    "@types/react": "~19.1.0",
+    "babel-preset-expo": "^54.0.7",
+    "tailwindcss": "^3.4.17",
+    "typescript": "~5.9.2"
+  }
+}
+```
 
 ### babel.config.js
 ```javascript
@@ -235,57 +418,193 @@ await signIn(email, password);
 await signUp(email, password);
 ```
 
-### Data Fetching
+### Data Fetching with React Query
 ```tsx
 import { useProfile } from '@/lib/hooks/useData';
 
 const { data, isLoading, error } = useProfile(userId);
+
+// Mutations
+const mutation = useMutation({
+  mutationFn: updateProfile,
+  onSuccess: () => {
+    queryClient.invalidateQueries({ queryKey: ['profile'] });
+  },
+});
 ```
 
-### Subscriptions
+### Subscriptions with RevenueCat
 ```tsx
 import { useSubscription } from '@/lib/hooks/useSubscription';
 
 const { isPro, offerings, purchasePackage } = useSubscription();
+
+if (isPro) {
+  // Show premium features
+}
+```
+
+### Navigation with Expo Router
+```tsx
+import { router } from 'expo-router';
+
+// Push to route
+router.push('/profile');
+
+// Replace (no back button)
+router.replace('/login');
+
+// Go back
+router.back();
+
+// With params
+router.push({
+  pathname: '/post/[id]',
+  params: { id: '123' },
+});
 ```
 
 ## Important Notes for LLMs
 
-1. **Always use official Expo install commands:** `npx expo install <package>`
-2. **Never hardcode colors:** Use `className="bg-primary-500"` or `colors.primary[500]`
-3. **Separation of concerns:** UI in `/app`, logic in `/lib`
-4. **TypeScript strict mode:** All code must be properly typed
-5. **Path aliases:** Import with `@/` instead of relative paths
-6. **Design tokens:** All colors/spacing in `tailwind.config.js`
-7. **React Query for server state:** Don't put API data in Zustand
-8. **Reanimated for animations:** Don't use old Animated API
+### Critical Rules
+1. **ALWAYS use --legacy-peer-deps** for npm install (React 19)
+2. **NEVER downgrade React** from 19.1.0 to 18.x (breaks Expo 54)
+3. **Limit BlurViews** to 2-3 per screen (performance)
+4. **Use Reanimated** for all animations (not Animated API)
+5. **Separate server/client state** (React Query vs Zustand)
+6. **TypeScript strict mode** required - no `any` types
+7. **Path aliases** - use `@/` imports, not relative paths
 
-## Common Issues
+### Glass Component Guidelines
+- Always wrap in ImageBackground with dark overlay
+- Use GlassCard variants appropriately (base/elevated/premium)
+- Combine glass components for rich UIs (modals, sheets, inputs)
+- Test animations on device (not just simulator)
 
-**Metro bundler errors:** Run `npx expo start --clear`
-**TypeScript errors:** Run `npx tsc --noEmit`
-**NativeWind not working:** Check global.css is imported in app/_layout.tsx
-**Supabase errors:** Check .env file has EXPO_PUBLIC_ prefix
+### Installation Checklist
+If starting fresh:
+1. ✅ Use `--legacy-peer-deps` for all npm installs
+2. ✅ Install `babel-preset-expo` as dev dependency
+3. ✅ Install `react-native-worklets-core` for Reanimated
+4. ✅ Verify React 19.1.0 exactly (not 19.2.x)
+5. ✅ Run `npx expo start --clear` after install
 
-## Documentation
+### Common Mistakes to Avoid
+- ❌ Installing without --legacy-peer-deps
+- ❌ Downgrading React to fix peer warnings
+- ❌ Missing babel-preset-expo or worklets-core
+- ❌ Using old Animated API instead of Reanimated
+- ❌ Hardcoding colors instead of design tokens
+- ❌ Too many BlurViews (causes jank)
+- ❌ Putting server data in Zustand (use React Query)
 
-Full documentation in `/docs/`:
-- 01-getting-started.md
-- 02-project-structure.md
-- 03-design-system.md
-- 04-components.md
-- 05-animations.md
-- 06-supabase-setup.md
-- 07-revenuecat-setup.md
+## Example Screens Built
+
+1. **Home Screen (index.tsx)**
+   - Expo Starter branding
+   - Tech stack showcase (6 cards)
+   - Quick start guide (3 steps)
+   - Links to components demo and examples
+
+2. **Components Demo (components-demo.tsx)**
+   - Showcase of all 7 glass components
+   - Interactive examples
+   - Code snippets
+
+3. **Login Example (example-login.tsx)**
+   - Email/password validation
+   - Remember me toggle
+   - Social auth buttons
+   - Loading states
+
+4. **Profile Example (example-profile.tsx)**
+   - Stats dashboard
+   - Segmented control tabs
+   - Edit modal
+   - Achievement cards
+
+5. **Settings Example (example-settings.tsx)**
+   - Switch toggles
+   - Draggable bottom sheet
+   - Discriminated union types
+   - Account management
+
+## Troubleshooting
+
+**Metro won't start:**
+```bash
+npx expo start --clear
+```
+
+**TypeScript errors:**
+```bash
+npx tsc --noEmit
+```
+
+**Missing worklets error:**
+```bash
+npm install react-native-worklets-core --legacy-peer-deps
+```
+
+**NativeWind not working:**
+- Check `global.css` imported in `app/_layout.tsx`
+- Restart Metro with `--clear` flag
+
+**React version mismatch:**
+```bash
+npm install react@19.1.0 react-dom@19.1.0 --legacy-peer-deps
+```
+
+## Documentation Structure
+
+All 15 guides available in `/docs/`:
+1. Getting Started - Installation and setup
+2. Project Structure - File organization
+3. Design System - Colors, typography, spacing
+4. Components - UI component library
+5. Animations - Reanimated patterns
+6. Supabase Setup - Backend configuration
+7. RevenueCat Setup - Monetization
+8. State Management - React Query + Zustand
+9. Routing - Expo Router patterns
+10. Deployment - EAS Build and app stores
+11. Testing - Unit, component, E2E
+12. Performance - Optimization techniques
+13. **Troubleshooting - CRITICAL installation fixes**
+14. Best Practices - Code standards
+15. API Reference - Complete API docs
 
 ## Version Info
 
-- Expo SDK: 54
+- Expo SDK: 54.0.24
+- React: 19.1.0 (FIXED - do not change)
 - React Native: 0.81.5
 - NativeWind: 4.2.1
 - Tailwind CSS: 3.4.17
-- TypeScript: 5.x
+- TypeScript: 5.9.2
 - Node.js: 18+
+- React Query: 5.90.10
+- Zustand: 5.0.8
+
+## Quick Start (For New Developers)
+
+```bash
+# 1. Clone the repo
+git clone <repo-url>
+cd clean-build
+
+# 2. Install dependencies (CRITICAL: use --legacy-peer-deps)
+npm install --legacy-peer-deps
+
+# 3. Create .env file
+cp .env.example .env
+# Edit .env with your Supabase and RevenueCat keys
+
+# 4. Start development server
+npx expo start
+
+# 5. Test in browser (press 'w') or scan QR with Expo Go
+```
 
 ## License
 

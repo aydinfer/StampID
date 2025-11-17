@@ -1,25 +1,44 @@
 # Expo Starter - Production Ready Template
 
-A production-ready Expo starter template built with official Expo packages and best practices.
+A production-ready Expo starter template with **glassmorphic UI design system**. Built with official Expo packages, React 19, and best practices.
 
-## Features
+## ✨ Features
 
-- ✅ **Expo SDK 54** - Latest stable version with React Native 0.81.5
+### Core Stack
+- ✅ **Expo SDK 54** - Latest version with React 19.1.0
+- ✅ **Glassmorphic UI** - 7 custom glass components
 - ✅ **NativeWind v4** - Tailwind CSS for React Native
 - ✅ **Expo Router** - File-based routing like Next.js
 - ✅ **React Native Reanimated** - 60fps animations
-- ✅ **expo-blur** - Native blur effects
-- ✅ **Supabase** - Backend, auth, and database
-- ✅ **RevenueCat** - In-app purchases and subscriptions
-- ✅ **React Query** - Data fetching and caching
-- ✅ **Zustand** - Lightweight global state
-- ✅ **TypeScript** - Full type safety with strict mode
+- ✅ **expo-blur** - Native blur effects for glass aesthetic
+- ✅ **TypeScript** - Strict mode with full type safety
 
-## Quick Start
+### Backend & Monetization
+- ✅ **Supabase** - Authentication, database, and storage
+- ✅ **RevenueCat** - In-app purchases and subscriptions
+- ✅ **React Query** - Server state management
+- ✅ **Zustand** - Client state management
+
+### Glass Components Included
+1. **GlassCard** - Glassmorphic containers with 3 variants
+2. **GlassButton** - Interactive buttons with loading states
+3. **GlassInput** - Form inputs with floating labels
+4. **GlassModal** - Full-screen modal dialogs
+5. **GlassSwitch** - Animated toggle switches
+6. **GlassSegmentedControl** - Tab selectors
+7. **GlassSheet** - Draggable bottom sheets
+
+## ⚠️ CRITICAL: Installation
+
+This project uses **React 19.1.0** (required by Expo SDK 54). You **MUST** use `--legacy-peer-deps`:
 
 ```bash
-# Install dependencies
-npm install
+# Clone the repository
+git clone <repo-url>
+cd clean-build
+
+# Install dependencies (CRITICAL: use --legacy-peer-deps)
+npm install --legacy-peer-deps
 
 # Set up environment variables
 cp .env.example .env
@@ -28,6 +47,14 @@ cp .env.example .env
 # Start development server
 npx expo start
 ```
+
+**Why --legacy-peer-deps?**
+- Expo 54 requires React 19.1.0 specifically
+- React ecosystem is catching up to React 19
+- Some packages show peer warnings but work correctly
+- **NEVER downgrade to React 18** - it will break Expo 54
+
+See [docs/13-troubleshooting.md](./docs/13-troubleshooting.md) for detailed installation troubleshooting.
 
 Then press:
 - `i` for iOS Simulator
