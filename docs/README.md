@@ -27,6 +27,11 @@ Complete documentation for the Expo Starter template.
 14. [Best Practices](./14-best-practices.md) - Code standards
 15. [API Reference](./15-api-reference.md) - Hooks and utilities
 
+### Meta Documentation
+- [Coding Guide](./meta/CODING_GUIDE.md) - Opinionated best practices (DRY, YAGNI, KISS)
+- [Changelog](./meta/CHANGELOG.md) - Version history and roadmap
+- [LLM.txt](./meta/LLM.txt) - AI assistant optimization guide
+
 ## Quick Links
 
 **First time?** Start with [Getting Started](./01-getting-started.md)
