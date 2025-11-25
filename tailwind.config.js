@@ -9,59 +9,81 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Primary brand colors
-        primary: {
-          50: '#eff6ff',
-          100: '#dbeafe',
-          200: '#bfdbfe',
-          300: '#93c5fd',
-          400: '#60a5fa',
-          500: '#3b82f6',
-          600: '#2563eb',
-          700: '#1d4ed8',
-          800: '#1e40af',
-          900: '#1e3a8a',
-          950: '#172554',
-        },
-        // Success colors
-        success: {
-          50: '#f0fdf4',
-          100: '#dcfce7',
-          200: '#bbf7d0',
-          300: '#86efac',
-          400: '#4ade80',
-          500: '#10b981',
-          600: '#16a34a',
-          700: '#15803d',
+        // Primary Brand Color - Forest Green
+        forest: {
+          50:  '#F0FDF4',
+          100: '#DCFCE7',
+          200: '#BBF7D0',
+          300: '#86EFAC',
+          400: '#4ADE80',
+          500: '#22C55E',
+          600: '#16A34A',
+          700: '#15803D',
           800: '#166534',
-          900: '#14532d',
+          900: '#1B4332', // PRIMARY - Deep Forest
+          950: '#0F2419',
         },
-        // Warning colors
+
+        // Background Colors - Cream
+        cream: {
+          DEFAULT: '#FAF9F6',
+          50:  '#FFFFFF',
+          100: '#FAF9F6', // Primary BG
+          200: '#F5F5F0', // Secondary BG
+          300: '#EBEBEB',
+        },
+
+        // Text Colors - Ink
+        ink: {
+          DEFAULT: '#1A1A1A', // Primary text
+          light: '#6B6B6B',   // Secondary text
+          muted: '#9CA3AF',   // Placeholder/disabled
+        },
+
+        // Semantic Colors
+        success: {
+          DEFAULT: '#22C55E',
+          50: '#F0FDF4',
+          100: '#DCFCE7',
+          500: '#22C55E',
+          600: '#16A34A',
+          700: '#15803D',
+        },
         warning: {
-          50: '#fffbeb',
-          100: '#fef3c7',
-          200: '#fde68a',
-          300: '#fcd34d',
-          400: '#fbbf24',
-          500: '#f59e0b',
-          600: '#d97706',
-          700: '#b45309',
-          800: '#92400e',
-          900: '#78350f',
+          DEFAULT: '#F59E0B',
+          50: '#FFFBEB',
+          100: '#FEF3C7',
+          500: '#F59E0B',
+          600: '#D97706',
+          700: '#B45309',
         },
-        // Error colors
         error: {
-          50: '#fef2f2',
-          100: '#fee2e2',
-          200: '#fecaca',
-          300: '#fca5a5',
-          400: '#f87171',
-          500: '#ef4444',
-          600: '#dc2626',
-          700: '#b91c1c',
-          800: '#991b1b',
-          900: '#7f1d1d',
+          DEFAULT: '#EF4444',
+          50: '#FEF2F2',
+          100: '#FEE2E2',
+          500: '#EF4444',
+          600: '#DC2626',
+          700: '#B91C1C',
         },
+      },
+
+      // Glass effect utilities
+      backdropBlur: {
+        glass: '20px',
+      },
+
+      // Glass shadows
+      boxShadow: {
+        'glass': '0 8px 32px rgba(0, 0, 0, 0.08)',
+        'glass-lg': '0 16px 48px rgba(0, 0, 0, 0.12)',
+        'glass-sm': '0 4px 16px rgba(0, 0, 0, 0.06)',
+      },
+
+      // Typography
+      fontFamily: {
+        display: ['PlayfairDisplay', 'serif'],
+        body: ['Inter', 'sans-serif'],
+        mono: ['JetBrainsMono', 'monospace'],
       },
     },
   },
