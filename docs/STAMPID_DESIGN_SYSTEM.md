@@ -29,68 +29,102 @@ Stamps are **artifacts of human connection** - letters sent, stories told, histo
 
 ## Color Palette
 
-### Primary Philosophy: "Aged Paper & Wax Seals"
+### Primary Philosophy: "Clean. Premium. Timeless."
 
-We reject typical AI colors (blue, purple, teal, cyan). Instead, we draw from:
-- Aged parchment paper
-- Wax seals (burgundy, deep red)
-- Antique gold leaf
-- Vintage ink (deep green, brown-black)
-- Old wooden stamp albums
+A minimal, sophisticated palette inspired by:
+- Vintage ink (deep forest green)
+- Fine stationery (cream, off-white)
+- Classic typography (near-black ink)
+- Frosted glass (modern, elegant surfaces)
+
+**The Rule:** Dark Green + Cream + Near-Black + Glass. Nothing else.
 
 ### The Palette
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                     STAMPID COLOR SYSTEM                        │
+│                     "Less is More"                              │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
-│  PRIMARY COLORS                                                 │
+│  PRIMARY COLOR                                                  │
 │  ┌──────────────────────────────────────────────────────────┐  │
 │  │                                                          │  │
-│  │  BURGUNDY (Wax Seal)        GOLD (Antique Leaf)         │  │
-│  │  #8B2942                    #C9A227                      │  │
-│  │  Primary actions,           Accents, highlights,         │  │
-│  │  voice active state         premium features             │  │
+│  │  FOREST GREEN (Primary Brand Color)                      │  │
+│  │  #1B4332                                                 │  │
+│  │                                                          │  │
+│  │  Used for:                                               │  │
+│  │  • Primary buttons                                       │  │
+│  │  • Active states                                         │  │
+│  │  • Voice recording indicator                             │  │
+│  │  • Key UI accents                                        │  │
+│  │  • Links and interactive elements                        │  │
 │  │                                                          │  │
 │  └──────────────────────────────────────────────────────────┘  │
 │                                                                 │
-│  SECONDARY COLORS                                               │
+│  BACKGROUND COLORS                                              │
 │  ┌──────────────────────────────────────────────────────────┐  │
 │  │                                                          │  │
-│  │  FOREST (Vintage Ink)       ESPRESSO (Old Wood)         │  │
-│  │  #2D4739                    #3D2B1F                      │  │
-│  │  Secondary actions,         Text, depth,                 │  │
-│  │  success states             grounding elements           │  │
+│  │  CREAM (Primary Background)     WHITE (Cards/Elevated)   │  │
+│  │  #FAF9F6                        #FFFFFF                  │  │
+│  │  Warm, easy on eyes             Clean, elevated surfaces │  │
+│  │                                                          │  │
+│  │  OFF-WHITE (Secondary BG)                                │  │
+│  │  #F5F5F0                                                 │  │
+│  │  Subtle depth, section dividers                         │  │
 │  │                                                          │  │
 │  └──────────────────────────────────────────────────────────┘  │
 │                                                                 │
-│  NEUTRAL COLORS                                                 │
+│  TEXT COLORS                                                    │
 │  ┌──────────────────────────────────────────────────────────┐  │
 │  │                                                          │  │
-│  │  PARCHMENT (Aged Paper)     CREAM (Light Paper)         │  │
-│  │  #F5F0E6                    #FFFDF7                      │  │
-│  │  Backgrounds,               Cards, elevated              │  │
-│  │  canvas                     surfaces                     │  │
+│  │  NEAR-BLACK (Primary Text)      GRAY (Secondary Text)    │  │
+│  │  #1A1A1A                        #6B6B6B                  │  │
+│  │  Headlines, body text           Captions, timestamps     │  │
 │  │                                                          │  │
-│  │  SEPIA (Aged Text)          INK (Deep Text)             │  │
-│  │  #704214                    #1A1410                      │  │
-│  │  Secondary text,            Primary text,                │  │
-│  │  timestamps                 headings                     │  │
+│  │  MUTED (Placeholder/Disabled)                           │  │
+│  │  #9CA3AF                                                 │  │
+│  │  Input placeholders, disabled states                    │  │
 │  │                                                          │  │
 │  └──────────────────────────────────────────────────────────┘  │
 │                                                                 │
-│  SEMANTIC COLORS                                                │
+│  SEMANTIC COLORS (Used Sparingly)                              │
 │  ┌──────────────────────────────────────────────────────────┐  │
 │  │                                                          │  │
-│  │  SUCCESS: #4A7C59 (Moss Green)                          │  │
-│  │  WARNING: #D4A84B (Amber Gold)                          │  │
-│  │  ERROR:   #9B3D3D (Deep Crimson)                        │  │
-│  │  INFO:    #5B7B8A (Slate Blue-Gray)                     │  │
+│  │  SUCCESS: #22C55E (Green - same family as primary)      │  │
+│  │  WARNING: #F59E0B (Amber - warm, visible)               │  │
+│  │  ERROR:   #EF4444 (Red - clear danger signal)           │  │
+│  │  INFO:    #1B4332 (Use primary green for info)          │  │
+│  │                                                          │  │
+│  └──────────────────────────────────────────────────────────┘  │
+│                                                                 │
+│  GLASS EFFECT (Frosted Glass for Cards, Buttons, Modals)       │
+│  ┌──────────────────────────────────────────────────────────┐  │
+│  │                                                          │  │
+│  │  Background: rgba(255, 255, 255, 0.7)                   │  │
+│  │  Backdrop blur: 20px                                     │  │
+│  │  Border: 1px solid rgba(255, 255, 255, 0.3)             │  │
+│  │  Shadow: 0 8px 32px rgba(0, 0, 0, 0.08)                 │  │
+│  │                                                          │  │
+│  │  Creates elegant, floating surfaces                      │  │
 │  │                                                          │  │
 │  └──────────────────────────────────────────────────────────┘  │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
+```
+
+### Visual Reference
+
+```
+LIGHT MODE:
+
+┌──────────────────────────────────────────────────────────────┐
+│  ████████████████████████████████████████  #FAF9F6  Cream BG │
+│  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  #FFFFFF  Glass    │
+│  ████                                      #1B4332  Green    │
+│  ████████████████████████████████████████  #1A1A1A  Text     │
+│  ████████████████████                      #6B6B6B  Gray     │
+└──────────────────────────────────────────────────────────────┘
 ```
 
 ### Tailwind Configuration
@@ -101,97 +135,157 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Primary
-        burgundy: {
-          50:  '#FDF2F4',
-          100: '#FCE7EB',
-          200: '#F9CED6',
-          300: '#F4A5B5',
-          400: '#EC728C',
-          500: '#D94B6A',
-          600: '#B83553',
-          700: '#8B2942', // PRIMARY
-          800: '#762438',
-          900: '#652233',
-          950: '#380F19',
-        },
-        gold: {
-          50:  '#FDFAEB',
-          100: '#FBF3C7',
-          200: '#F7E68E',
-          300: '#F2D24B',
-          400: '#E8BD24',
-          500: '#C9A227', // PRIMARY
-          600: '#A67D1A',
-          700: '#7D5B17',
-          800: '#68491A',
-          900: '#593C1B',
-          950: '#341F0B',
-        },
+        // Primary Brand Color
         forest: {
-          50:  '#F3F7F4',
-          100: '#E3EBE5',
-          200: '#C8D8CD',
-          300: '#A0BCAA',
-          400: '#739A82',
-          500: '#527C64',
-          600: '#3F634F',
-          700: '#2D4739', // PRIMARY
-          800: '#283B31',
-          900: '#22312A',
-          950: '#121B17',
+          50:  '#F0FDF4',
+          100: '#DCFCE7',
+          200: '#BBF7D0',
+          300: '#86EFAC',
+          400: '#4ADE80',
+          500: '#22C55E',
+          600: '#16A34A',
+          700: '#15803D',
+          800: '#166534',
+          900: '#1B4332', // PRIMARY - Deep Forest
+          950: '#0F2419',
         },
-        espresso: {
-          50:  '#F9F6F3',
-          100: '#F1EBE4',
-          200: '#E2D6C8',
-          300: '#CEBAA4',
-          400: '#B89A7E',
-          500: '#A78263',
-          600: '#9A7257',
-          700: '#805D49',
-          800: '#694D3F',
-          900: '#3D2B1F', // PRIMARY
-          950: '#2D1F16',
+
+        // Background Colors
+        cream: {
+          DEFAULT: '#FAF9F6',
+          50:  '#FFFFFF',
+          100: '#FAF9F6', // Primary BG
+          200: '#F5F5F0', // Secondary BG
+          300: '#EBEBEB',
         },
-        parchment: {
-          50:  '#FFFDF7',
-          100: '#F5F0E6', // PRIMARY LIGHT BG
-          200: '#EDE5D4',
-          300: '#DED2BA',
-          400: '#CBBA98',
-          500: '#BBA57D',
-          600: '#AB9068',
-          700: '#8F7556',
-          800: '#76614A',
-          900: '#62513F',
-        },
+
+        // Text Colors
         ink: {
-          DEFAULT: '#1A1410',
-          light: '#704214',
+          DEFAULT: '#1A1A1A', // Primary text
+          light: '#6B6B6B',   // Secondary text
+          muted: '#9CA3AF',   // Placeholder/disabled
         },
+
+        // Semantic (used sparingly)
+        success: '#22C55E',
+        warning: '#F59E0B',
+        error: '#EF4444',
+      },
+
+      // Glass effect utilities
+      backdropBlur: {
+        glass: '20px',
+      },
+
+      // Glass shadows
+      boxShadow: {
+        'glass': '0 8px 32px rgba(0, 0, 0, 0.08)',
+        'glass-lg': '0 16px 48px rgba(0, 0, 0, 0.12)',
+        'glass-sm': '0 4px 16px rgba(0, 0, 0, 0.06)',
       },
     },
   },
 };
 ```
 
+### Glass Component Styles
+
+```typescript
+// Frosted Glass Card
+const glassCard = `
+  bg-white/70
+  backdrop-blur-glass
+  border border-white/30
+  shadow-glass
+  rounded-2xl
+`;
+
+// Frosted Glass Button
+const glassButton = `
+  bg-white/80
+  backdrop-blur-glass
+  border border-white/40
+  shadow-glass-sm
+  rounded-xl
+  active:bg-white/90
+  active:scale-[0.98]
+`;
+
+// Primary Button (Solid Green)
+const primaryButton = `
+  bg-forest-900
+  text-white
+  rounded-xl
+  shadow-glass-sm
+  active:bg-forest-800
+  active:scale-[0.98]
+`;
+
+// Glass Input
+const glassInput = `
+  bg-white/60
+  backdrop-blur-glass
+  border border-white/40
+  rounded-xl
+  text-ink
+  placeholder:text-ink-muted
+  focus:border-forest-900/30
+  focus:ring-2
+  focus:ring-forest-900/10
+`;
+
+// Glass Modal/Sheet
+const glassModal = `
+  bg-white/80
+  backdrop-blur-glass
+  border border-white/30
+  shadow-glass-lg
+  rounded-3xl
+`;
+```
+
 ### Dark Mode Palette
 
-Dark mode should feel like **a stamp album in candlelight**, not harsh black:
+Dark mode inverts to forest green as the canvas:
 
 ```
 DARK MODE
 
-Background:     #1A1410 (Warm Black - like aged leather)
-Surface:        #2A2420 (Elevated surfaces)
-Surface High:   #3A3430 (Cards, modals)
+┌──────────────────────────────────────────────────────────────┐
+│  ████████████████████████████████████████  #0F1A14  Dark BG  │
+│  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  Glass (white/10%) │
+│  ████                                      #4ADE80  Light Grn│
+│  ████████████████████████████████████████  #F5F5F0  Text     │
+│  ████████████████████                      #9CA3AF  Gray     │
+└──────────────────────────────────────────────────────────────┘
 
-Text Primary:   #F5F0E6 (Parchment)
-Text Secondary: #B8A898 (Muted parchment)
+Background:     #0F1A14 (Deep forest black)
+Surface:        rgba(255, 255, 255, 0.05) (Subtle glass)
+Surface High:   rgba(255, 255, 255, 0.10) (Cards, modals)
 
-Accent:         #C9A227 (Gold pops beautifully on dark)
-Primary Action: #D94B6A (Lighter burgundy for contrast)
+Text Primary:   #F5F5F0 (Cream/off-white)
+Text Secondary: #9CA3AF (Muted gray)
+
+Accent:         #4ADE80 (Lighter green for contrast)
+Primary Action: #22C55E (Success green, vibrant on dark)
+```
+
+### Usage Guidelines
+
+```
+DO:
+✓ Use forest-900 for primary actions
+✓ Use cream-100 as main background
+✓ Use glass effects for cards, buttons, modals
+✓ Keep text in ink/ink-light hierarchy
+✓ Use semantic colors only for status
+
+DON'T:
+✗ Add additional accent colors
+✗ Use gradients (keep it flat)
+✗ Mix different glass opacities randomly
+✗ Use pure black (#000000) for text
+✗ Use forest green for large background areas
 ```
 
 ---
@@ -323,11 +417,11 @@ IDLE STATE:
 ┌─────────────────────────────────┐
 │                                 │
 │           ┌───────┐            │
-│           │  🎙️   │            │  Burgundy circle
-│           │       │            │  Gold microphone icon
+│           │  🎙️   │            │  Forest green circle (#1B4332)
+│           │       │            │  White microphone icon
 │           └───────┘            │  Subtle pulse animation
 │                                 │
-│    "Tap to talk to StampID"    │
+│    "Tap to talk to StampID"    │  Frosted glass background
 │                                 │
 └─────────────────────────────────┘
 
@@ -336,9 +430,9 @@ LISTENING STATE:
 │                                 │
 │     ╭─────────────────────╮    │
 │     │ ≋≋≋ ▌▌▌ ≋≋≋ ▌▌▌ ≋≋≋ │    │  Waveform animation
-│     │     Listening...     │    │  Warm gold/burgundy gradient
+│     │     Listening...     │    │  Forest green bars
 │     ╰─────────────────────╯    │  Responds to voice amplitude
-│                                 │
+│                                 │  Glass container
 └─────────────────────────────────┘
 
 PROCESSING STATE:
@@ -346,10 +440,10 @@ PROCESSING STATE:
 │                                 │
 │           ╭───────╮            │
 │           │ ◠ ◠ ◠ │            │  Thinking dots
-│           │  ...  │            │  Gold shimmer effect
+│           │  ...  │            │  Green shimmer effect
 │           ╰───────╯            │
 │                                 │
-│    "Searching 50,000 stamps"   │
+│    "Searching 50,000 stamps"   │  Muted text (#6B6B6B)
 │                                 │
 └─────────────────────────────────┘
 
@@ -358,7 +452,7 @@ RESPONDING STATE:
 │                                 │
 │     ╭─────────────────────╮    │
 │     │ ))) ◉ (((           │    │  Speaker animation
-│     │  Speaking...        │    │  Soft burgundy glow
+│     │  Speaking...        │    │  Soft green glow
 │     ╰─────────────────────╯    │
 │                                 │
 └─────────────────────────────────┘
@@ -369,11 +463,12 @@ RESPONDING STATE:
 ```typescript
 // Voice waveform configuration
 const voiceWaveConfig = {
-  // Colors (gradient)
+  // Colors (single color system - clean)
   colors: {
-    primary: '#8B2942',   // Burgundy
-    secondary: '#C9A227', // Gold
-    glow: 'rgba(139, 41, 66, 0.3)', // Burgundy glow
+    primary: '#1B4332',   // Forest green
+    active: '#22C55E',    // Brighter green when speaking
+    glow: 'rgba(27, 67, 50, 0.2)', // Subtle green glow
+    background: 'rgba(255, 255, 255, 0.7)', // Glass background
   },
 
   // Animation
@@ -538,21 +633,21 @@ MARKETPLACE (Future):
 │  STAGE 2: Details Cascade (400-800ms)                          │
 │  - Country fades in from left                                   │
 │  - Year fades in from right                                     │
-│  - Value scales up from center with gold shimmer               │
+│  - Value scales up from center with green shimmer              │
 │  - Catalog # types in like old typewriter                      │
 │                                                                 │
 │  STAGE 3: Confidence Ring (800-1000ms)                         │
 │  - Circular progress fills around stamp                        │
-│  - Color indicates confidence (gold = high, sepia = medium)    │
+│  - Color indicates confidence (green = high, gray = medium)    │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-#### 2. Wax Seal Button Press
+#### 2. Glass Button Press
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                      WAX SEAL INTERACTION                       │
+│                      GLASS BUTTON INTERACTION                   │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
 │  IDLE:           PRESSED:          RELEASED:                   │
@@ -565,7 +660,7 @@ MARKETPLACE (Future):
 │                                                                 │
 │  - Scale to 0.95                                               │
 │  - Subtle "press into wax" shadow                              │
-│  - Gold ripple on release                                       │
+│  - Green ripple on release                                      │
 │  - Haptic feedback                                              │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
@@ -611,7 +706,7 @@ MARKETPLACE (Future):
 │  │    $▓▓▓ → $1▓▓ → $12▓ → $125       │                       │
 │  │                                     │                       │
 │  │    Numbers "roll" like slot machine │                       │
-│  │    Gold shimmer on final reveal     │                       │
+│  │    Green shimmer on final reveal    │                       │
 │  │                                     │                       │
 │  └─────────────────────────────────────┘                       │
 │                                                                 │
@@ -932,10 +1027,10 @@ ACTIONS:
 
 ```
 CONTRAST RATIOS (WCAG AA):
-- Body text on parchment: 7.2:1 ✓
-- Headlines on parchment: 12.1:1 ✓
-- Gold on dark mode: 8.4:1 ✓
-- Burgundy buttons: 4.8:1 ✓
+- Body text (#1A1A1A) on cream: 14.5:1 ✓
+- Secondary text (#6B6B6B) on cream: 5.2:1 ✓
+- Green (#1B4332) on white: 10.8:1 ✓
+- White text on green buttons: 10.8:1 ✓
 
 TOUCH TARGETS:
 - Minimum: 44x44px
@@ -987,10 +1082,10 @@ MOTION:
 - [Teenage Engineering](https://teenage.engineering/) - Premium minimalism
 
 ### Color Inspiration
-- Vintage wax seals
+- Fine cream stationery
 - Old leather stamp albums
 - Aged parchment paper
-- Antique gold leaf
+- Frosted glass surfaces
 - Museum display cases
 
 ### Animation Inspiration
@@ -1007,7 +1102,7 @@ MOTION:
 
 | Traditional AI App | StampID |
 |-------------------|---------|
-| Cold blue/purple | Warm burgundy/gold |
+| Cold blue/purple | **Forest green + cream** |
 | Tap-first | Voice-first |
 | Clinical | Personal & knowledgeable |
 | Feature grid | Conversation flow |
