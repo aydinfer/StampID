@@ -6,8 +6,8 @@ export type LLMProvider = 'qwen' | 'deepseek' | 'pixtral' | 'google' | 'openai';
 // ============================================
 // CHANGE MODEL HERE (2 lines)
 // ============================================
-export const ACTIVE_PROVIDER: LLMProvider = 'qwen';
-export const ACTIVE_MODEL = 'qwen-vl-max'; // or qwen2.5-vl-72b-instruct
+export const ACTIVE_PROVIDER: LLMProvider = 'google';
+export const ACTIVE_MODEL = 'gemini-2.5-flash'; // $0.10/1M - cheapest with best multi-object
 
 // Provider configurations
 export const PROVIDERS = {

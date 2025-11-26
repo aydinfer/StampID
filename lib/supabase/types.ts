@@ -39,6 +39,8 @@ export interface Stamp {
   estimated_value_low: number | null;
   estimated_value_high: number | null;
   currency: string;
+  rarity: 'common' | 'uncommon' | 'rare' | 'very_rare' | null;
+  description: string | null;
 
   // Images
   image_url: string;
