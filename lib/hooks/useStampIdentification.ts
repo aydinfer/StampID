@@ -1,13 +1,16 @@
 import { useState, useCallback } from 'react';
 import {
-  identifyStamp,
-  imageToBase64,
+  identifyStamps,
   StampIdentificationResult,
+  MultiStampResponse,
 } from '../api/identify-stamp';
 
 interface UseStampIdentificationReturn {
-  identify: (imageUri: string) => Promise<StampIdentificationResult>;
-  result: StampIdentificationResult | null;
+  identify: (imageUri: string) => Promise<MultiStampResponse>;
+  result: StampIdentificationResult | null; // First/primary stamp
+  results: StampIdentificationResult[];     // All stamps detected
+  response: MultiStampResponse | null;      // Full API response
+  totalStamps: number;
   loading: boolean;
   error: string | null;
   reset: () => void;
@@ -15,40 +18,39 @@ interface UseStampIdentificationReturn {
 
 /**
  * Hook for identifying stamps from images
+ * Supports single and multi-stamp detection
  *
  * @example
- * const { identify, result, loading, error } = useStampIdentification();
+ * const { identify, results, totalStamps, loading, error } = useStampIdentification();
  *
  * const handleCapture = async (uri: string) => {
  *   try {
- *     const result = await identify(uri);
- *     console.log('Identified:', result.name);
+ *     const response = await identify(uri);
+ *     console.log(`Found ${response.total_stamps_detected} stamps`);
+ *     response.stamps.forEach(stamp => {
+ *       console.log('Identified:', stamp.name);
+ *     });
  *   } catch (err) {
  *     console.error('Failed:', err);
  *   }
  * };
  */
 export function useStampIdentification(): UseStampIdentificationReturn {
-  const [result, setResult] = useState<StampIdentificationResult | null>(null);
+  const [response, setResponse] = useState<MultiStampResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const identify = useCallback(async (imageUri: string): Promise<StampIdentificationResult> => {
+  const identify = useCallback(async (imageUri: string): Promise<MultiStampResponse> => {
     setLoading(true);
     setError(null);
-    setResult(null);
+    setResponse(null);
 
     try {
-      // Convert image to base64
-      const base64 = await imageToBase64(imageUri);
+      // Image compression is handled internally by identifyStamps
+      const apiResponse = await identifyStamps({ imageUri });
 
-      // Call API
-      const identificationResult = await identifyStamp({
-        imageBase64: base64,
-      });
-
-      setResult(identificationResult);
-      return identificationResult;
+      setResponse(apiResponse);
+      return apiResponse;
 
     } catch (err: any) {
       const errorMessage = err.message || 'Failed to identify stamp';
@@ -61,14 +63,17 @@ export function useStampIdentification(): UseStampIdentificationReturn {
   }, []);
 
   const reset = useCallback(() => {
-    setResult(null);
+    setResponse(null);
     setError(null);
     setLoading(false);
   }, []);
 
   return {
     identify,
-    result,
+    result: response?.stamps[0] ?? null,
+    results: response?.stamps ?? [],
+    response,
+    totalStamps: response?.total_stamps_detected ?? 0,
     loading,
     error,
     reset,

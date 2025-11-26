@@ -5,12 +5,13 @@ import * as ImagePicker from 'expo-image-picker';
 import { router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { BlurView } from 'expo-blur';
-import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
+import Animated, { FadeIn, FadeInUp } from 'react-native-reanimated';
+import { StampMask } from '@/components/StampMask';
 
 export default function CameraScreen() {
   const [facing, setFacing] = useState<CameraType>('back');
   const [permission, requestPermission] = useCameraPermissions();
-  const [capturedImage, setCapturedImage] = useState<string | null>(null);
+  const [isCapturing, setIsCapturing] = useState(false);
   const cameraRef = useRef<CameraView>(null);
 
   // Permission loading state
@@ -53,11 +54,12 @@ export default function CameraScreen() {
 
   // Take photo
   const handleCapture = async () => {
-    if (!cameraRef.current) return;
+    if (!cameraRef.current || isCapturing) return;
 
+    setIsCapturing(true);
     try {
       const photo = await cameraRef.current.takePictureAsync({
-        quality: 0.8,
+        quality: 0.9,
         base64: false,
       });
 
@@ -71,6 +73,8 @@ export default function CameraScreen() {
     } catch (error) {
       console.error('Failed to capture:', error);
       Alert.alert('Error', 'Failed to capture photo. Please try again.');
+    } finally {
+      setIsCapturing(false);
     }
   };
 
@@ -78,9 +82,8 @@ export default function CameraScreen() {
   const handlePickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ['images'],
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 0.8,
+      allowsEditing: false, // Allow full image for multi-stamp detection
+      quality: 0.9,
     });
 
     if (!result.canceled && result.assets[0]) {
@@ -107,7 +110,10 @@ export default function CameraScreen() {
         {/* Overlay UI */}
         <SafeAreaView className="flex-1">
           {/* Top Bar */}
-          <View className="flex-row justify-between items-center px-4 pt-2">
+          <Animated.View
+            entering={FadeIn.duration(300)}
+            className="flex-row justify-between items-center px-4 pt-2"
+          >
             <Pressable
               onPress={() => router.back()}
               className="w-10 h-10 rounded-full bg-black/30 items-center justify-center"
@@ -123,20 +129,32 @@ export default function CameraScreen() {
             >
               <Text className="text-white text-xl">🔄</Text>
             </Pressable>
-          </View>
+          </Animated.View>
 
-          {/* Center Guide */}
+          {/* Center Guide with Stamp Mask */}
           <View className="flex-1 items-center justify-center">
-            <View className="w-64 h-64 border-2 border-white/50 rounded-2xl">
-              {/* Corner markers */}
-              <View className="absolute -top-1 -left-1 w-8 h-8 border-t-4 border-l-4 border-white rounded-tl-xl" />
-              <View className="absolute -top-1 -right-1 w-8 h-8 border-t-4 border-r-4 border-white rounded-tr-xl" />
-              <View className="absolute -bottom-1 -left-1 w-8 h-8 border-b-4 border-l-4 border-white rounded-bl-xl" />
-              <View className="absolute -bottom-1 -right-1 w-8 h-8 border-b-4 border-r-4 border-white rounded-br-xl" />
-            </View>
-            <Text className="text-white/80 mt-4 text-center">
+            <Animated.View entering={FadeInUp.delay(200).duration(400)}>
+              <StampMask
+                size={280}
+                color="rgba(255, 255, 255, 0.85)"
+                backgroundColor="rgba(0, 0, 0, 0.5)"
+                animated={!isCapturing}
+              />
+            </Animated.View>
+
+            <Animated.Text
+              entering={FadeInUp.delay(400).duration(400)}
+              className="text-white/90 mt-6 text-center font-medium"
+            >
               Position stamp within the frame
-            </Text>
+            </Animated.Text>
+
+            <Animated.Text
+              entering={FadeInUp.delay(500).duration(400)}
+              className="text-white/60 mt-2 text-center text-sm"
+            >
+              Multiple stamps? Use gallery for best results
+            </Animated.Text>
           </View>
 
           {/* Bottom Controls */}
@@ -153,7 +171,10 @@ export default function CameraScreen() {
               {/* Capture Button */}
               <Pressable
                 onPress={handleCapture}
-                className="w-20 h-20 rounded-full bg-white items-center justify-center active:scale-95"
+                disabled={isCapturing}
+                className={`w-20 h-20 rounded-full bg-white items-center justify-center ${
+                  isCapturing ? 'opacity-50' : 'active:scale-95'
+                }`}
                 style={{
                   shadowColor: '#000',
                   shadowOffset: { width: 0, height: 4 },

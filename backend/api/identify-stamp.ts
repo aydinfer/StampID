@@ -4,32 +4,62 @@
 // ============================================
 // CHANGE MODEL HERE (2 lines to switch)
 // ============================================
-const MODEL = 'google/gemini-2.0-flash-exp:free'; // FREE - Default
-// const MODEL = 'anthropic/claude-3.5-sonnet';   // QUALITY - Uncomment for better results
+const MODEL = 'google/gemini-2.5-flash-preview-05-20'; // RECOMMENDED - Best price/performance
+// const MODEL = 'google/gemini-2.0-flash-exp:free';   // FREE - Decent quality
+// const MODEL = 'anthropic/claude-3.5-sonnet';        // PREMIUM - Best quality
 
 const SYSTEM_PROMPT = `You are an expert philatelist (stamp expert) with deep knowledge of stamps from around the world.
-Analyze the stamp image provided and return a JSON response with the following information:
+Analyze the stamp image provided. The image may contain ONE or MULTIPLE stamps.
 
+IMPORTANT: If you detect MULTIPLE stamps in the image, return an array of stamp objects.
+If you detect only ONE stamp, still return an array with one object.
+
+Return a JSON response with this exact structure:
 {
-  "identified": true,
-  "confidence": 85,
-  "name": "Stamp name/description",
-  "country": "Country of origin",
-  "year_issued": 1950,
-  "catalog_number": "Scott/Stanley Gibbons number if identifiable",
-  "denomination": "Face value",
-  "category": "definitive|commemorative|airmail|special|other",
-  "theme": "Subject theme",
-  "condition": "mint|mint_hinged|used|damaged",
-  "condition_notes": "Brief notes on condition",
-  "estimated_value_low": 1.00,
-  "estimated_value_high": 5.00,
-  "currency": "USD",
-  "description": "Brief historical context",
-  "rarity": "common|uncommon|rare|very_rare"
+  "stamps": [
+    {
+      "identified": true,
+      "confidence": 85,
+      "name": "Stamp name/description",
+      "country": "Country of origin",
+      "year_issued": 1950,
+      "catalog_number": "Scott/Stanley Gibbons number if identifiable",
+      "denomination": "Face value",
+      "category": "definitive|commemorative|airmail|special|other",
+      "theme": "Subject theme",
+      "condition": "mint|mint_hinged|used|damaged",
+      "condition_notes": "Brief notes on condition",
+      "estimated_value_low": 1.00,
+      "estimated_value_high": 5.00,
+      "currency": "USD",
+      "description": "Brief historical context",
+      "rarity": "common|uncommon|rare|very_rare",
+      "bounding_box": {
+        "x": 0,
+        "y": 0,
+        "width": 100,
+        "height": 100,
+        "normalized": true
+      }
+    }
+  ],
+  "total_stamps_detected": 1,
+  "image_quality": "good|fair|poor",
+  "suggestions": "Optional tips for better identification"
 }
 
-IMPORTANT: Return ONLY valid JSON, no markdown, no explanation.`;
+The bounding_box should contain normalized coordinates (0-1 range) indicating where each stamp is located in the image.
+Set "normalized": true and provide x, y (top-left corner) and width, height as percentages.
+
+If no stamp is detected, return:
+{
+  "stamps": [],
+  "total_stamps_detected": 0,
+  "image_quality": "poor",
+  "suggestions": "Please capture a clearer image of the stamp"
+}
+
+IMPORTANT: Return ONLY valid JSON, no markdown code blocks, no explanation.`;
 
 export const config = {
   runtime: 'edge',
@@ -94,7 +124,10 @@ export default async function handler(request: Request) {
           {
             role: 'user',
             content: [
-              { type: 'text', text: 'Identify this stamp:' },
+              {
+                type: 'text',
+                text: 'Identify all stamps in this image. Detect each stamp separately and provide bounding boxes.'
+              },
               {
                 type: 'image_url',
                 image_url: { url: image_url || imageData },
@@ -102,8 +135,8 @@ export default async function handler(request: Request) {
             ],
           },
         ],
-        max_tokens: 1000,
-        temperature: 0.3,
+        max_tokens: 2000,
+        temperature: 0.2,
       }),
     });
 
@@ -111,7 +144,11 @@ export default async function handler(request: Request) {
       const error = await response.text();
       console.error('OpenRouter error:', error);
       return new Response(
-        JSON.stringify({ error: 'AI service error', identified: false }),
+        JSON.stringify({
+          error: 'AI service error',
+          stamps: [],
+          total_stamps_detected: 0
+        }),
         { status: 500, headers: { 'Content-Type': 'application/json' } }
       );
     }
@@ -122,10 +159,28 @@ export default async function handler(request: Request) {
     // Parse AI response
     let result;
     try {
-      const clean = content.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+      const clean = content
+        .replace(/```json\n?/g, '')
+        .replace(/```\n?/g, '')
+        .trim();
       result = JSON.parse(clean);
+
+      // Handle legacy single-stamp response format
+      if (result.identified !== undefined && !result.stamps) {
+        result = {
+          stamps: [result],
+          total_stamps_detected: 1,
+          image_quality: 'good',
+        };
+      }
     } catch {
-      result = { identified: false, confidence: 0, name: 'Parse error', raw: content };
+      result = {
+        stamps: [],
+        total_stamps_detected: 0,
+        image_quality: 'unknown',
+        parse_error: true,
+        raw: content
+      };
     }
 
     return new Response(
@@ -142,7 +197,11 @@ export default async function handler(request: Request) {
   } catch (error: any) {
     console.error('Error:', error);
     return new Response(
-      JSON.stringify({ error: error.message, identified: false }),
+      JSON.stringify({
+        error: error.message,
+        stamps: [],
+        total_stamps_detected: 0
+      }),
       { status: 500, headers: { 'Content-Type': 'application/json' } }
     );
   }

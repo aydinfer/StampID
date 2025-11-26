@@ -7,18 +7,28 @@ import {
   ScrollView,
   ActivityIndicator,
   Alert,
+  Dimensions,
 } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { BlurView } from 'expo-blur';
-import Animated, { FadeIn, FadeInDown, FadeInUp } from 'react-native-reanimated';
+import Animated, {
+  FadeIn,
+  FadeInDown,
+  FadeInUp,
+  FadeInRight,
+  SlideInRight,
+} from 'react-native-reanimated';
 import { useStampIdentification } from '@/lib/hooks/useStampIdentification';
 import type { StampIdentificationResult } from '@/lib/api/identify-stamp';
 
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
+
 export default function ScanResultScreen() {
   const { imageUri } = useLocalSearchParams<{ imageUri: string }>();
-  const { identify, result, loading, error } = useStampIdentification();
+  const { identify, results, totalStamps, loading, error, response } = useStampIdentification();
   const [hasIdentified, setHasIdentified] = useState(false);
+  const [selectedStampIndex, setSelectedStampIndex] = useState(0);
 
   useEffect(() => {
     if (imageUri && !hasIdentified) {
@@ -32,19 +42,25 @@ export default function ScanResultScreen() {
   };
 
   const handleSaveToCollection = () => {
-    if (!result) return;
+    if (results.length === 0) return;
 
-    // TODO: Implement save to collection
+    const stampCount = results.length;
     Alert.alert(
       'Save to Collection',
-      'This stamp will be saved to your collection.',
+      stampCount > 1
+        ? `${stampCount} stamps will be saved to your collection.`
+        : 'This stamp will be saved to your collection.',
       [
         { text: 'Cancel', style: 'cancel' },
         {
           text: 'Save',
           onPress: () => {
-            // Navigate to collection selection or save directly
-            Alert.alert('Saved!', 'Stamp added to your collection.');
+            Alert.alert(
+              'Saved!',
+              stampCount > 1
+                ? `${stampCount} stamps added to your collection.`
+                : 'Stamp added to your collection.'
+            );
             router.replace('/(tabs)');
           },
         },
@@ -55,6 +71,9 @@ export default function ScanResultScreen() {
   const handleScanAnother = () => {
     router.replace('/camera');
   };
+
+  // Get currently selected stamp
+  const selectedStamp = results[selectedStampIndex];
 
   // Loading state
   if (loading) {
@@ -120,6 +139,34 @@ export default function ScanResultScreen() {
     );
   }
 
+  // No stamps detected
+  if (results.length === 0) {
+    return (
+      <SafeAreaView className="flex-1 bg-cream">
+        <View className="flex-1 items-center justify-center px-6">
+          <View className="w-20 h-20 rounded-full bg-warning/10 items-center justify-center mb-6">
+            <Text className="text-4xl">🔍</Text>
+          </View>
+          <Text className="text-2xl font-bold text-ink text-center mb-3">
+            No Stamps Detected
+          </Text>
+          <Text className="text-ink-light text-center mb-4">
+            {response?.suggestions || "We couldn't find any stamps in this image."}
+          </Text>
+          <Text className="text-ink-muted text-center text-sm mb-8">
+            Try taking a clearer photo with better lighting.
+          </Text>
+          <Pressable
+            onPress={handleRetake}
+            className="bg-forest-900 rounded-xl py-4 px-8 active:opacity-90"
+          >
+            <Text className="text-white font-semibold">Try Again</Text>
+          </Pressable>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
   // Result state
   return (
     <SafeAreaView className="flex-1 bg-cream">
@@ -129,29 +176,87 @@ export default function ScanResultScreen() {
           <Text className="text-forest-900 font-medium">← Back</Text>
         </Pressable>
         <Text className="text-lg font-semibold text-ink">
-          {result?.identified ? 'Stamp Identified!' : 'Scan Result'}
+          {totalStamps > 1
+            ? `${totalStamps} Stamps Found`
+            : selectedStamp?.identified
+            ? 'Stamp Identified!'
+            : 'Scan Result'}
         </Text>
         <View className="w-16" />
       </View>
 
       <ScrollView className="flex-1" contentContainerClassName="pb-32">
-        {/* Image */}
+        {/* Image with stamp count badge */}
         <Animated.View
           entering={FadeIn.duration(400)}
           className="items-center px-6 pt-4"
         >
-          <View className="w-64 h-64 rounded-2xl overflow-hidden shadow-glass-lg bg-white">
-            {imageUri && (
-              <Image
-                source={{ uri: imageUri }}
-                className="w-full h-full"
-                resizeMode="cover"
-              />
+          <View className="relative">
+            <View className="w-64 h-64 rounded-2xl overflow-hidden shadow-glass-lg bg-white">
+              {imageUri && (
+                <Image
+                  source={{ uri: imageUri }}
+                  className="w-full h-full"
+                  resizeMode="cover"
+                />
+              )}
+            </View>
+
+            {/* Multi-stamp badge */}
+            {totalStamps > 1 && (
+              <Animated.View
+                entering={FadeInUp.delay(300).duration(300)}
+                className="absolute -top-2 -right-2"
+              >
+                <BlurView intensity={30} tint="light" className="rounded-full overflow-hidden">
+                  <View className="bg-forest-900/90 px-3 py-1.5">
+                    <Text className="text-white font-bold text-sm">
+                      {totalStamps} stamps
+                    </Text>
+                  </View>
+                </BlurView>
+              </Animated.View>
             )}
           </View>
 
+          {/* Stamp selector for multiple stamps */}
+          {totalStamps > 1 && (
+            <Animated.View
+              entering={FadeInUp.delay(400).duration(300)}
+              className="mt-4"
+            >
+              <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerClassName="px-2"
+              >
+                {results.map((stamp, index) => (
+                  <Pressable
+                    key={index}
+                    onPress={() => setSelectedStampIndex(index)}
+                    className={`mx-1 px-4 py-2 rounded-full ${
+                      selectedStampIndex === index
+                        ? 'bg-forest-900'
+                        : 'bg-white/80 border border-forest-900/20'
+                    }`}
+                  >
+                    <Text
+                      className={`font-medium ${
+                        selectedStampIndex === index
+                          ? 'text-white'
+                          : 'text-forest-900'
+                      }`}
+                    >
+                      Stamp {index + 1}
+                    </Text>
+                  </Pressable>
+                ))}
+              </ScrollView>
+            </Animated.View>
+          )}
+
           {/* Confidence Badge */}
-          {result && (
+          {selectedStamp && (
             <Animated.View
               entering={FadeInUp.delay(200).duration(300)}
               className="mt-4"
@@ -163,23 +268,23 @@ export default function ScanResultScreen() {
               >
                 <View
                   className={`px-4 py-2 flex-row items-center ${
-                    (result.confidence ?? 0) >= 80
+                    (selectedStamp.confidence ?? 0) >= 80
                       ? 'bg-success/20'
-                      : (result.confidence ?? 0) >= 50
+                      : (selectedStamp.confidence ?? 0) >= 50
                       ? 'bg-warning/20'
                       : 'bg-error/20'
                   }`}
                 >
                   <Text
                     className={`font-semibold ${
-                      (result.confidence ?? 0) >= 80
+                      (selectedStamp.confidence ?? 0) >= 80
                         ? 'text-success'
-                        : (result.confidence ?? 0) >= 50
+                        : (selectedStamp.confidence ?? 0) >= 50
                         ? 'text-warning'
                         : 'text-error'
                     }`}
                   >
-                    {result.confidence ?? 0}% Confident
+                    {selectedStamp.confidence ?? 0}% Confident
                   </Text>
                 </View>
               </BlurView>
@@ -187,36 +292,37 @@ export default function ScanResultScreen() {
           )}
         </Animated.View>
 
-        {/* Details */}
-        {result && (
+        {/* Selected Stamp Details */}
+        {selectedStamp && (
           <Animated.View
             entering={FadeInDown.delay(300).duration(400)}
             className="px-6 mt-6"
+            key={selectedStampIndex}
           >
             {/* Name & Country */}
             <BlurView intensity={20} tint="light" className="rounded-2xl overflow-hidden mb-4">
               <View className="bg-white/70 p-4">
                 <Text className="text-2xl font-bold text-ink mb-1">
-                  {result.name || 'Unknown Stamp'}
+                  {selectedStamp.name || 'Unknown Stamp'}
                 </Text>
-                {result.country && (
+                {selectedStamp.country && (
                   <Text className="text-ink-light text-lg">
-                    {result.country} {result.year_issued ? `• ${result.year_issued}` : ''}
+                    {selectedStamp.country} {selectedStamp.year_issued ? `• ${selectedStamp.year_issued}` : ''}
                   </Text>
                 )}
               </View>
             </BlurView>
 
             {/* Value Estimate */}
-            {(result.estimated_value_low || result.estimated_value_high) && (
+            {(selectedStamp.estimated_value_low || selectedStamp.estimated_value_high) && (
               <BlurView intensity={20} tint="light" className="rounded-2xl overflow-hidden mb-4">
                 <View className="bg-white/70 p-4">
                   <Text className="text-sm text-ink-light mb-1">Estimated Value</Text>
                   <Text className="text-3xl font-bold text-forest-900">
-                    ${result.estimated_value_low?.toFixed(2) || '0.00'} - ${result.estimated_value_high?.toFixed(2) || '0.00'}
+                    ${selectedStamp.estimated_value_low?.toFixed(2) || '0.00'} - ${selectedStamp.estimated_value_high?.toFixed(2) || '0.00'}
                   </Text>
                   <Text className="text-sm text-ink-muted mt-1">
-                    {result.currency || 'USD'} • {result.rarity || 'Unknown rarity'}
+                    {selectedStamp.currency || 'USD'} • {selectedStamp.rarity || 'Unknown rarity'}
                   </Text>
                 </View>
               </BlurView>
@@ -224,28 +330,49 @@ export default function ScanResultScreen() {
 
             {/* Details Grid */}
             <View className="flex-row flex-wrap -mx-2">
-              <DetailCard label="Catalog #" value={result.catalog_number} />
-              <DetailCard label="Denomination" value={result.denomination} />
-              <DetailCard label="Category" value={result.category} />
-              <DetailCard label="Condition" value={result.condition} />
+              <DetailCard label="Catalog #" value={selectedStamp.catalog_number} />
+              <DetailCard label="Denomination" value={selectedStamp.denomination} />
+              <DetailCard label="Category" value={selectedStamp.category} />
+              <DetailCard label="Condition" value={selectedStamp.condition} />
             </View>
 
             {/* Description */}
-            {result.description && (
+            {selectedStamp.description && (
               <BlurView intensity={20} tint="light" className="rounded-2xl overflow-hidden mt-4">
                 <View className="bg-white/70 p-4">
                   <Text className="text-sm text-ink-light mb-1">About this stamp</Text>
-                  <Text className="text-ink leading-6">{result.description}</Text>
+                  <Text className="text-ink leading-6">{selectedStamp.description}</Text>
                 </View>
               </BlurView>
             )}
 
             {/* Condition Notes */}
-            {result.condition_notes && (
+            {selectedStamp.condition_notes && (
               <BlurView intensity={20} tint="light" className="rounded-2xl overflow-hidden mt-4">
                 <View className="bg-white/70 p-4">
                   <Text className="text-sm text-ink-light mb-1">Condition Notes</Text>
-                  <Text className="text-ink">{result.condition_notes}</Text>
+                  <Text className="text-ink">{selectedStamp.condition_notes}</Text>
+                </View>
+              </BlurView>
+            )}
+
+            {/* Total value summary for multiple stamps */}
+            {totalStamps > 1 && (
+              <BlurView intensity={20} tint="light" className="rounded-2xl overflow-hidden mt-6">
+                <View className="bg-forest-900/10 p-4">
+                  <Text className="text-sm text-forest-900 font-medium mb-2">
+                    Collection Summary
+                  </Text>
+                  <View className="flex-row justify-between items-center">
+                    <Text className="text-ink">Total stamps</Text>
+                    <Text className="text-ink font-semibold">{totalStamps}</Text>
+                  </View>
+                  <View className="flex-row justify-between items-center mt-2">
+                    <Text className="text-ink">Est. total value</Text>
+                    <Text className="text-forest-900 font-bold text-lg">
+                      ${calculateTotalValue(results)}
+                    </Text>
+                  </View>
                 </View>
               </BlurView>
             )}
@@ -271,13 +398,26 @@ export default function ScanResultScreen() {
               onPress={handleSaveToCollection}
               className="flex-1 bg-forest-900 rounded-xl py-4 items-center active:opacity-90"
             >
-              <Text className="text-white font-semibold">Save to Collection</Text>
+              <Text className="text-white font-semibold">
+                {totalStamps > 1 ? `Save All (${totalStamps})` : 'Save to Collection'}
+              </Text>
             </Pressable>
           </View>
         </SafeAreaView>
       </BlurView>
     </SafeAreaView>
   );
+}
+
+// Calculate total estimated value for all stamps
+function calculateTotalValue(stamps: StampIdentificationResult[]): string {
+  const low = stamps.reduce((sum, stamp) => sum + (stamp.estimated_value_low || 0), 0);
+  const high = stamps.reduce((sum, stamp) => sum + (stamp.estimated_value_high || 0), 0);
+
+  if (low === 0 && high === 0) return '0.00';
+
+  const avg = (low + high) / 2;
+  return avg.toFixed(2);
 }
 
 // Helper component for detail cards
