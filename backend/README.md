@@ -1,73 +1,49 @@
 # StampID Backend API
 
-This folder contains example backend code for the StampID AI identification endpoint.
+Secure backend for stamp identification. API keys stay on the server.
 
-## Why a Separate Backend?
+## LLM Router
 
-**API keys must NEVER be in the mobile app.** Anyone can decompile an app and steal keys.
-
-The backend:
-1. Receives image from mobile app
-2. Calls OpenRouter API with your secret key
-3. Returns result to mobile app
-
-## Features
-
-- **Multi-stamp detection**: Detects and identifies multiple stamps in a single image
-- **Bounding boxes**: Returns location data for each stamp in the image
-- **Image quality assessment**: Reports on image quality for better user feedback
-- **Flexible model switching**: Change AI model in 2 lines
-
-## Deployment Options
-
-### Option 1: Vercel (Recommended - Free tier)
-
-1. Create `api/identify-stamp.ts` in a Vercel project
-2. Deploy with `vercel deploy`
-3. Set environment variable: `OPENROUTER_API_KEY`
-
-### Option 2: Railway
-
-1. Deploy `server.ts` as a Node.js service
-2. Set environment variable: `OPENROUTER_API_KEY`
-
-### Option 3: Any Node.js Host
-
-1. Run `server.ts` on any Node.js hosting
-2. Set environment variable: `OPENROUTER_API_KEY`
-
-## Environment Variables
-
-```
-OPENROUTER_API_KEY=sk-or-v1-xxxxx  # Get from openrouter.ai
-```
-
-## Change AI Model
-
-Edit line 7 in `api/identify-stamp.ts`:
+Switch providers by editing `lib/llm-config.ts`:
 
 ```typescript
-// RECOMMENDED - Best price/performance for multi-stamp detection
-const MODEL = 'google/gemini-2.5-flash-preview-05-20';
-
-// FREE - Decent quality (uncomment to use)
-// const MODEL = 'google/gemini-2.0-flash-exp:free';
-
-// PREMIUM - Best quality (uncomment to use)
-// const MODEL = 'anthropic/claude-3.5-sonnet';
+// Change these 2 lines to switch providers
+export const ACTIVE_PROVIDER: LLMProvider = 'qwen';
+export const ACTIVE_MODEL = 'qwen-vl-max';
 ```
 
-### Model Comparison (Nov 2025)
+### Supported Providers
 
-| Model | Cost | Multi-Object | Quality |
-|-------|------|--------------|---------|
-| Gemini 2.5 Flash | ~$0.10/1M input | Excellent | High |
-| Gemini 2.0 Flash (free) | Free | Good | Medium |
-| Claude 3.5 Sonnet | ~$3/1M input | Good | Very High |
+| Provider | Model | Cost (per 1M tokens) | Notes |
+|----------|-------|---------------------|-------|
+| **Qwen** | qwen-vl-max | $0.41 | Flagship, best accuracy |
+| **Qwen** | qwen2.5-vl-72b | $0.15 | Best value |
+| **DeepSeek** | deepseek-vl2 | $0.15 | Best for charts |
+| **Pixtral** | pixtral-12b | $0.10 | Lightweight, Apache 2.0 |
+| **Google** | gemini-2.5-flash | $0.10 | Fast |
+| **OpenAI** | gpt-4o-mini | $0.15 | Cheapest OpenAI |
 
-## API Response Format
+### Recommended: Qwen2.5-VL
 
-The API returns a multi-stamp response:
+Best price/performance. Set `QWEN_API_KEY` environment variable.
+
+## Deployment
+
+### Vercel (Recommended)
+
+```bash
+cd backend
+vercel deploy
+```
+
+Set environment variable for your chosen provider:
+- `QWEN_API_KEY` - Get from [DashScope](https://dashscope.aliyun.com/)
+- `DEEPSEEK_API_KEY` - Get from [DeepSeek](https://platform.deepseek.com/)
+- `MISTRAL_API_KEY` - Get from [Mistral](https://console.mistral.ai/)
+- `GOOGLE_API_KEY` - Get from [Google AI Studio](https://aistudio.google.com/)
+- `OPENAI_API_KEY` - Get from [OpenAI](https://platform.openai.com/)
+
+## API Response
 
 ```json
 {
@@ -78,36 +54,21 @@ The API returns a multi-stamp response:
       "name": "Stamp name",
       "country": "Country",
       "year_issued": 1950,
-      "catalog_number": "Scott #123",
-      "denomination": "5 cents",
-      "category": "commemorative",
-      "theme": "Historical",
-      "condition": "mint",
-      "condition_notes": "Excellent centering",
       "estimated_value_low": 1.00,
       "estimated_value_high": 5.00,
-      "currency": "USD",
-      "description": "Brief description",
-      "rarity": "common",
-      "bounding_box": {
-        "x": 0.1,
-        "y": 0.2,
-        "width": 0.3,
-        "height": 0.4,
-        "normalized": true
-      }
+      "bounding_box": { "x": 0.1, "y": 0.2, "width": 0.3, "height": 0.4, "normalized": true }
     }
   ],
   "total_stamps_detected": 1,
   "image_quality": "good",
-  "suggestions": "Optional tips",
-  "model_used": "google/gemini-2.5-flash-preview-05-20"
+  "model": "qwen-vl-max",
+  "provider": "qwen"
 }
 ```
 
-## Mobile App Configuration
+## Mobile App Config
 
-Set in your `.env`:
+Set in `.env`:
 
 ```
 EXPO_PUBLIC_AI_API_URL=https://your-backend.vercel.app/api/identify-stamp

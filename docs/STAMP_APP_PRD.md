@@ -106,8 +106,8 @@ Stamp fraud is a **$150M+ problem**. This creates opportunity:
 | **Framework** | Expo 54 + React Native 0.81 | Cross-platform mobile |
 | **Styling** | NativeWind (TailwindCSS) | Consistent design system |
 | **Backend** | Supabase | Auth, Database, Storage |
-| **AI Backend** | Vercel Edge Functions | Secure AI API calls |
-| **AI Model** | OpenRouter (Gemini 2.5 Flash) | LLM router, change model in 2 lines |
+| **AI Backend** | Vercel Serverless | Secure AI API calls |
+| **AI Model** | LLM Router (Qwen/DeepSeek/Pixtral) | LLM router, change model in 2 lines |
 | **Payments** | RevenueCat | Subscriptions |
 | **State** | React Query + Zustand | Server + Client state |
 | **Animations** | Reanimated | Smooth 60fps animations |
@@ -159,8 +159,8 @@ Stamp fraud is a **$150M+ problem**. This creates opportunity:
 ┌─────────────────────────────┼───────────────────────────────┐
 │                      OPENROUTER                             │
 │  ┌──────────────────────────┴────────────────────────────┐ │
-│  │   Gemini 2.5 Flash (default) - Multi-stamp detection  │ │
-│  │   300+ models available, change in 2 lines            │ │
+│  │   Qwen2.5-VL (default) - Best price/performance  │ │
+│  │   Switch providers in 2 lines            │ │
 │  └───────────────────────────────────────────────────────┘ │
 └─────────────────────────────────────────────────────────────┘
 ```
