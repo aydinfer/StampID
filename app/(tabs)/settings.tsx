@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView, Pressable, Alert, Linking } from 'react-native';
-import { router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { BlurView } from 'expo-blur';
 import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
 import { useSubscriptionContext, FREE_SCANS_LIMIT } from '@/lib/providers/SubscriptionProvider';
 
 export default function SettingsScreen() {
-  const { isPro, customerInfo, restorePurchases, freeScansRemaining } = useSubscriptionContext();
+  const { isPro, customerInfo, restorePurchases, freeScansRemaining, presentPaywall } = useSubscriptionContext();
   const [isRestoring, setIsRestoring] = useState(false);
 
   const handleRestore = async () => {
@@ -102,7 +101,7 @@ export default function SettingsScreen() {
                 </View>
 
                 <Pressable
-                  onPress={() => router.push('/paywall')}
+                  onPress={presentPaywall}
                   className="bg-forest-900 rounded-xl py-3.5 items-center"
                 >
                   <Text className="text-white font-semibold">Upgrade to Pro</Text>
@@ -158,13 +157,13 @@ export default function SettingsScreen() {
                 icon="☁️"
                 title="Cloud Backup"
                 subtitle={isPro ? 'Enabled' : 'Pro feature'}
-                onPress={() => !isPro && router.push('/paywall')}
+                onPress={() => !isPro && presentPaywall()}
               />
               <SettingsRow
                 icon="📤"
                 title="Export Collection"
                 subtitle={isPro ? 'CSV, PDF' : 'Pro feature'}
-                onPress={() => !isPro && router.push('/paywall')}
+                onPress={() => !isPro && presentPaywall()}
                 isLast
               />
             </View>

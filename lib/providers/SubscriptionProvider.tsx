@@ -4,6 +4,7 @@ import Purchases, {
   PurchasesOfferings,
   PurchasesPackage,
 } from 'react-native-purchases';
+import RevenueCatUI, { PAYWALL_RESULT } from 'react-native-purchases-ui';
 import { Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -27,6 +28,7 @@ interface SubscriptionContextType {
   canScan: boolean;
 
   // Actions
+  presentPaywall: () => Promise<boolean>;
   purchasePackage: (pkg: PurchasesPackage) => Promise<CustomerInfo | null>;
   restorePurchases: () => Promise<CustomerInfo | null>;
   recordScan: () => Promise<boolean>;
@@ -68,8 +70,8 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
       setCustomerInfo(info);
 
       // Get available offerings
-      const offerings = await Purchases.getOfferings();
-      setOfferings(offerings);
+      const offs = await Purchases.getOfferings();
+      setOfferings(offs);
 
       // Listen for customer info updates
       Purchases.addCustomerInfoUpdateListener((info) => {
@@ -102,6 +104,22 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
       console.error('Error loading free scans count:', error);
     }
   };
+
+  // Present RevenueCat's native paywall (built in their dashboard)
+  const presentPaywall = useCallback(async (): Promise<boolean> => {
+    try {
+      const result = await RevenueCatUI.presentPaywall();
+
+      // Refresh customer info after paywall closes
+      await refreshCustomerInfo();
+
+      // Return true if user purchased
+      return result === PAYWALL_RESULT.PURCHASED || result === PAYWALL_RESULT.RESTORED;
+    } catch (error) {
+      console.error('Error presenting paywall:', error);
+      return false;
+    }
+  }, []);
 
   const recordScan = useCallback(async (): Promise<boolean> => {
     // Pro users have unlimited scans
@@ -165,6 +183,7 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
         customerInfo,
         freeScansRemaining,
         canScan,
+        presentPaywall,
         purchasePackage,
         restorePurchases,
         recordScan,

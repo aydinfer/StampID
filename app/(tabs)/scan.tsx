@@ -8,18 +8,18 @@ import * as ImagePicker from 'expo-image-picker';
 import { useSubscriptionContext, FREE_SCANS_LIMIT } from '@/lib/providers/SubscriptionProvider';
 
 export default function ScanScreen() {
-  const { isPro, freeScansRemaining, canScan, recordScan } = useSubscriptionContext();
+  const { isPro, freeScansRemaining, canScan, recordScan, presentPaywall } = useSubscriptionContext();
 
   const handleCamera = async () => {
     if (!canScan) {
-      router.push('/paywall');
+      await presentPaywall();
       return;
     }
 
     // Record the scan attempt
     const allowed = await recordScan();
     if (!allowed) {
-      router.push('/paywall');
+      await presentPaywall();
       return;
     }
 
@@ -28,7 +28,7 @@ export default function ScanScreen() {
 
   const handleGallery = async () => {
     if (!canScan) {
-      router.push('/paywall');
+      await presentPaywall();
       return;
     }
 
@@ -42,7 +42,7 @@ export default function ScanScreen() {
       // Record the scan attempt
       const allowed = await recordScan();
       if (!allowed) {
-        router.push('/paywall');
+        await presentPaywall();
         return;
       }
 
@@ -69,7 +69,7 @@ export default function ScanScreen() {
               <Text className="text-white text-sm font-semibold">PRO</Text>
             </View>
           ) : (
-            <Pressable onPress={() => router.push('/paywall')}>
+            <Pressable onPress={presentPaywall}>
               <BlurView intensity={20} tint="light" className="rounded-full overflow-hidden">
                 <View className="bg-amber-100/80 px-3 py-1.5">
                   <Text className="text-amber-800 text-sm font-semibold">
@@ -86,7 +86,7 @@ export default function ScanScreen() {
         {/* Upgrade Banner for Free Users */}
         {!isPro && freeScansRemaining === 0 && (
           <Animated.View entering={FadeIn.duration(400)} className="mb-6">
-            <Pressable onPress={() => router.push('/paywall')}>
+            <Pressable onPress={presentPaywall}>
               <BlurView intensity={20} tint="light" className="rounded-2xl overflow-hidden">
                 <View className="bg-forest-50/80 p-4 border border-forest-900/20 rounded-2xl">
                   <View className="flex-row items-center">
@@ -150,7 +150,7 @@ export default function ScanScreen() {
         {/* Pro Promo for Free Users with Scans Left */}
         {!isPro && freeScansRemaining > 0 && (
           <Animated.View entering={FadeIn.delay(300).duration(400)} className="mb-4">
-            <Pressable onPress={() => router.push('/paywall')}>
+            <Pressable onPress={presentPaywall}>
               <BlurView intensity={20} tint="light" className="rounded-2xl overflow-hidden">
                 <View className="bg-forest-50/50 p-4">
                   <View className="flex-row items-center">
