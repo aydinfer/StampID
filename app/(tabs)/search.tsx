@@ -2,11 +2,13 @@ import React, { useEffect, useCallback } from 'react';
 import { View, Text, FlatList, Pressable } from 'react-native';
 import { router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { BlurView } from 'expo-blur';
 import Animated, { FadeIn } from 'react-native-reanimated';
+import { Search, HelpCircle } from 'lucide-react-native';
 import { SearchBar } from '@/components/search/SearchBar';
 import { StampCard } from '@/components/stamps/StampCard';
+import { GlassCard } from '@/components/ui/GlassCard';
 import { useStampSearch, SearchFilters } from '@/lib/hooks/useSearch';
+import { colors } from '@/lib/design/tokens';
 import type { Stamp } from '@/lib/supabase/types';
 
 export default function SearchScreen() {
@@ -45,10 +47,13 @@ export default function SearchScreen() {
   const hasActiveFilters = Object.keys(filters).length > 0;
 
   return (
-    <SafeAreaView className="flex-1 bg-cream" edges={['top']}>
+    <SafeAreaView className="flex-1 bg-zinc-50" edges={['top']}>
       {/* Header */}
-      <View className="px-4 py-4">
-        <Text className="text-2xl font-bold text-ink mb-4">Search</Text>
+      <View className="px-6 pt-4 pb-2">
+        <Text className="text-display font-sans-bold text-zinc-900">Search</Text>
+        <Text className="text-caption text-zinc-500 mt-1">Find stamps in your collection</Text>
+      </View>
+      <View className="px-4 mb-4">
 
         <SearchBar
           value={query}
@@ -92,12 +97,13 @@ export default function SearchScreen() {
           />
         </View>
       </View>
+      <View className="h-px bg-zinc-100" />
 
       {/* Results */}
-      <View className="flex-1 px-4">
+      <View className="flex-1 px-4 pt-4">
         {isLoading ? (
           <View className="flex-1 items-center justify-center">
-            <Text className="text-ink-muted">Searching...</Text>
+            <Text className="text-zinc-400 font-sans-medium">Searching...</Text>
           </View>
         ) : results.length > 0 ? (
           <FlatList
@@ -108,7 +114,7 @@ export default function SearchScreen() {
             contentContainerStyle={{ paddingBottom: 100 }}
             showsVerticalScrollIndicator={false}
             ListHeaderComponent={
-              <Text className="text-ink-muted text-sm mb-3">
+              <Text className="text-zinc-500 text-caption font-sans-medium mb-3">
                 {results.length} result{results.length !== 1 ? 's' : ''}
               </Text>
             }
@@ -125,11 +131,11 @@ export default function SearchScreen() {
             entering={FadeIn.duration(300)}
             className="flex-1 items-center justify-center"
           >
-            <View className="w-16 h-16 rounded-full bg-ink-muted/10 items-center justify-center mb-4">
-              <Text className="text-ink-muted text-2xl">?</Text>
+            <View className="w-16 h-16 rounded-full bg-zinc-100 items-center justify-center mb-4">
+              <HelpCircle size={32} color={colors.zinc[400]} />
             </View>
-            <Text className="text-ink font-semibold text-lg mb-1">No Results</Text>
-            <Text className="text-ink-muted text-center px-8">
+            <Text className="text-zinc-900 font-sans-semibold text-body mb-1">No Results</Text>
+            <Text className="text-zinc-500 text-center text-caption px-8">
               No stamps found for "{query}". Try a different search term.
             </Text>
           </Animated.View>
@@ -138,13 +144,13 @@ export default function SearchScreen() {
             entering={FadeIn.duration(300)}
             className="flex-1 items-center justify-center"
           >
-            <View className="w-16 h-16 rounded-full bg-forest-100 items-center justify-center mb-4">
-              <Text className="text-forest-900 text-2xl font-bold">S</Text>
+            <View className="w-16 h-16 rounded-full bg-indigo-50 items-center justify-center mb-4">
+              <Search size={32} color={colors.indigo[500]} />
             </View>
-            <Text className="text-ink font-semibold text-lg mb-1">
+            <Text className="text-zinc-900 font-sans-semibold text-body mb-1">
               Search Your Collection
             </Text>
-            <Text className="text-ink-muted text-center px-8">
+            <Text className="text-zinc-500 text-center text-caption px-8">
               Find stamps by name, country, year, or catalog number
             </Text>
           </Animated.View>
@@ -166,21 +172,21 @@ function FilterPill({
 }) {
   return (
     <Pressable onPress={onPress}>
-      <BlurView intensity={20} tint="light" className="rounded-full overflow-hidden">
+      <GlassCard variant="subtle" padding="none" rounded="full">
         <View
           className={`px-3 py-1.5 ${
-            active ? 'bg-forest-900' : 'bg-white/70'
+            active ? 'bg-indigo-500' : 'bg-white/70'
           }`}
         >
           <Text
-            className={`text-xs font-medium ${
-              active ? 'text-white' : 'text-ink'
+            className={`text-micro font-sans-medium ${
+              active ? 'text-white' : 'text-zinc-700'
             }`}
           >
             {label}
           </Text>
         </View>
-      </BlurView>
+      </GlassCard>
     </Pressable>
   );
 }

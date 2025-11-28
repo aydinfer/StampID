@@ -2,9 +2,11 @@ import React from 'react';
 import { View, Text, Pressable } from 'react-native';
 import { router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { BlurView } from 'expo-blur';
 import Animated, { FadeIn, FadeInUp } from 'react-native-reanimated';
 import * as ImagePicker from 'expo-image-picker';
+import { Camera, Image, Lock, Sparkles, Sun, Maximize2, ZoomIn, Layers, ChevronRight } from 'lucide-react-native';
+import { GlassCard } from '@/components/ui/GlassCard';
+import { colors } from '@/lib/design/tokens';
 import { useSubscriptionContext, FREE_SCANS_LIMIT } from '@/lib/providers/SubscriptionProvider';
 
 export default function ScanScreen() {
@@ -54,96 +56,106 @@ export default function ScanScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-cream" edges={['top']}>
+    <SafeAreaView className="flex-1 bg-zinc-50" edges={['top']}>
       {/* Header */}
-      <View className="px-4 py-4">
+      <View className="px-6 pt-4 pb-2">
         <View className="flex-row items-center justify-between">
           <View>
-            <Text className="text-2xl font-bold text-ink">Scan Stamp</Text>
-            <Text className="text-ink-light mt-1">Identify stamps using AI</Text>
+            <Text className="text-display font-sans-bold text-zinc-900">Scan Stamp</Text>
+            <Text className="text-caption text-zinc-500 mt-1">Identify stamps using AI</Text>
           </View>
 
           {/* Subscription Badge */}
           {isPro ? (
-            <View className="bg-forest-900 px-3 py-1.5 rounded-full">
-              <Text className="text-white text-sm font-semibold">PRO</Text>
+            <View className="bg-indigo-500 px-3 py-1.5 rounded-full">
+              <Text className="text-white text-micro font-sans-semibold">PRO</Text>
             </View>
           ) : (
             <Pressable onPress={presentPaywall}>
-              <BlurView intensity={20} tint="light" className="rounded-full overflow-hidden">
+              <GlassCard variant="subtle" padding="none" rounded="full">
                 <View className="bg-amber-100/80 px-3 py-1.5">
-                  <Text className="text-amber-800 text-sm font-semibold">
+                  <Text className="text-amber-700 text-micro font-sans-semibold">
                     {freeScansRemaining}/{FREE_SCANS_LIMIT} scans
                   </Text>
                 </View>
-              </BlurView>
+              </GlassCard>
             </Pressable>
           )}
         </View>
       </View>
 
-      <View className="flex-1 px-6 pt-8">
+      <View className="flex-1 px-4 pt-6">
         {/* Upgrade Banner for Free Users */}
         {!isPro && freeScansRemaining === 0 && (
           <Animated.View entering={FadeIn.duration(400)} className="mb-6">
             <Pressable onPress={presentPaywall}>
-              <BlurView intensity={20} tint="light" className="rounded-2xl overflow-hidden">
-                <View className="bg-forest-50/80 p-4 border border-forest-900/20 rounded-2xl">
+              <GlassCard variant="card" padding="md">
+                <View className="bg-rose-50 -m-4 p-4 rounded-2xl">
                   <View className="flex-row items-center">
-                    <Text className="text-3xl mr-3">🔒</Text>
+                    <View className="w-10 h-10 rounded-full bg-rose-100 items-center justify-center mr-3">
+                      <Lock size={20} color={colors.rose[500]} />
+                    </View>
                     <View className="flex-1">
-                      <Text className="text-forest-900 font-semibold">Daily Limit Reached</Text>
-                      <Text className="text-forest-900/70 text-sm">
+                      <Text className="text-zinc-900 font-sans-semibold">Daily Limit Reached</Text>
+                      <Text className="text-zinc-500 text-caption">
                         Upgrade to Pro for unlimited scans
                       </Text>
                     </View>
-                    <View className="bg-forest-900 px-3 py-1.5 rounded-full">
-                      <Text className="text-white text-sm font-medium">Upgrade</Text>
+                    <View className="bg-indigo-500 px-3 py-1.5 rounded-full">
+                      <Text className="text-white text-micro font-sans-medium">Upgrade</Text>
                     </View>
                   </View>
                 </View>
-              </BlurView>
+              </GlassCard>
             </Pressable>
           </Animated.View>
         )}
 
         {/* Camera Option */}
-        <Animated.View entering={FadeInUp.delay(100).duration(400)}>
+        <Animated.View entering={FadeInUp.delay(100).duration(400)} className="mb-3">
           <Pressable onPress={handleCamera} disabled={!canScan}>
-            <BlurView intensity={20} tint="light" className="rounded-2xl overflow-hidden mb-4">
-              <View className={`bg-white/70 p-6 flex-row items-center ${!canScan ? 'opacity-50' : ''}`}>
-                <View className="w-16 h-16 bg-forest-900/10 rounded-2xl items-center justify-center mr-4">
-                  <Text className="text-3xl">📷</Text>
+            <GlassCard variant="card" padding="lg">
+              <View className={`flex-row items-center ${!canScan ? 'opacity-50' : ''}`}>
+                <View className="w-14 h-14 bg-indigo-50 rounded-2xl items-center justify-center mr-4">
+                  <Camera size={28} color={colors.indigo[500]} />
                 </View>
                 <View className="flex-1">
-                  <Text className="text-lg font-semibold text-ink">Take Photo</Text>
-                  <Text className="text-ink-light text-sm mt-0.5">
+                  <Text className="text-body font-sans-semibold text-zinc-900">Take Photo</Text>
+                  <Text className="text-zinc-500 text-caption mt-0.5">
                     Capture stamp with camera
                   </Text>
                 </View>
-                <Text className="text-ink-muted text-xl">{canScan ? '›' : '🔒'}</Text>
+                {canScan ? (
+                  <ChevronRight size={20} color={colors.zinc[400]} />
+                ) : (
+                  <Lock size={20} color={colors.zinc[400]} />
+                )}
               </View>
-            </BlurView>
+            </GlassCard>
           </Pressable>
         </Animated.View>
 
         {/* Gallery Option */}
-        <Animated.View entering={FadeInUp.delay(200).duration(400)}>
+        <Animated.View entering={FadeInUp.delay(200).duration(400)} className="mb-3">
           <Pressable onPress={handleGallery} disabled={!canScan}>
-            <BlurView intensity={20} tint="light" className="rounded-2xl overflow-hidden mb-4">
-              <View className={`bg-white/70 p-6 flex-row items-center ${!canScan ? 'opacity-50' : ''}`}>
-                <View className="w-16 h-16 bg-forest-900/10 rounded-2xl items-center justify-center mr-4">
-                  <Text className="text-3xl">🖼️</Text>
+            <GlassCard variant="card" padding="lg">
+              <View className={`flex-row items-center ${!canScan ? 'opacity-50' : ''}`}>
+                <View className="w-14 h-14 bg-teal-50 rounded-2xl items-center justify-center mr-4">
+                  <Image size={28} color={colors.teal[500]} />
                 </View>
                 <View className="flex-1">
-                  <Text className="text-lg font-semibold text-ink">From Gallery</Text>
-                  <Text className="text-ink-light text-sm mt-0.5">
+                  <Text className="text-body font-sans-semibold text-zinc-900">From Gallery</Text>
+                  <Text className="text-zinc-500 text-caption mt-0.5">
                     Select from photo library
                   </Text>
                 </View>
-                <Text className="text-ink-muted text-xl">{canScan ? '›' : '🔒'}</Text>
+                {canScan ? (
+                  <ChevronRight size={20} color={colors.zinc[400]} />
+                ) : (
+                  <Lock size={20} color={colors.zinc[400]} />
+                )}
               </View>
-            </BlurView>
+            </GlassCard>
           </Pressable>
         </Animated.View>
 
@@ -151,44 +163,47 @@ export default function ScanScreen() {
         {!isPro && freeScansRemaining > 0 && (
           <Animated.View entering={FadeIn.delay(300).duration(400)} className="mb-4">
             <Pressable onPress={presentPaywall}>
-              <BlurView intensity={20} tint="light" className="rounded-2xl overflow-hidden">
-                <View className="bg-forest-50/50 p-4">
+              <GlassCard variant="subtle" padding="md">
+                <View className="bg-indigo-50/50 -m-4 p-4 rounded-2xl">
                   <View className="flex-row items-center">
-                    <Text className="text-2xl mr-3">✨</Text>
-                    <View className="flex-1">
-                      <Text className="text-forest-900 font-medium text-sm">
+                    <Sparkles size={20} color={colors.indigo[500]} />
+                    <View className="flex-1 ml-3">
+                      <Text className="text-indigo-600 font-sans-medium text-caption">
                         Upgrade to Pro for unlimited scans
                       </Text>
                     </View>
-                    <Text className="text-forest-900">›</Text>
+                    <ChevronRight size={16} color={colors.indigo[500]} />
                   </View>
                 </View>
-              </BlurView>
+              </GlassCard>
             </Pressable>
           </Animated.View>
         )}
 
         {/* Tips */}
         <Animated.View entering={FadeIn.delay(400).duration(400)} className="mt-4">
-          <Text className="text-ink font-semibold mb-3">Tips for best results</Text>
-
-          <View className="space-y-2">
-            <TipItem icon="💡" text="Good lighting, avoid shadows" />
-            <TipItem icon="📐" text="Keep stamp flat and centered" />
-            <TipItem icon="🔍" text="Get close for details" />
-            <TipItem icon="📸" text="Multiple stamps? We detect them all!" />
-          </View>
+          <GlassCard variant="card" padding="md">
+            <Text className="text-zinc-900 font-sans-semibold mb-3">Tips for best results</Text>
+            <View className="gap-2">
+              <TipItem icon={<Sun size={18} color={colors.amber[500]} />} text="Good lighting, avoid shadows" />
+              <TipItem icon={<Maximize2 size={18} color={colors.teal[500]} />} text="Keep stamp flat and centered" />
+              <TipItem icon={<ZoomIn size={18} color={colors.violet[500]} />} text="Get close for details" />
+              <TipItem icon={<Layers size={18} color={colors.indigo[500]} />} text="Multiple stamps? We detect them all!" />
+            </View>
+          </GlassCard>
         </Animated.View>
       </View>
     </SafeAreaView>
   );
 }
 
-function TipItem({ icon, text }: { icon: string; text: string }) {
+function TipItem({ icon, text }: { icon: React.ReactNode; text: string }) {
   return (
-    <View className="flex-row items-center mb-2">
-      <Text className="text-lg mr-3">{icon}</Text>
-      <Text className="text-ink-light">{text}</Text>
+    <View className="flex-row items-center">
+      <View className="w-8 h-8 rounded-lg bg-zinc-50 items-center justify-center mr-3">
+        {icon}
+      </View>
+      <Text className="text-zinc-600 text-caption font-sans-medium flex-1">{text}</Text>
     </View>
   );
 }

@@ -1,11 +1,13 @@
 import React, { useState, useCallback } from 'react';
 import { View, Text, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { BlurView } from 'expo-blur';
 import Animated, { FadeIn, FadeInUp } from 'react-native-reanimated';
+import { Compass, X, RotateCcw, Heart, RefreshCw } from 'lucide-react-native';
 import { SwipeableStampCard } from '@/components/discover/SwipeableStampCard';
+import { GlassCard } from '@/components/ui/GlassCard';
 import { useDiscoverStamps, useAddToWantList, useDiscoveryStats } from '@/lib/hooks/useDiscover';
 import { Feedback } from '@/lib/utils/feedback';
+import { colors } from '@/lib/design/tokens';
 import type { Stamp } from '@/lib/supabase/types';
 
 export default function DiscoverScreen() {
@@ -44,20 +46,21 @@ export default function DiscoverScreen() {
   // Empty state
   if (!isLoading && currentStamps.length === 0) {
     return (
-      <SafeAreaView className="flex-1 bg-cream" edges={['top']}>
-        <View className="px-4 py-4">
-          <Text className="text-2xl font-bold text-ink">Discover</Text>
+      <SafeAreaView className="flex-1 bg-zinc-50" edges={['top']}>
+        <View className="px-6 pt-4 pb-2">
+          <Text className="text-display font-sans-bold text-zinc-900">Discover</Text>
+          <Text className="text-caption text-zinc-500 mt-1">Find new stamps</Text>
         </View>
 
         <View className="flex-1 items-center justify-center px-6">
           <Animated.View entering={FadeIn.duration(400)} className="items-center">
-            <View className="w-20 h-20 rounded-full bg-forest-100 items-center justify-center mb-6">
-              <Text className="text-forest-900 text-3xl font-bold">D</Text>
+            <View className="w-20 h-20 rounded-full bg-indigo-50 items-center justify-center mb-6">
+              <Compass size={40} color={colors.indigo[500]} />
             </View>
-            <Text className="text-2xl font-bold text-ink mb-2">
+            <Text className="text-title font-sans-bold text-zinc-900 mb-2">
               {hasMore ? "You've seen them all!" : 'No stamps to discover'}
             </Text>
-            <Text className="text-ink-muted text-center mb-8">
+            <Text className="text-zinc-500 text-center text-caption mb-8">
               {hasMore
                 ? 'Check back later for more stamps'
                 : 'Scan some stamps to build the catalog'
@@ -65,9 +68,10 @@ export default function DiscoverScreen() {
             </Text>
             <Pressable
               onPress={handleRefresh}
-              className="bg-forest-900 rounded-xl py-4 px-8"
+              className="bg-indigo-500 rounded-xl py-3.5 px-8 flex-row items-center active:opacity-90"
             >
-              <Text className="text-white font-semibold">Refresh</Text>
+              <RefreshCw size={18} color="#FFFFFF" />
+              <Text className="text-white font-sans-semibold ml-2">Refresh</Text>
             </Pressable>
           </Animated.View>
         </View>
@@ -76,26 +80,26 @@ export default function DiscoverScreen() {
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-cream" edges={['top']}>
+    <SafeAreaView className="flex-1 bg-zinc-50" edges={['top']}>
       {/* Header */}
-      <View className="px-4 py-4">
+      <View className="px-6 pt-4 pb-2">
         <View className="flex-row items-center justify-between">
           <View>
-            <Text className="text-2xl font-bold text-ink">Discover</Text>
-            <Text className="text-ink-muted text-sm">
+            <Text className="text-display font-sans-bold text-zinc-900">Discover</Text>
+            <Text className="text-caption text-zinc-500 mt-1">
               Swipe right to add to favorites
             </Text>
           </View>
 
           {/* Stats */}
-          <BlurView intensity={20} tint="light" className="rounded-xl overflow-hidden">
-            <View className="bg-white/70 px-3 py-2">
-              <Text className="text-ink text-xs">Want List</Text>
-              <Text className="text-forest-900 font-bold">
-                {wantListCount} stamps
+          <GlassCard variant="subtle" padding="sm">
+            <View className="items-end">
+              <Text className="text-zinc-500 text-micro">Want List</Text>
+              <Text className="text-indigo-500 font-sans-bold text-body">
+                {wantListCount}
               </Text>
             </View>
-          </BlurView>
+          </GlassCard>
         </View>
       </View>
 
@@ -103,7 +107,7 @@ export default function DiscoverScreen() {
       <View className="flex-1 items-center justify-center">
         {isLoading ? (
           <Animated.View entering={FadeIn.duration(300)}>
-            <Text className="text-ink-muted">Loading stamps...</Text>
+            <Text className="text-zinc-400 font-sans-medium">Loading stamps...</Text>
           </Animated.View>
         ) : (
           <View className="relative" style={{ width: '100%', height: '100%' }}>
@@ -131,15 +135,15 @@ export default function DiscoverScreen() {
         entering={FadeInUp.delay(200).duration(400)}
         className="px-6 pb-6"
       >
-        <BlurView intensity={20} tint="light" className="rounded-2xl overflow-hidden">
-          <View className="bg-white/70 flex-row items-center justify-center py-4 gap-8">
+        <GlassCard variant="card" padding="md">
+          <View className="flex-row items-center justify-center py-2 gap-8">
             {/* Skip Button */}
             <Pressable
               onPress={() => currentStamps[0] && handleSwipeLeft(currentStamps[0])}
-              className="w-16 h-16 rounded-full bg-red-100 items-center justify-center active:scale-95"
+              className="w-16 h-16 rounded-full bg-rose-50 items-center justify-center active:scale-95"
               disabled={currentStamps.length === 0}
             >
-              <Text className="text-red-500 text-2xl font-bold">X</Text>
+              <X size={28} color={colors.rose[500]} strokeWidth={2.5} />
             </Pressable>
 
             {/* Undo Button */}
@@ -149,26 +153,26 @@ export default function DiscoverScreen() {
                   setCurrentIndex((prev) => prev - 1);
                 }
               }}
-              className="w-12 h-12 rounded-full bg-amber-100 items-center justify-center active:scale-95"
+              className={`w-12 h-12 rounded-full bg-amber-50 items-center justify-center active:scale-95 ${currentIndex === 0 ? 'opacity-40' : ''}`}
               disabled={currentIndex === 0}
             >
-              <Text className="text-amber-600 text-lg font-bold">↺</Text>
+              <RotateCcw size={22} color={colors.amber[600]} />
             </Pressable>
 
             {/* Like Button */}
             <Pressable
               onPress={() => currentStamps[0] && handleSwipeRight(currentStamps[0])}
-              className="w-16 h-16 rounded-full bg-green-100 items-center justify-center active:scale-95"
+              className="w-16 h-16 rounded-full bg-teal-50 items-center justify-center active:scale-95"
               disabled={currentStamps.length === 0}
             >
-              <Text className="text-green-500 text-2xl font-bold">♥</Text>
+              <Heart size={28} color={colors.teal[500]} strokeWidth={2.5} />
             </Pressable>
           </View>
-        </BlurView>
+        </GlassCard>
 
         {/* Progress indicator */}
         <View className="flex-row items-center justify-center mt-3">
-          <Text className="text-ink-muted text-xs">
+          <Text className="text-zinc-400 text-micro font-sans-medium">
             {currentIndex + 1} of {stamps.length} stamps
           </Text>
         </View>

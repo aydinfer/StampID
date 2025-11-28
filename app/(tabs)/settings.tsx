@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView, Pressable, Alert, Linking } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { BlurView } from 'expo-blur';
 import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
+import {
+  Trophy, Mail, User, Bell, Lock, Cloud, Download,
+  HelpCircle, MessageCircle, Star, FileText, Shield, Smartphone, ChevronRight
+} from 'lucide-react-native';
+import { GlassCard } from '@/components/ui/GlassCard';
+import { colors } from '@/lib/design/tokens';
 import { useSubscriptionContext, FREE_SCANS_LIMIT } from '@/lib/providers/SubscriptionProvider';
 
 export default function SettingsScreen() {
@@ -31,10 +36,11 @@ export default function SettingsScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-cream" edges={['top']}>
+    <SafeAreaView className="flex-1 bg-zinc-50" edges={['top']}>
       {/* Header */}
-      <View className="px-4 py-4">
-        <Text className="text-2xl font-bold text-ink">Settings</Text>
+      <View className="px-6 pt-4 pb-2">
+        <Text className="text-display font-sans-bold text-zinc-900">Settings</Text>
+        <Text className="text-caption text-zinc-500 mt-1">Manage your account</Text>
       </View>
 
       <ScrollView
@@ -44,34 +50,34 @@ export default function SettingsScreen() {
       >
         {/* Subscription Section */}
         <Animated.View entering={FadeIn.duration(400)} className="px-4 mb-6">
-          <Text className="text-ink-light text-sm font-medium mb-3 ml-1">SUBSCRIPTION</Text>
+          <Text className="text-zinc-400 text-micro font-sans-semibold mb-3 ml-1 tracking-wide">SUBSCRIPTION</Text>
 
-          <BlurView intensity={20} tint="light" className="rounded-2xl overflow-hidden">
+          <GlassCard variant="card" padding="md">
             {isPro ? (
               // Pro User
-              <View className="bg-forest-50/80 p-4">
+              <View className="bg-indigo-500 -m-4 p-4 rounded-2xl">
                 <View className="flex-row items-center mb-3">
-                  <View className="w-12 h-12 bg-forest-900 rounded-full items-center justify-center mr-3">
-                    <Text className="text-xl">🏆</Text>
+                  <View className="w-12 h-12 bg-white/20 rounded-full items-center justify-center mr-3">
+                    <Trophy size={24} color="#FFFFFF" />
                   </View>
                   <View className="flex-1">
-                    <Text className="text-forest-900 font-bold text-lg">StampID Pro</Text>
-                    <Text className="text-forest-900/70 text-sm">Unlimited access</Text>
+                    <Text className="text-white font-sans-bold text-body">StampID Pro</Text>
+                    <Text className="text-white/70 text-caption">Unlimited access</Text>
                   </View>
                 </View>
 
-                <View className="border-t border-forest-900/10 pt-3 mt-1">
+                <View className="border-t border-white/20 pt-3 mt-1">
                   <View className="flex-row items-center justify-between">
-                    <Text className="text-forest-900/70 text-sm">Status</Text>
-                    <View className="bg-success/20 px-2 py-0.5 rounded-full">
-                      <Text className="text-success text-xs font-semibold">Active</Text>
+                    <Text className="text-white/70 text-caption">Status</Text>
+                    <View className="bg-teal-400/20 px-2 py-0.5 rounded-full">
+                      <Text className="text-teal-300 text-micro font-sans-semibold">Active</Text>
                     </View>
                   </View>
 
                   {customerInfo?.entitlements.active['pro']?.expirationDate && (
                     <View className="flex-row items-center justify-between mt-2">
-                      <Text className="text-forest-900/70 text-sm">Renews</Text>
-                      <Text className="text-forest-900 text-sm font-medium">
+                      <Text className="text-white/70 text-caption">Renews</Text>
+                      <Text className="text-white text-caption font-sans-medium">
                         {new Date(customerInfo.entitlements.active['pro'].expirationDate).toLocaleDateString()}
                       </Text>
                     </View>
@@ -80,21 +86,21 @@ export default function SettingsScreen() {
 
                 <Pressable
                   onPress={handleManageSubscription}
-                  className="bg-forest-900/10 rounded-xl py-3 mt-4 items-center"
+                  className="bg-white/20 rounded-xl py-3 mt-4 items-center active:bg-white/30"
                 >
-                  <Text className="text-forest-900 font-medium">Manage Subscription</Text>
+                  <Text className="text-white font-sans-medium">Manage Subscription</Text>
                 </Pressable>
               </View>
             ) : (
               // Free User
-              <View className="bg-white/70 p-4">
-                <View className="flex-row items-center mb-3">
-                  <View className="w-12 h-12 bg-ink-muted/10 rounded-full items-center justify-center mr-3">
-                    <Text className="text-xl">📮</Text>
+              <View>
+                <View className="flex-row items-center mb-4">
+                  <View className="w-12 h-12 bg-zinc-100 rounded-full items-center justify-center mr-3">
+                    <Mail size={24} color={colors.zinc[400]} />
                   </View>
                   <View className="flex-1">
-                    <Text className="text-ink font-bold text-lg">Free Plan</Text>
-                    <Text className="text-ink-light text-sm">
+                    <Text className="text-zinc-900 font-sans-bold text-body">Free Plan</Text>
+                    <Text className="text-zinc-500 text-caption">
                       {freeScansRemaining}/{FREE_SCANS_LIMIT} scans remaining today
                     </Text>
                   </View>
@@ -102,9 +108,9 @@ export default function SettingsScreen() {
 
                 <Pressable
                   onPress={presentPaywall}
-                  className="bg-forest-900 rounded-xl py-3.5 items-center"
+                  className="bg-indigo-500 rounded-xl py-3.5 items-center active:opacity-90"
                 >
-                  <Text className="text-white font-semibold">Upgrade to Pro</Text>
+                  <Text className="text-white font-sans-semibold">Upgrade to Pro</Text>
                 </Pressable>
 
                 <Pressable
@@ -112,115 +118,109 @@ export default function SettingsScreen() {
                   disabled={isRestoring}
                   className="py-3 mt-2 items-center"
                 >
-                  <Text className="text-forest-900 font-medium">
+                  <Text className="text-indigo-500 font-sans-medium">
                     {isRestoring ? 'Restoring...' : 'Restore Purchases'}
                   </Text>
                 </Pressable>
               </View>
             )}
-          </BlurView>
+          </GlassCard>
         </Animated.View>
 
         {/* Account Section */}
         <Animated.View entering={FadeInDown.delay(100).duration(400)} className="px-4 mb-6">
-          <Text className="text-ink-light text-sm font-medium mb-3 ml-1">ACCOUNT</Text>
+          <Text className="text-zinc-400 text-micro font-sans-semibold mb-3 ml-1 tracking-wide">ACCOUNT</Text>
 
-          <BlurView intensity={20} tint="light" className="rounded-2xl overflow-hidden">
-            <View className="bg-white/70">
-              <SettingsRow
-                icon="👤"
-                title="Profile"
-                onPress={() => {}}
-              />
-              <SettingsRow
-                icon="🔔"
-                title="Notifications"
-                onPress={() => {}}
-              />
-              <SettingsRow
-                icon="🔒"
-                title="Privacy"
-                onPress={() => {}}
-                isLast
-              />
-            </View>
-          </BlurView>
+          <GlassCard variant="card" padding="none">
+            <SettingsRow
+              icon={<User size={20} color={colors.zinc[500]} />}
+              title="Profile"
+              onPress={() => {}}
+            />
+            <SettingsRow
+              icon={<Bell size={20} color={colors.zinc[500]} />}
+              title="Notifications"
+              onPress={() => {}}
+            />
+            <SettingsRow
+              icon={<Lock size={20} color={colors.zinc[500]} />}
+              title="Privacy"
+              onPress={() => {}}
+              isLast
+            />
+          </GlassCard>
         </Animated.View>
 
         {/* Data Section */}
         <Animated.View entering={FadeInDown.delay(200).duration(400)} className="px-4 mb-6">
-          <Text className="text-ink-light text-sm font-medium mb-3 ml-1">DATA</Text>
+          <Text className="text-zinc-400 text-micro font-sans-semibold mb-3 ml-1 tracking-wide">DATA</Text>
 
-          <BlurView intensity={20} tint="light" className="rounded-2xl overflow-hidden">
-            <View className="bg-white/70">
-              <SettingsRow
-                icon="☁️"
-                title="Cloud Backup"
-                subtitle={isPro ? 'Enabled' : 'Pro feature'}
-                onPress={() => !isPro && presentPaywall()}
-              />
-              <SettingsRow
-                icon="📤"
-                title="Export Collection"
-                subtitle={isPro ? 'CSV, PDF' : 'Pro feature'}
-                onPress={() => !isPro && presentPaywall()}
-                isLast
-              />
-            </View>
-          </BlurView>
+          <GlassCard variant="card" padding="none">
+            <SettingsRow
+              icon={<Cloud size={20} color={colors.zinc[500]} />}
+              title="Cloud Backup"
+              subtitle={isPro ? 'Enabled' : 'Pro feature'}
+              onPress={() => !isPro && presentPaywall()}
+            />
+            <SettingsRow
+              icon={<Download size={20} color={colors.zinc[500]} />}
+              title="Export Collection"
+              subtitle={isPro ? 'CSV, PDF' : 'Pro feature'}
+              onPress={() => !isPro && presentPaywall()}
+              isLast
+            />
+          </GlassCard>
         </Animated.View>
 
         {/* Support Section */}
         <Animated.View entering={FadeInDown.delay(300).duration(400)} className="px-4 mb-6">
-          <Text className="text-ink-light text-sm font-medium mb-3 ml-1">SUPPORT</Text>
+          <Text className="text-zinc-400 text-micro font-sans-semibold mb-3 ml-1 tracking-wide">SUPPORT</Text>
 
-          <BlurView intensity={20} tint="light" className="rounded-2xl overflow-hidden">
-            <View className="bg-white/70">
-              <SettingsRow
-                icon="❓"
-                title="Help Center"
-                onPress={() => {}}
-              />
-              <SettingsRow
-                icon="💬"
-                title="Contact Support"
-                onPress={() => {}}
-              />
-              <SettingsRow
-                icon="⭐"
-                title="Rate StampID"
-                onPress={() => {}}
-                isLast
-              />
-            </View>
-          </BlurView>
+          <GlassCard variant="card" padding="none">
+            <SettingsRow
+              icon={<HelpCircle size={20} color={colors.zinc[500]} />}
+              title="Help Center"
+              onPress={() => {}}
+            />
+            <SettingsRow
+              icon={<MessageCircle size={20} color={colors.zinc[500]} />}
+              title="Contact Support"
+              onPress={() => {}}
+            />
+            <SettingsRow
+              icon={<Star size={20} color={colors.zinc[500]} />}
+              title="Rate StampID"
+              onPress={() => {}}
+              isLast
+            />
+          </GlassCard>
         </Animated.View>
 
         {/* About Section */}
         <Animated.View entering={FadeInDown.delay(400).duration(400)} className="px-4 mb-6">
-          <Text className="text-ink-light text-sm font-medium mb-3 ml-1">ABOUT</Text>
+          <Text className="text-zinc-400 text-micro font-sans-semibold mb-3 ml-1 tracking-wide">ABOUT</Text>
 
-          <BlurView intensity={20} tint="light" className="rounded-2xl overflow-hidden">
-            <View className="bg-white/70">
-              <SettingsRow
-                icon="📋"
-                title="Terms of Service"
-                onPress={() => {}}
-              />
-              <SettingsRow
-                icon="🔐"
-                title="Privacy Policy"
-                onPress={() => {}}
-              />
-              <View className="flex-row items-center justify-between p-4 border-t border-ink-muted/10">
-                <View className="flex-row items-center">
-                  <Text className="text-xl mr-3">📱</Text>
-                  <Text className="text-ink font-medium">App Version</Text>
+          <GlassCard variant="card" padding="none">
+            <SettingsRow
+              icon={<FileText size={20} color={colors.zinc[500]} />}
+              title="Terms of Service"
+              onPress={() => {}}
+            />
+            <SettingsRow
+              icon={<Shield size={20} color={colors.zinc[500]} />}
+              title="Privacy Policy"
+              onPress={() => {}}
+            />
+            <View className="flex-row items-center justify-between p-4 border-t border-zinc-100">
+              <View className="flex-row items-center">
+                <View className="w-9 h-9 rounded-lg bg-zinc-50 items-center justify-center mr-3">
+                  <Smartphone size={20} color={colors.zinc[500]} />
                 </View>
-                <Text className="text-ink-muted">1.0.0</Text>
+                <Text className="text-zinc-900 font-sans-medium">App Version</Text>
               </View>
+              <Text className="text-zinc-400 font-mono-regular">1.0.0</Text>
             </View>
-          </BlurView>
+          </GlassCard>
         </Animated.View>
       </ScrollView>
     </SafeAreaView>
@@ -234,7 +234,7 @@ function SettingsRow({
   onPress,
   isLast = false,
 }: {
-  icon: string;
+  icon: React.ReactNode;
   title: string;
   subtitle?: string;
   onPress: () => void;
@@ -243,18 +243,20 @@ function SettingsRow({
   return (
     <Pressable
       onPress={onPress}
-      className={`flex-row items-center p-4 active:bg-ink-muted/5 ${
-        !isLast ? 'border-b border-ink-muted/10' : ''
+      className={`flex-row items-center p-4 active:bg-zinc-50 ${
+        !isLast ? 'border-b border-zinc-100' : ''
       }`}
     >
-      <Text className="text-xl mr-3">{icon}</Text>
+      <View className="w-9 h-9 rounded-lg bg-zinc-50 items-center justify-center mr-3">
+        {icon}
+      </View>
       <View className="flex-1">
-        <Text className="text-ink font-medium">{title}</Text>
+        <Text className="text-zinc-900 font-sans-medium">{title}</Text>
         {subtitle && (
-          <Text className="text-ink-muted text-sm">{subtitle}</Text>
+          <Text className="text-zinc-400 text-caption">{subtitle}</Text>
         )}
       </View>
-      <Text className="text-ink-muted">›</Text>
+      <ChevronRight size={18} color={colors.zinc[300]} />
     </Pressable>
   );
 }

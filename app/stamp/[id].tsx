@@ -14,13 +14,15 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { BlurView } from 'expo-blur';
 import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
-import { ChevronLeft, Heart, Share2, Edit3, Trash2, X } from 'lucide-react-native';
+import { ChevronLeft, Heart, Share2, Edit3, Trash2, X, HelpCircle } from 'lucide-react-native';
 import { useStamp, useDeleteStamp, useFavoriteStamp } from '@/lib/hooks/useStamps';
 import { StampEditModal } from '@/components/stamps/StampEditModal';
 import { ShareCard } from '@/components/share/ShareCard';
 import { useShareStamp, getRecommendedShareStyle } from '@/lib/hooks/useShare';
 import { ConditionBadge } from '@/components/stamps/ConditionBadge';
 import { RarityBadge } from '@/components/stamps/RarityBadge';
+import { GlassCard } from '@/components/ui/GlassCard';
+import { colors } from '@/lib/design/tokens';
 import type { RarityTier } from '@/lib/stamps/catalog';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -38,21 +40,21 @@ export default function StampDetailScreen() {
 
   if (isLoading) {
     return (
-      <SafeAreaView className="flex-1 bg-cream items-center justify-center">
-        <ActivityIndicator size="large" color="#1B4332" />
+      <SafeAreaView className="flex-1 bg-zinc-50 items-center justify-center">
+        <ActivityIndicator size="large" color={colors.indigo[500]} />
       </SafeAreaView>
     );
   }
 
   if (!stamp) {
     return (
-      <SafeAreaView className="flex-1 bg-cream items-center justify-center px-6">
-        <View className="w-16 h-16 rounded-full bg-ink-muted/10 items-center justify-center mb-4">
-          <Text className="text-ink-muted text-2xl font-bold">?</Text>
+      <SafeAreaView className="flex-1 bg-zinc-50 items-center justify-center px-6">
+        <View className="w-16 h-16 rounded-full bg-zinc-100 items-center justify-center mb-4">
+          <HelpCircle size={32} color={colors.zinc[400]} />
         </View>
-        <Text className="text-ink font-semibold text-lg mb-2">Stamp not found</Text>
+        <Text className="text-zinc-900 font-sans-semibold text-body mb-2">Stamp not found</Text>
         <Pressable onPress={() => router.back()} className="mt-4">
-          <Text className="text-forest-900 font-semibold">Go Back</Text>
+          <Text className="text-indigo-500 font-sans-semibold">Go Back</Text>
         </Pressable>
       </SafeAreaView>
     );
@@ -111,45 +113,49 @@ export default function StampDetailScreen() {
   const avgValue = ((stamp.estimated_value_low || 0) + (stamp.estimated_value_high || 0)) / 2;
 
   return (
-    <SafeAreaView className="flex-1 bg-cream" edges={['top']}>
+    <SafeAreaView className="flex-1 bg-zinc-50" edges={['top']}>
       {/* Header */}
       <View className="flex-row items-center justify-between px-4 py-3">
         <Pressable onPress={() => router.back()} className="flex-row items-center py-2 pr-4">
-          <ChevronLeft size={24} color="#1B4332" />
-          <Text className="text-forest-900 font-medium">Back</Text>
+          <ChevronLeft size={24} color={colors.indigo[500]} />
+          <Text className="text-indigo-500 font-sans-medium">Back</Text>
         </Pressable>
 
         <View className="flex-row gap-2">
           <Pressable
             onPress={handleToggleFavorite}
             className={`w-10 h-10 rounded-full items-center justify-center ${
-              stamp.is_favorite ? 'bg-red-100' : 'bg-white/80'
+              stamp.is_favorite ? 'bg-rose-50' : 'bg-white'
             }`}
+            style={{ shadowColor: colors.zinc[900], shadowOpacity: 0.05, shadowRadius: 4, elevation: 2 }}
           >
             <Heart
               size={20}
-              color={stamp.is_favorite ? '#EF4444' : '#6B6B6B'}
-              fill={stamp.is_favorite ? '#EF4444' : 'transparent'}
+              color={stamp.is_favorite ? colors.rose[500] : colors.zinc[400]}
+              fill={stamp.is_favorite ? colors.rose[500] : 'transparent'}
             />
           </Pressable>
           <Pressable
             onPress={handleShare}
             disabled={isCapturing || isSharing}
-            className="w-10 h-10 rounded-full bg-white/80 items-center justify-center"
+            className="w-10 h-10 rounded-full bg-white items-center justify-center"
+            style={{ shadowColor: colors.zinc[900], shadowOpacity: 0.05, shadowRadius: 4, elevation: 2 }}
           >
-            <Share2 size={20} color="#6B6B6B" />
+            <Share2 size={20} color={colors.zinc[400]} />
           </Pressable>
           <Pressable
             onPress={() => setShowEditModal(true)}
-            className="w-10 h-10 rounded-full bg-white/80 items-center justify-center"
+            className="w-10 h-10 rounded-full bg-white items-center justify-center"
+            style={{ shadowColor: colors.zinc[900], shadowOpacity: 0.05, shadowRadius: 4, elevation: 2 }}
           >
-            <Edit3 size={20} color="#6B6B6B" />
+            <Edit3 size={20} color={colors.zinc[400]} />
           </Pressable>
           <Pressable
             onPress={handleDelete}
-            className="w-10 h-10 rounded-full bg-white/80 items-center justify-center"
+            className="w-10 h-10 rounded-full bg-white items-center justify-center"
+            style={{ shadowColor: colors.zinc[900], shadowOpacity: 0.05, shadowRadius: 4, elevation: 2 }}
           >
-            <Trash2 size={20} color="#EF4444" />
+            <Trash2 size={20} color={colors.rose[500]} />
           </Pressable>
         </View>
       </View>
@@ -202,34 +208,30 @@ export default function StampDetailScreen() {
 
         {/* Title & Origin */}
         <Animated.View entering={FadeInDown.delay(100).duration(400)} className="px-4 mt-4">
-          <BlurView intensity={20} tint="light" className="rounded-2xl overflow-hidden">
-            <View className="bg-white/70 p-4">
-              <Text className="text-2xl font-bold text-ink">{stamp.name}</Text>
-              <Text className="text-ink-light text-lg mt-1">
-                {stamp.country || 'Unknown origin'}
-                {stamp.year_issued ? ` • ${stamp.year_issued}` : ''}
-              </Text>
-            </View>
-          </BlurView>
+          <GlassCard variant="card" padding="md">
+            <Text className="text-title font-sans-bold text-zinc-900">{stamp.name}</Text>
+            <Text className="text-zinc-500 text-body mt-1">
+              {stamp.country || 'Unknown origin'}
+              {stamp.year_issued ? ` • ${stamp.year_issued}` : ''}
+            </Text>
+          </GlassCard>
         </Animated.View>
 
         {/* Value */}
         {avgValue > 0 && (
           <Animated.View entering={FadeInDown.delay(150).duration(400)} className="px-4 mt-4">
-            <BlurView intensity={20} tint="light" className="rounded-2xl overflow-hidden">
-              <View className="bg-white/70 p-4">
-                <Text className="text-ink-light text-sm">Estimated Value</Text>
-                <Text className="text-3xl font-bold text-forest-900 mt-1">
-                  ${stamp.estimated_value_low?.toFixed(2)} - ${stamp.estimated_value_high?.toFixed(2)}
-                </Text>
-                <View className="flex-row items-center mt-2 gap-3">
-                  <Text className="text-ink-muted text-sm">{stamp.currency || 'USD'}</Text>
-                  {stamp.rarity && (
-                    <RarityBadge rarity={stamp.rarity as RarityTier} size="sm" />
-                  )}
-                </View>
+            <GlassCard variant="card" padding="md">
+              <Text className="text-zinc-500 text-caption">Estimated Value</Text>
+              <Text className="text-display font-sans-bold text-indigo-500 mt-1">
+                ${stamp.estimated_value_low?.toFixed(2)} - ${stamp.estimated_value_high?.toFixed(2)}
+              </Text>
+              <View className="flex-row items-center mt-2 gap-3">
+                <Text className="text-zinc-400 text-caption font-mono-regular">{stamp.currency || 'USD'}</Text>
+                {stamp.rarity && (
+                  <RarityBadge rarity={stamp.rarity as RarityTier} size="sm" />
+                )}
               </View>
-            </BlurView>
+            </GlassCard>
           </Animated.View>
         )}
 
@@ -246,49 +248,43 @@ export default function StampDetailScreen() {
         {/* Condition */}
         {stamp.condition && (
           <Animated.View entering={FadeInDown.delay(250).duration(400)} className="px-4 mt-4">
-            <BlurView intensity={20} tint="light" className="rounded-2xl overflow-hidden">
-              <View className="bg-white/70 p-4">
-                <Text className="text-ink-light text-sm mb-2">Condition</Text>
-                <View className="flex-row items-center">
-                  <ConditionBadge condition={stamp.condition} size="lg" />
-                  {stamp.condition_notes && (
-                    <Text className="text-ink-light text-sm ml-3 flex-1">
-                      {stamp.condition_notes}
-                    </Text>
-                  )}
-                </View>
+            <GlassCard variant="card" padding="md">
+              <Text className="text-zinc-500 text-caption mb-2">Condition</Text>
+              <View className="flex-row items-center">
+                <ConditionBadge condition={stamp.condition} size="lg" />
+                {stamp.condition_notes && (
+                  <Text className="text-zinc-500 text-caption ml-3 flex-1">
+                    {stamp.condition_notes}
+                  </Text>
+                )}
               </View>
-            </BlurView>
+            </GlassCard>
           </Animated.View>
         )}
 
         {/* Description */}
         {stamp.description && (
           <Animated.View entering={FadeInDown.delay(300).duration(400)} className="px-4 mt-4">
-            <BlurView intensity={20} tint="light" className="rounded-2xl overflow-hidden">
-              <View className="bg-white/70 p-4">
-                <Text className="text-ink-light text-sm mb-1">About</Text>
-                <Text className="text-ink leading-6">{stamp.description}</Text>
-              </View>
-            </BlurView>
+            <GlassCard variant="card" padding="md">
+              <Text className="text-zinc-500 text-caption mb-1">About</Text>
+              <Text className="text-zinc-700 leading-6">{stamp.description}</Text>
+            </GlassCard>
           </Animated.View>
         )}
 
         {/* Notes */}
         {stamp.notes && (
           <Animated.View entering={FadeInDown.delay(350).duration(400)} className="px-4 mt-4">
-            <BlurView intensity={20} tint="light" className="rounded-2xl overflow-hidden">
-              <View className="bg-white/70 p-4">
-                <Text className="text-ink-light text-sm mb-1">Your Notes</Text>
-                <Text className="text-ink">{stamp.notes}</Text>
-              </View>
-            </BlurView>
+            <GlassCard variant="card" padding="md">
+              <Text className="text-zinc-500 text-caption mb-1">Your Notes</Text>
+              <Text className="text-zinc-700">{stamp.notes}</Text>
+            </GlassCard>
           </Animated.View>
         )}
 
         {/* Metadata */}
         <Animated.View entering={FadeInDown.delay(400).duration(400)} className="px-4 mt-4">
-          <Text className="text-ink-muted text-xs text-center">
+          <Text className="text-zinc-400 text-micro text-center font-sans-medium">
             Added {new Date(stamp.created_at).toLocaleDateString()}
           </Text>
         </Animated.View>
@@ -334,7 +330,7 @@ export default function StampDetailScreen() {
             style={getRecommendedShareStyle(stamp)}
           />
           <View className="mt-4">
-            <Text className="text-white">Preparing share...</Text>
+            <Text className="text-white font-sans-medium">Preparing share...</Text>
           </View>
         </View>
       </Modal>
@@ -354,12 +350,10 @@ function DetailCard({ label, value }: { label: string; value?: string | null }) 
 
   return (
     <View className="w-1/2 px-1 mb-2">
-      <BlurView intensity={20} tint="light" className="rounded-xl overflow-hidden">
-        <View className="bg-white/70 p-3">
-          <Text className="text-xs text-ink-light">{label}</Text>
-          <Text className="text-ink font-medium capitalize mt-0.5">{value}</Text>
-        </View>
-      </BlurView>
+      <GlassCard variant="subtle" padding="sm">
+        <Text className="text-micro text-zinc-400">{label}</Text>
+        <Text className="text-zinc-900 font-sans-medium capitalize mt-0.5">{value}</Text>
+      </GlassCard>
     </View>
   );
 }

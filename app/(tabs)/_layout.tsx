@@ -8,12 +8,9 @@ import {
   FolderOpen,
   Settings,
 } from 'lucide-react-native';
+import { colors } from '@/lib/design/tokens';
 
 const ICON_SIZE = 24;
-const COLORS = {
-  active: '#1B4332',
-  inactive: '#6B6B6B',
-};
 
 type IconComponent = typeof Home;
 
@@ -21,12 +18,12 @@ function TabIcon({ Icon, focused }: { Icon: IconComponent; focused: boolean }) {
   return (
     <View
       className={`w-10 h-10 rounded-xl items-center justify-center ${
-        focused ? 'bg-forest-900/10' : 'bg-transparent'
+        focused ? 'bg-indigo-500/10' : 'bg-transparent'
       }`}
     >
       <Icon
         size={ICON_SIZE}
-        color={focused ? COLORS.active : COLORS.inactive}
+        color={focused ? colors.indigo[500] : colors.zinc[400]}
         strokeWidth={focused ? 2.5 : 2}
       />
     </View>
@@ -38,17 +35,18 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: COLORS.active,
-        tabBarInactiveTintColor: COLORS.inactive,
+        tabBarActiveTintColor: colors.indigo[500],
+        tabBarInactiveTintColor: colors.zinc[400],
         tabBarStyle: {
-          backgroundColor: 'rgba(250, 249, 246, 0.95)',
-          borderTopColor: 'rgba(27, 67, 50, 0.1)',
+          backgroundColor: 'rgba(250, 250, 250, 0.95)',
+          borderTopColor: colors.zinc[200],
+          borderTopWidth: 0.5,
           paddingTop: 8,
           height: 85,
         },
         tabBarLabelStyle: {
+          fontFamily: 'PlusJakartaSans_500Medium',
           fontSize: 11,
-          fontWeight: '600',
           marginTop: 4,
         },
       }}

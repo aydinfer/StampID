@@ -2,10 +2,12 @@ import React from 'react';
 import { View, Text, ScrollView, Pressable, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
-import { BlurView } from 'expo-blur';
 import Animated, { FadeIn, FadeInUp } from 'react-native-reanimated';
+import { Camera, FolderOpen, Search, Star, Lightbulb } from 'lucide-react-native';
 import { useStamps, useCollectionValue } from '@/lib/hooks/useStamps';
 import { StampCard } from '@/components/stamps/StampCard';
+import { GlassCard } from '@/components/ui/GlassCard';
+import { colors } from '@/lib/design/tokens';
 
 export default function HomeScreen() {
   const { data: stamps, isLoading, refetch } = useStamps();
@@ -14,7 +16,7 @@ export default function HomeScreen() {
   const recentStamps = stamps?.slice(0, 4) || [];
 
   return (
-    <SafeAreaView className="flex-1 bg-cream" edges={['top']}>
+    <SafeAreaView className="flex-1 bg-zinc-50" edges={['top']}>
       <ScrollView
         className="flex-1"
         contentContainerStyle={{ paddingBottom: 100 }}
@@ -23,28 +25,28 @@ export default function HomeScreen() {
           <RefreshControl
             refreshing={isLoading}
             onRefresh={refetch}
-            tintColor="#1B4332"
+            tintColor={colors.indigo[500]}
           />
         }
       >
         {/* Header */}
         <View className="px-6 pt-4 pb-2">
-          <Text className="text-3xl font-bold text-ink">StampID</Text>
-          <Text className="text-ink-light mt-1">Your digital stamp collection</Text>
+          <Text className="text-display font-sans-bold text-zinc-900">StampID</Text>
+          <Text className="text-caption text-zinc-500 mt-1">Your digital stamp collection</Text>
         </View>
 
         {/* Stats Card */}
         <Animated.View entering={FadeIn.duration(400)} className="px-4 mt-4">
-          <BlurView intensity={20} tint="light" className="rounded-2xl overflow-hidden">
-            <View className="bg-forest-900 p-5">
+          <GlassCard variant="card" padding="lg">
+            <View className="bg-indigo-500 -m-6 p-5 rounded-2xl">
               <View className="flex-row justify-between">
                 <View>
-                  <Text className="text-white/70 text-sm">Total Stamps</Text>
-                  <Text className="text-white text-3xl font-bold">{count}</Text>
+                  <Text className="text-white/70 text-caption">Total Stamps</Text>
+                  <Text className="text-white text-display font-sans-bold">{count}</Text>
                 </View>
                 <View className="items-end">
-                  <Text className="text-white/70 text-sm">Est. Value</Text>
-                  <Text className="text-white text-3xl font-bold">
+                  <Text className="text-white/70 text-caption">Est. Value</Text>
+                  <Text className="text-white text-display font-sans-bold">
                     ${average.toFixed(0)}
                   </Text>
                 </View>
@@ -52,37 +54,38 @@ export default function HomeScreen() {
 
               <Pressable
                 onPress={() => router.push('/camera')}
-                className="bg-white/20 rounded-xl py-3 mt-4 items-center active:bg-white/30"
+                className="bg-white/20 rounded-xl py-3.5 mt-5 flex-row items-center justify-center active:bg-white/30"
               >
-                <Text className="text-white font-semibold">📷 Scan New Stamp</Text>
+                <Camera size={20} color="#FFFFFF" strokeWidth={2} />
+                <Text className="text-white font-sans-semibold ml-2">Scan New Stamp</Text>
               </Pressable>
             </View>
-          </BlurView>
+          </GlassCard>
         </Animated.View>
 
         {/* Quick Actions */}
         <Animated.View entering={FadeInUp.delay(100).duration(400)} className="px-4 mt-6">
-          <Text className="text-lg font-semibold text-ink mb-3 px-2">Quick Actions</Text>
+          <Text className="text-headline font-sans-semibold text-zinc-900 mb-3 px-2">Quick Actions</Text>
           <View className="flex-row gap-3">
             <QuickAction
-              icon="📷"
+              icon={<Camera size={24} color={colors.indigo[500]} />}
               label="Scan"
               onPress={() => router.push('/camera')}
             />
             <QuickAction
-              icon="📚"
+              icon={<FolderOpen size={24} color={colors.indigo[500]} />}
               label="Collections"
               onPress={() => router.push('/(tabs)/collection')}
             />
             <QuickAction
-              icon="🔍"
+              icon={<Search size={24} color={colors.indigo[500]} />}
               label="Search"
-              onPress={() => {}}
+              onPress={() => router.push('/(tabs)/search')}
             />
             <QuickAction
-              icon="⭐"
+              icon={<Star size={24} color={colors.indigo[500]} />}
               label="Favorites"
-              onPress={() => {}}
+              onPress={() => router.push('/wantlist')}
             />
           </View>
         </Animated.View>
@@ -90,10 +93,10 @@ export default function HomeScreen() {
         {/* Recent Stamps */}
         <Animated.View entering={FadeInUp.delay(200).duration(400)} className="mt-6">
           <View className="flex-row justify-between items-center px-6 mb-3">
-            <Text className="text-lg font-semibold text-ink">Recent Stamps</Text>
+            <Text className="text-headline font-sans-semibold text-zinc-900">Recent Stamps</Text>
             {stamps && stamps.length > 4 && (
               <Pressable onPress={() => router.push('/(tabs)/collection')}>
-                <Text className="text-forest-900 font-medium">See All</Text>
+                <Text className="text-indigo-500 font-sans-medium">See All</Text>
               </Pressable>
             )}
           </View>
@@ -116,29 +119,42 @@ export default function HomeScreen() {
 
         {/* Tips */}
         <Animated.View entering={FadeInUp.delay(300).duration(400)} className="px-4 mt-6">
-          <BlurView intensity={20} tint="light" className="rounded-2xl overflow-hidden">
-            <View className="bg-white/70 p-4">
-              <Text className="text-ink font-semibold mb-2">💡 Pro Tip</Text>
-              <Text className="text-ink-light text-sm">
-                Scan multiple stamps at once! Our AI can detect and identify several stamps in a single photo.
-              </Text>
+          <GlassCard variant="card" padding="md">
+            <View className="flex-row items-start">
+              <View className="w-10 h-10 rounded-full bg-amber-100 items-center justify-center mr-3">
+                <Lightbulb size={20} color={colors.amber[600]} />
+              </View>
+              <View className="flex-1">
+                <Text className="text-zinc-900 font-sans-semibold mb-1">Pro Tip</Text>
+                <Text className="text-zinc-500 text-caption leading-5">
+                  Scan multiple stamps at once! Our AI can detect and identify several stamps in a single photo.
+                </Text>
+              </View>
             </View>
-          </BlurView>
+          </GlassCard>
         </Animated.View>
       </ScrollView>
     </SafeAreaView>
   );
 }
 
-function QuickAction({ icon, label, onPress }: { icon: string; label: string; onPress: () => void }) {
+function QuickAction({
+  icon,
+  label,
+  onPress
+}: {
+  icon: React.ReactNode;
+  label: string;
+  onPress: () => void
+}) {
   return (
     <Pressable onPress={onPress} className="flex-1">
-      <BlurView intensity={20} tint="light" className="rounded-xl overflow-hidden">
-        <View className="bg-white/70 p-3 items-center active:bg-white">
-          <Text className="text-2xl mb-1">{icon}</Text>
-          <Text className="text-ink text-xs font-medium">{label}</Text>
+      <GlassCard variant="subtle" padding="sm">
+        <View className="items-center py-1">
+          {icon}
+          <Text className="text-zinc-700 text-micro font-sans-medium mt-2">{label}</Text>
         </View>
-      </BlurView>
+      </GlassCard>
     </Pressable>
   );
 }
@@ -146,16 +162,18 @@ function QuickAction({ icon, label, onPress }: { icon: string; label: string; on
 function EmptyState() {
   return (
     <View className="items-center py-8 px-6">
-      <Text className="text-5xl mb-3">📭</Text>
-      <Text className="text-ink font-semibold text-base mb-1">No stamps yet</Text>
-      <Text className="text-ink-light text-center text-sm mb-4">
+      <View className="w-16 h-16 rounded-full bg-zinc-100 items-center justify-center mb-4">
+        <Camera size={32} color={colors.zinc[400]} />
+      </View>
+      <Text className="text-zinc-900 font-sans-semibold text-body mb-1">No stamps yet</Text>
+      <Text className="text-zinc-500 text-center text-caption mb-4">
         Scan your first stamp to start building your collection
       </Text>
       <Pressable
         onPress={() => router.push('/camera')}
-        className="bg-forest-900 rounded-xl py-3 px-6 active:opacity-90"
+        className="bg-indigo-500 rounded-xl py-3 px-6 active:opacity-90"
       >
-        <Text className="text-white font-semibold">Scan First Stamp</Text>
+        <Text className="text-white font-sans-semibold">Scan First Stamp</Text>
       </Pressable>
     </View>
   );
