@@ -6,7 +6,7 @@
  */
 
 import React from 'react';
-import { View } from 'react-native';
+import { View, DimensionValue } from 'react-native';
 import { BlurView } from 'expo-blur';
 import Animated, {
   useSharedValue,
@@ -106,13 +106,10 @@ export function GlassSkeleton({
     };
   });
 
-  const widthStyle = typeof width === 'number' ? { width } : { width };
-  const heightStyle = typeof height === 'number' ? { height } : { height };
-
   return (
     <View
       className={`overflow-hidden ${radiusStyle}`}
-      style={[widthStyle, heightStyle]}
+      style={{ width: width as DimensionValue, height: height as DimensionValue }}
     >
       <BlurView
         intensity={variantStyle.intensity}

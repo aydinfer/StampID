@@ -16,6 +16,11 @@ import { BlurView } from 'expo-blur';
 import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
 import { useStamp, useDeleteStamp, useFavoriteStamp } from '@/lib/hooks/useStamps';
 import { StampEditModal } from '@/components/stamps/StampEditModal';
+import { ShareCard } from '@/components/share/ShareCard';
+import { useShareStamp, getRecommendedShareStyle } from '@/lib/hooks/useShare';
+import { ConditionBadge } from '@/components/stamps/ConditionBadge';
+import { RarityBadge } from '@/components/stamps/RarityBadge';
+import type { RarityTier } from '@/lib/stamps/catalog';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -24,8 +29,10 @@ export default function StampDetailScreen() {
   const { data: stamp, isLoading } = useStamp(id!);
   const deleteStamp = useDeleteStamp();
   const favoriteStamp = useFavoriteStamp();
+  const { cardRef, captureAndShare, isCapturing, isSharing } = useShareStamp();
 
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(false);
   const [imageZoomed, setImageZoomed] = useState(false);
 
   if (isLoading) {
@@ -39,7 +46,9 @@ export default function StampDetailScreen() {
   if (!stamp) {
     return (
       <SafeAreaView className="flex-1 bg-cream items-center justify-center px-6">
-        <Text className="text-5xl mb-4">📭</Text>
+        <View className="w-16 h-16 rounded-full bg-ink-muted/10 items-center justify-center mb-4">
+          <Text className="text-ink-muted text-2xl font-bold">?</Text>
+        </View>
         <Text className="text-ink font-semibold text-lg mb-2">Stamp not found</Text>
         <Pressable onPress={() => router.back()} className="mt-4">
           <Text className="text-forest-900 font-semibold">Go Back</Text>
@@ -81,6 +90,23 @@ export default function StampDetailScreen() {
     }
   };
 
+  const handleShare = async () => {
+    try {
+      setShowShareModal(true);
+      // Small delay to ensure the share card is rendered
+      setTimeout(async () => {
+        await captureAndShare({
+          stamp,
+          style: getRecommendedShareStyle(stamp),
+        });
+        setShowShareModal(false);
+      }, 100);
+    } catch (error) {
+      setShowShareModal(false);
+      Alert.alert('Error', 'Failed to share stamp');
+    }
+  };
+
   const avgValue = ((stamp.estimated_value_low || 0) + (stamp.estimated_value_high || 0)) / 2;
 
   return (
@@ -88,27 +114,38 @@ export default function StampDetailScreen() {
       {/* Header */}
       <View className="flex-row items-center justify-between px-4 py-3">
         <Pressable onPress={() => router.back()} className="py-2 pr-4">
-          <Text className="text-forest-900 font-medium">← Back</Text>
+          <Text className="text-forest-900 font-medium">Back</Text>
         </Pressable>
 
         <View className="flex-row gap-2">
           <Pressable
             onPress={handleToggleFavorite}
+            className={`w-10 h-10 rounded-full items-center justify-center ${
+              stamp.is_favorite ? 'bg-red-100' : 'bg-white/80'
+            }`}
+          >
+            <Text className={`text-sm font-bold ${stamp.is_favorite ? 'text-red-500' : 'text-ink-muted'}`}>
+              {stamp.is_favorite ? 'F' : 'f'}
+            </Text>
+          </Pressable>
+          <Pressable
+            onPress={handleShare}
+            disabled={isCapturing || isSharing}
             className="w-10 h-10 rounded-full bg-white/80 items-center justify-center"
           >
-            <Text className="text-lg">{stamp.is_favorite ? '❤️' : '🤍'}</Text>
+            <Text className="text-ink-muted text-sm font-bold">S</Text>
           </Pressable>
           <Pressable
             onPress={() => setShowEditModal(true)}
             className="w-10 h-10 rounded-full bg-white/80 items-center justify-center"
           >
-            <Text className="text-lg">✏️</Text>
+            <Text className="text-ink-muted text-sm font-bold">E</Text>
           </Pressable>
           <Pressable
             onPress={handleDelete}
             className="w-10 h-10 rounded-full bg-white/80 items-center justify-center"
           >
-            <Text className="text-lg">🗑️</Text>
+            <Text className="text-red-500 text-sm font-bold">D</Text>
           </Pressable>
         </View>
       </View>
@@ -184,19 +221,7 @@ export default function StampDetailScreen() {
                 <View className="flex-row items-center mt-2 gap-3">
                   <Text className="text-ink-muted text-sm">{stamp.currency || 'USD'}</Text>
                   {stamp.rarity && (
-                    <View className={`px-2 py-0.5 rounded-full ${
-                      stamp.rarity === 'very_rare' ? 'bg-purple-100' :
-                      stamp.rarity === 'rare' ? 'bg-amber-100' :
-                      stamp.rarity === 'uncommon' ? 'bg-blue-100' : 'bg-gray-100'
-                    }`}>
-                      <Text className={`text-xs font-medium capitalize ${
-                        stamp.rarity === 'very_rare' ? 'text-purple-700' :
-                        stamp.rarity === 'rare' ? 'text-amber-700' :
-                        stamp.rarity === 'uncommon' ? 'text-blue-700' : 'text-gray-700'
-                      }`}>
-                        {stamp.rarity.replace('_', ' ')}
-                      </Text>
-                    </View>
+                    <RarityBadge rarity={stamp.rarity as RarityTier} size="sm" />
                   )}
                 </View>
               </View>
@@ -221,7 +246,7 @@ export default function StampDetailScreen() {
               <View className="bg-white/70 p-4">
                 <Text className="text-ink-light text-sm mb-2">Condition</Text>
                 <View className="flex-row items-center">
-                  <ConditionBadge condition={stamp.condition} />
+                  <ConditionBadge condition={stamp.condition} size="lg" />
                   {stamp.condition_notes && (
                     <Text className="text-ink-light text-sm ml-3 flex-1">
                       {stamp.condition_notes}
@@ -286,10 +311,28 @@ export default function StampDetailScreen() {
               onPress={() => setImageZoomed(false)}
               className="w-10 h-10 rounded-full bg-white/20 items-center justify-center"
             >
-              <Text className="text-white text-xl">✕</Text>
+              <Text className="text-white text-xl font-bold">X</Text>
             </Pressable>
           </View>
         </Pressable>
+      </Modal>
+
+      {/* Share Card (Hidden, for capture) */}
+      <Modal
+        visible={showShareModal}
+        transparent
+        animationType="none"
+      >
+        <View className="flex-1 bg-black/80 items-center justify-center">
+          <ShareCard
+            ref={cardRef}
+            stamp={stamp}
+            style={getRecommendedShareStyle(stamp)}
+          />
+          <View className="mt-4">
+            <Text className="text-white">Preparing share...</Text>
+          </View>
+        </View>
       </Modal>
 
       {/* Edit Modal */}
@@ -313,23 +356,6 @@ function DetailCard({ label, value }: { label: string; value?: string | null }) 
           <Text className="text-ink font-medium capitalize mt-0.5">{value}</Text>
         </View>
       </BlurView>
-    </View>
-  );
-}
-
-function ConditionBadge({ condition }: { condition: string }) {
-  const config: Record<string, { bg: string; text: string; label: string }> = {
-    mint: { bg: 'bg-green-100', text: 'text-green-700', label: 'Mint' },
-    mint_hinged: { bg: 'bg-lime-100', text: 'text-lime-700', label: 'Mint Hinged' },
-    used: { bg: 'bg-blue-100', text: 'text-blue-700', label: 'Used' },
-    damaged: { bg: 'bg-red-100', text: 'text-red-700', label: 'Damaged' },
-  };
-
-  const c = config[condition] || { bg: 'bg-gray-100', text: 'text-gray-700', label: condition };
-
-  return (
-    <View className={`px-3 py-1.5 rounded-full ${c.bg}`}>
-      <Text className={`text-sm font-medium ${c.text}`}>{c.label}</Text>
     </View>
   );
 }

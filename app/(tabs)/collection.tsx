@@ -23,6 +23,9 @@ export default function CollectionScreen() {
       await createCollection.mutateAsync({
         name: newCollectionName.trim(),
         user_id: '', // Will be set by hook
+        description: null,
+        cover_image_url: null,
+        is_public: false,
       });
       setNewCollectionName('');
       setShowCreateModal(false);

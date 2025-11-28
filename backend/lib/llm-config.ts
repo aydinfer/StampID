@@ -70,11 +70,12 @@ export function getProviderConfig() {
 
 export function getModelInfo() {
   const provider = PROVIDERS[ACTIVE_PROVIDER];
-  const model = provider.models[ACTIVE_MODEL as keyof typeof provider.models];
+  const models = provider.models as Record<string, { cost: number; description: string }>;
+  const model = models[ACTIVE_MODEL];
   return {
     provider: ACTIVE_PROVIDER,
     model: ACTIVE_MODEL,
-    cost: model?.cost || 0,
-    description: model?.description || '',
+    cost: model?.cost ?? 0,
+    description: model?.description ?? '',
   };
 }

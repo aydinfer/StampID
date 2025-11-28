@@ -1,18 +1,30 @@
 import { Tabs } from 'expo-router';
 import { View, Text } from 'react-native';
 
+// Tab icon component - uses text placeholders until proper icons are provided
 function TabIcon({ name, focused }: { name: string; focused: boolean }) {
-  const icons: Record<string, string> = {
-    Home: '🏠',
-    Collection: '📚',
-    Scan: '📷',
-    Settings: '⚙️',
+  // Text-based icon placeholders (replace with actual icon components)
+  const iconLabels: Record<string, string> = {
+    Home: 'H',
+    Search: 'S',
+    Scan: '+',
+    Discover: 'D',
+    Collection: 'C',
+    Settings: 'G',
   };
 
   return (
-    <View className="items-center">
-      <Text className={`text-xl ${focused ? '' : 'opacity-60'}`}>
-        {icons[name] || '📄'}
+    <View
+      className={`w-8 h-8 rounded-lg items-center justify-center ${
+        focused ? 'bg-forest-900' : 'bg-transparent'
+      }`}
+    >
+      <Text
+        className={`text-base font-semibold ${
+          focused ? 'text-white' : 'text-ink-muted'
+        }`}
+      >
+        {iconLabels[name] || '?'}
       </Text>
     </View>
   );
@@ -46,10 +58,10 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="collection"
+        name="search"
         options={{
-          title: 'Collection',
-          tabBarIcon: ({ focused }) => <TabIcon name="Collection" focused={focused} />,
+          title: 'Search',
+          tabBarIcon: ({ focused }) => <TabIcon name="Search" focused={focused} />,
         }}
       />
       <Tabs.Screen
@@ -57,6 +69,20 @@ export default function TabLayout() {
         options={{
           title: 'Scan',
           tabBarIcon: ({ focused }) => <TabIcon name="Scan" focused={focused} />,
+        }}
+      />
+      <Tabs.Screen
+        name="discover"
+        options={{
+          title: 'Discover',
+          tabBarIcon: ({ focused }) => <TabIcon name="Discover" focused={focused} />,
+        }}
+      />
+      <Tabs.Screen
+        name="collection"
+        options={{
+          title: 'Collection',
+          tabBarIcon: ({ focused }) => <TabIcon name="Collection" focused={focused} />,
         }}
       />
       <Tabs.Screen
