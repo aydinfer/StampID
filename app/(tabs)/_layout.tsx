@@ -1,31 +1,34 @@
 import { Tabs } from 'expo-router';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
+import {
+  Home,
+  Search,
+  ScanLine,
+  Compass,
+  FolderOpen,
+  Settings,
+} from 'lucide-react-native';
 
-// Tab icon component - uses text placeholders until proper icons are provided
-function TabIcon({ name, focused }: { name: string; focused: boolean }) {
-  // Text-based icon placeholders (replace with actual icon components)
-  const iconLabels: Record<string, string> = {
-    Home: 'H',
-    Search: 'S',
-    Scan: '+',
-    Discover: 'D',
-    Collection: 'C',
-    Settings: 'G',
-  };
+const ICON_SIZE = 24;
+const COLORS = {
+  active: '#1B4332',
+  inactive: '#6B6B6B',
+};
 
+type IconComponent = typeof Home;
+
+function TabIcon({ Icon, focused }: { Icon: IconComponent; focused: boolean }) {
   return (
     <View
-      className={`w-8 h-8 rounded-lg items-center justify-center ${
-        focused ? 'bg-forest-900' : 'bg-transparent'
+      className={`w-10 h-10 rounded-xl items-center justify-center ${
+        focused ? 'bg-forest-900/10' : 'bg-transparent'
       }`}
     >
-      <Text
-        className={`text-base font-semibold ${
-          focused ? 'text-white' : 'text-ink-muted'
-        }`}
-      >
-        {iconLabels[name] || '?'}
-      </Text>
+      <Icon
+        size={ICON_SIZE}
+        color={focused ? COLORS.active : COLORS.inactive}
+        strokeWidth={focused ? 2.5 : 2}
+      />
     </View>
   );
 }
@@ -35,8 +38,8 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: '#1B4332',
-        tabBarInactiveTintColor: '#6B6B6B',
+        tabBarActiveTintColor: COLORS.active,
+        tabBarInactiveTintColor: COLORS.inactive,
         tabBarStyle: {
           backgroundColor: 'rgba(250, 249, 246, 0.95)',
           borderTopColor: 'rgba(27, 67, 50, 0.1)',
@@ -54,42 +57,42 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ focused }) => <TabIcon name="Home" focused={focused} />,
+          tabBarIcon: ({ focused }) => <TabIcon Icon={Home} focused={focused} />,
         }}
       />
       <Tabs.Screen
         name="search"
         options={{
           title: 'Search',
-          tabBarIcon: ({ focused }) => <TabIcon name="Search" focused={focused} />,
+          tabBarIcon: ({ focused }) => <TabIcon Icon={Search} focused={focused} />,
         }}
       />
       <Tabs.Screen
         name="scan"
         options={{
           title: 'Scan',
-          tabBarIcon: ({ focused }) => <TabIcon name="Scan" focused={focused} />,
+          tabBarIcon: ({ focused }) => <TabIcon Icon={ScanLine} focused={focused} />,
         }}
       />
       <Tabs.Screen
         name="discover"
         options={{
           title: 'Discover',
-          tabBarIcon: ({ focused }) => <TabIcon name="Discover" focused={focused} />,
+          tabBarIcon: ({ focused }) => <TabIcon Icon={Compass} focused={focused} />,
         }}
       />
       <Tabs.Screen
         name="collection"
         options={{
           title: 'Collection',
-          tabBarIcon: ({ focused }) => <TabIcon name="Collection" focused={focused} />,
+          tabBarIcon: ({ focused }) => <TabIcon Icon={FolderOpen} focused={focused} />,
         }}
       />
       <Tabs.Screen
         name="settings"
         options={{
           title: 'Settings',
-          tabBarIcon: ({ focused }) => <TabIcon name="Settings" focused={focused} />,
+          tabBarIcon: ({ focused }) => <TabIcon Icon={Settings} focused={focused} />,
         }}
       />
     </Tabs>

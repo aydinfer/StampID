@@ -14,6 +14,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { BlurView } from 'expo-blur';
 import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
+import { ChevronLeft, Heart, Share2, Edit3, Trash2, X } from 'lucide-react-native';
 import { useStamp, useDeleteStamp, useFavoriteStamp } from '@/lib/hooks/useStamps';
 import { StampEditModal } from '@/components/stamps/StampEditModal';
 import { ShareCard } from '@/components/share/ShareCard';
@@ -113,7 +114,8 @@ export default function StampDetailScreen() {
     <SafeAreaView className="flex-1 bg-cream" edges={['top']}>
       {/* Header */}
       <View className="flex-row items-center justify-between px-4 py-3">
-        <Pressable onPress={() => router.back()} className="py-2 pr-4">
+        <Pressable onPress={() => router.back()} className="flex-row items-center py-2 pr-4">
+          <ChevronLeft size={24} color="#1B4332" />
           <Text className="text-forest-900 font-medium">Back</Text>
         </Pressable>
 
@@ -124,28 +126,30 @@ export default function StampDetailScreen() {
               stamp.is_favorite ? 'bg-red-100' : 'bg-white/80'
             }`}
           >
-            <Text className={`text-sm font-bold ${stamp.is_favorite ? 'text-red-500' : 'text-ink-muted'}`}>
-              {stamp.is_favorite ? 'F' : 'f'}
-            </Text>
+            <Heart
+              size={20}
+              color={stamp.is_favorite ? '#EF4444' : '#6B6B6B'}
+              fill={stamp.is_favorite ? '#EF4444' : 'transparent'}
+            />
           </Pressable>
           <Pressable
             onPress={handleShare}
             disabled={isCapturing || isSharing}
             className="w-10 h-10 rounded-full bg-white/80 items-center justify-center"
           >
-            <Text className="text-ink-muted text-sm font-bold">S</Text>
+            <Share2 size={20} color="#6B6B6B" />
           </Pressable>
           <Pressable
             onPress={() => setShowEditModal(true)}
             className="w-10 h-10 rounded-full bg-white/80 items-center justify-center"
           >
-            <Text className="text-ink-muted text-sm font-bold">E</Text>
+            <Edit3 size={20} color="#6B6B6B" />
           </Pressable>
           <Pressable
             onPress={handleDelete}
             className="w-10 h-10 rounded-full bg-white/80 items-center justify-center"
           >
-            <Text className="text-red-500 text-sm font-bold">D</Text>
+            <Trash2 size={20} color="#EF4444" />
           </Pressable>
         </View>
       </View>
@@ -311,7 +315,7 @@ export default function StampDetailScreen() {
               onPress={() => setImageZoomed(false)}
               className="w-10 h-10 rounded-full bg-white/20 items-center justify-center"
             >
-              <Text className="text-white text-xl font-bold">X</Text>
+              <X size={24} color="#FFFFFF" />
             </Pressable>
           </View>
         </Pressable>
