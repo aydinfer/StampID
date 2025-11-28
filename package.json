@@ -9,6 +9,8 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@expo-google-fonts/jetbrains-mono": "^0.4.1",
+    "@expo-google-fonts/plus-jakarta-sans": "^0.4.2",
     "@react-native-async-storage/async-storage": "2.2.0",
     "@supabase/supabase-js": "^2.81.1",
     "@tanstack/react-query": "^5.90.10",
@@ -21,6 +23,7 @@
     "expo-haptics": "^15.0.7",
     "expo-image-manipulator": "~14.0.7",
     "expo-image-picker": "~16.1.4",
+    "expo-linear-gradient": "^15.0.7",
     "expo-linking": "~8.0.9",
     "expo-router": "~6.0.15",
     "expo-sharing": "^13.1.5",
