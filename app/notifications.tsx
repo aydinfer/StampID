@@ -3,8 +3,8 @@ import { View, Text, ScrollView, ImageBackground, Pressable, RefreshControl } fr
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import Animated, { FadeInDown } from 'react-native-reanimated';
-import { GlassCard, GlassBadge, GlassEmptyStateNoItems } from '@/components/ui/glass';
-import { formatDate, formatTimeAgo } from '@/lib/utils/format';
+import { GlassCard, GlassBadge, GlassEmptyState } from '@/components/ui/glass';
+import { formatRelativeTime } from '@/lib/utils/format';
 
 interface Notification {
   id: string;
@@ -66,18 +66,20 @@ export default function NotificationsScreen() {
   };
 
   const handleMarkAsRead = (id: string) => {
-    setNotifications(notifications.map(notif =>
-      notif.id === id ? { ...notif, read: true } : notif
-    ));
+    setNotifications(
+      notifications.map((notif) => (notif.id === id ? { ...notif, read: true } : notif))
+    );
   };
 
   const handleMarkAllAsRead = () => {
-    setNotifications(notifications.map(notif => ({ ...notif, read: true })));
+    setNotifications(notifications.map((notif) => ({ ...notif, read: true })));
   };
 
-  const unreadCount = notifications.filter(n => !n.read).length;
+  const unreadCount = notifications.filter((n) => !n.read).length;
 
-  const getBadgeVariant = (type: Notification['type']) => {
+  const getBadgeVariant = (
+    type: Notification['type']
+  ): 'primary' | 'success' | 'warning' | 'error' | 'info' | 'neutral' => {
     switch (type) {
       case 'success':
         return 'success';
@@ -86,7 +88,7 @@ export default function NotificationsScreen() {
       case 'error':
         return 'error';
       default:
-        return 'default';
+        return 'info';
     }
   };
 
@@ -103,35 +105,32 @@ export default function NotificationsScreen() {
         >
           <View className="flex-row items-start justify-between mb-2">
             <View className="flex-1 mr-3">
-              <Text className={`text-base font-bold ${
-                notification.read ? 'text-white/70' : 'text-white'
-              }`}>
+              <Text
+                className={`text-base font-bold ${
+                  notification.read ? 'text-white/70' : 'text-white'
+                }`}
+              >
                 {notification.title}
               </Text>
             </View>
 
             <GlassBadge
+              content={notification.type}
               variant={getBadgeVariant(notification.type)}
               size="sm"
-            >
-              {notification.type}
-            </GlassBadge>
+            />
           </View>
 
-          <Text className={`text-sm mb-2 ${
-            notification.read ? 'text-white/50' : 'text-white/70'
-          }`}>
+          <Text className={`text-sm mb-2 ${notification.read ? 'text-white/50' : 'text-white/70'}`}>
             {notification.message}
           </Text>
 
           <View className="flex-row items-center justify-between">
             <Text className="text-white/40 text-xs">
-              {formatTimeAgo(notification.createdAt)}
+              {formatRelativeTime(notification.createdAt)}
             </Text>
 
-            {!notification.read && (
-              <View className="w-2 h-2 rounded-full bg-primary-500" />
-            )}
+            {!notification.read && <View className="w-2 h-2 rounded-full bg-primary-500" />}
           </View>
         </GlassCard>
       </Pressable>
@@ -149,21 +148,14 @@ export default function NotificationsScreen() {
 
       <SafeAreaView className="flex-1" edges={['top', 'bottom']}>
         {/* Header */}
-        <Animated.View
-          entering={FadeInDown.duration(400)}
-          className="px-4 pt-4 pb-6"
-        >
+        <Animated.View entering={FadeInDown.duration(400)} className="px-4 pt-4 pb-6">
           <Pressable onPress={() => router.back()}>
             <Text className="text-primary-400 text-base font-medium mb-4">← Back</Text>
           </Pressable>
 
           <View className="flex-row items-center justify-between mb-2">
             <Text className="text-4xl font-bold text-white">Notifications</Text>
-            {unreadCount > 0 && (
-              <GlassBadge variant="error" size="md">
-                {unreadCount}
-              </GlassBadge>
-            )}
+            {unreadCount > 0 && <GlassBadge content={unreadCount} variant="error" size="md" />}
           </View>
 
           <View className="flex-row items-center justify-between">
@@ -175,9 +167,7 @@ export default function NotificationsScreen() {
 
             {unreadCount > 0 && (
               <Pressable onPress={handleMarkAllAsRead}>
-                <Text className="text-primary-400 text-sm font-medium">
-                  Mark all as read
-                </Text>
+                <Text className="text-primary-400 text-sm font-medium">Mark all as read</Text>
               </Pressable>
             )}
           </View>
@@ -186,9 +176,10 @@ export default function NotificationsScreen() {
         {/* Notifications List */}
         {notifications.length === 0 ? (
           <View className="flex-1 items-center justify-center px-4">
-            <GlassEmptyStateNoItems
+            <GlassEmptyState
+              icon="🔔"
               title="No Notifications"
-              message="You're all caught up! Check back later for updates."
+              description="You're all caught up! Check back later for updates."
             />
           </View>
         ) : (
@@ -203,9 +194,7 @@ export default function NotificationsScreen() {
               />
             }
           >
-            {notifications.map((notification, index) =>
-              renderNotification(notification, index)
-            )}
+            {notifications.map((notification, index) => renderNotification(notification, index))}
 
             <View className="h-8" />
           </ScrollView>

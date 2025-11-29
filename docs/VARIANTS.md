@@ -11,6 +11,7 @@ This template comes in **3 flavors** to suit different app requirements. Choose 
 **Best for:** Most production apps, SaaS, social apps, multi-device apps
 
 **Includes:**
+
 - ✅ Supabase authentication & database
 - ✅ RevenueCat subscriptions
 - ✅ Multi-device sync
@@ -30,6 +31,7 @@ This template comes in **3 flavors** to suit different app requirements. Choose 
 **Best for:** Games, utilities, tools, content apps that don't need user accounts
 
 **Includes:**
+
 - ✅ RevenueCat subscriptions (works without auth!)
 - ✅ All 13 glass components
 - ✅ Onboarding flow
@@ -39,12 +41,14 @@ This template comes in **3 flavors** to suit different app requirements. Choose 
 - ❌ No cloud storage
 
 **Pros:**
+
 - Fastest to ship
 - No backend configuration
 - Still fully monetizable
 - Lower maintenance
 
 **Cons:**
+
 - No cross-device sync
 - No user accounts
 - Can't add social features later without refactoring
@@ -58,6 +62,7 @@ This template comes in **3 flavors** to suit different app requirements. Choose 
 **Best for:** Privacy-focused apps, offline-first apps, regulated industries
 
 **Includes:**
+
 - ✅ RevenueCat subscriptions
 - ✅ Local authentication (encrypted with SecureStore)
 - ✅ SQLite database (all data on-device)
@@ -68,12 +73,14 @@ This template comes in **3 flavors** to suit different app requirements. Choose 
 - ❌ No multi-device support
 
 **Pros:**
+
 - Maximum privacy (data never leaves device)
 - Works 100% offline
 - No backend costs
 - Still fully monetizable
 
 **Cons:**
+
 - No cloud backup
 - No cross-device sync
 - User loses data if device is lost
@@ -85,20 +92,20 @@ This template comes in **3 flavors** to suit different app requirements. Choose 
 
 ## 📊 Feature Comparison
 
-| Feature | Full Stack | Anonymous | Local Auth |
-|---------|-----------|-----------|------------|
-| **RevenueCat Subscriptions** | ✅ | ✅ | ✅ |
-| **Glass UI Components** | ✅ (13) | ✅ (13) | ✅ (13) |
-| **Onboarding Flow** | ✅ | ✅ | ✅ |
-| **User Authentication** | ✅ Cloud | ❌ None | ✅ Local |
-| **User Profiles** | ✅ | ❌ | ✅ Local |
-| **Cloud Storage** | ✅ | ❌ | ❌ |
-| **Multi-Device Sync** | ✅ | ❌ | ❌ |
-| **Offline Mode** | Partial | ✅ Full | ✅ Full |
-| **Backend Required** | Supabase | None | None |
-| **Privacy** | Good | Excellent | Excellent |
-| **Complexity** | Medium | Low | Medium |
-| **Time to Ship** | 1-2 days | < 1 day | 2-3 days |
+| Feature                      | Full Stack | Anonymous | Local Auth |
+| ---------------------------- | ---------- | --------- | ---------- |
+| **RevenueCat Subscriptions** | ✅         | ✅        | ✅         |
+| **Glass UI Components**      | ✅ (13)    | ✅ (13)   | ✅ (13)    |
+| **Onboarding Flow**          | ✅         | ✅        | ✅         |
+| **User Authentication**      | ✅ Cloud   | ❌ None   | ✅ Local   |
+| **User Profiles**            | ✅         | ❌        | ✅ Local   |
+| **Cloud Storage**            | ✅         | ❌        | ❌         |
+| **Multi-Device Sync**        | ✅         | ❌        | ❌         |
+| **Offline Mode**             | Partial    | ✅ Full   | ✅ Full    |
+| **Backend Required**         | Supabase   | None      | None       |
+| **Privacy**                  | Good       | Excellent | Excellent  |
+| **Complexity**               | Medium     | Low       | Medium     |
+| **Time to Ship**             | 1-2 days   | < 1 day   | 2-3 days   |
 
 ---
 
@@ -151,6 +158,7 @@ Need to refactor all data layer
 ## 💡 Recommendations
 
 ### Choose **Full Stack** if:
+
 - ✅ You need user accounts
 - ✅ You want multi-device sync
 - ✅ You're building a social app
@@ -158,6 +166,7 @@ Need to refactor all data layer
 - ✅ You want real-time features
 
 ### Choose **Anonymous** if:
+
 - ✅ Your app doesn't need accounts
 - ✅ You want to ship FAST
 - ✅ You're building a game or utility
@@ -165,6 +174,7 @@ Need to refactor all data layer
 - ✅ Privacy is a selling point
 
 ### Choose **Local Auth** if:
+
 - ✅ Privacy is critical
 - ✅ You need offline-first
 - ✅ You want user accounts but no cloud
@@ -182,5 +192,6 @@ Need to refactor all data layer
 ---
 
 **Questions?**
+
 - 📖 [Full Documentation](../README.md)
 - 🐛 [Report Issues](https://github.com/aydinfer/Expo-Starter/issues)

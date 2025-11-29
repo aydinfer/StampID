@@ -1,9 +1,17 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, ImageBackground, FlatList, Dimensions, Pressable, ViewToken } from 'react-native';
+import {
+  View,
+  Text,
+  ImageBackground,
+  FlatList,
+  Dimensions,
+  Pressable,
+  ViewToken,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
-import { GlassCard, GlassButton } from '@/components/ui/glass';
+import { GlassButton } from '@/components/ui/glass';
 import { useOnboarding } from '@/lib/hooks/useOnboarding';
 
 const { width } = Dimensions.get('window');
@@ -19,13 +27,15 @@ const slides: OnboardingSlide[] = [
   {
     id: '1',
     title: 'Welcome to the App',
-    description: 'A beautiful, production-ready starter template with glassmorphic UI design and everything you need to build amazing apps.',
+    description:
+      'A beautiful, production-ready starter template with glassmorphic UI design and everything you need to build amazing apps.',
     icon: '👋',
   },
   {
     id: '2',
     title: 'Powerful Features',
-    description: 'Built with Expo SDK 54, React 19, Supabase authentication, and 13 pre-built glassmorphic components.',
+    description:
+      'Built with Expo SDK 54, React 19, Supabase authentication, and 13 pre-built glassmorphic components.',
     icon: '⚡',
   },
   {
@@ -98,9 +108,7 @@ export default function OnboardingScreen() {
         </View>
 
         {/* Title */}
-        <Text className="text-4xl font-bold text-white text-center mb-4">
-          {item.title}
-        </Text>
+        <Text className="text-4xl font-bold text-white text-center mb-4">{item.title}</Text>
 
         {/* Description */}
         <Text className="text-lg text-white/70 text-center leading-relaxed">
@@ -121,10 +129,7 @@ export default function OnboardingScreen() {
 
       <SafeAreaView className="flex-1" edges={['top', 'bottom']}>
         {/* Skip Button */}
-        <Animated.View
-          entering={FadeInUp.duration(400)}
-          className="absolute top-16 right-6 z-10"
-        >
+        <Animated.View entering={FadeInUp.duration(400)} className="absolute top-16 right-6 z-10">
           <Pressable onPress={handleSkip}>
             <Text className="text-white/70 text-base font-medium">Skip</Text>
           </Pressable>
@@ -145,19 +150,14 @@ export default function OnboardingScreen() {
         />
 
         {/* Pagination Dots & Next Button */}
-        <Animated.View
-          entering={FadeInUp.delay(400).duration(600)}
-          className="pb-8 px-6"
-        >
+        <Animated.View entering={FadeInUp.delay(400).duration(600)} className="pb-8 px-6">
           {/* Pagination Dots */}
           <View className="flex-row justify-center mb-8">
             {slides.map((_, index) => (
               <View
                 key={index}
                 className={`h-2 rounded-full mx-1 ${
-                  index === currentIndex
-                    ? 'w-8 bg-primary-500'
-                    : 'w-2 bg-white/30'
+                  index === currentIndex ? 'w-8 bg-primary-500' : 'w-2 bg-white/30'
                 }`}
               />
             ))}

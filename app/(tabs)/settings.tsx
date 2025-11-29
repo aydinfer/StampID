@@ -44,28 +44,24 @@ export default function SettingsScreen() {
   const [isSigningOut, setIsSigningOut] = useState(false);
 
   const handleSignOut = () => {
-    Alert.alert(
-      'Sign Out',
-      'Are you sure you want to sign out?',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Sign Out',
-          style: 'destructive',
-          onPress: async () => {
-            setIsSigningOut(true);
-            try {
-              await signOut();
-              router.replace('/(auth)/sign-in');
-            } catch (error: any) {
-              Alert.alert('Error', error?.message || 'Failed to sign out');
-            } finally {
-              setIsSigningOut(false);
-            }
-          },
+    Alert.alert('Sign Out', 'Are you sure you want to sign out?', [
+      { text: 'Cancel', style: 'cancel' },
+      {
+        text: 'Sign Out',
+        style: 'destructive',
+        onPress: async () => {
+          setIsSigningOut(true);
+          try {
+            await signOut();
+            router.replace('/(auth)/sign-in');
+          } catch (error: any) {
+            Alert.alert('Error', error?.message || 'Failed to sign out');
+          } finally {
+            setIsSigningOut(false);
+          }
         },
-      ]
-    );
+      },
+    ]);
   };
 
   const handleClearOnboarding = async () => {
@@ -80,7 +76,7 @@ export default function SettingsScreen() {
             try {
               await resetOnboarding();
               Alert.alert('Success', 'Onboarding has been reset. Sign out to see it again.');
-            } catch (error) {
+            } catch {
               Alert.alert('Error', 'Failed to reset onboarding');
             }
           },
@@ -102,7 +98,7 @@ export default function SettingsScreen() {
             try {
               await AsyncStorage.clear();
               Alert.alert('Success', 'Cache cleared successfully');
-            } catch (error) {
+            } catch {
               Alert.alert('Error', 'Failed to clear cache');
             }
           },
@@ -227,15 +223,9 @@ export default function SettingsScreen() {
 
     if (item.type === 'button') {
       return (
-        <Pressable
-          key={index}
-          onPress={item.onPress}
-          className="py-3 border-b border-white/10"
-        >
+        <Pressable key={index} onPress={item.onPress} className="py-3 border-b border-white/10">
           <Text className="text-white font-medium mb-1">{item.label}</Text>
-          {item.subtitle && (
-            <Text className="text-white/50 text-sm">{item.subtitle}</Text>
-          )}
+          {item.subtitle && <Text className="text-white/50 text-sm">{item.subtitle}</Text>}
         </Pressable>
       );
     }
@@ -260,44 +250,26 @@ export default function SettingsScreen() {
 
       <SafeAreaView className="flex-1" edges={['top', 'bottom']}>
         {/* Header */}
-        <Animated.View
-          entering={FadeInDown.duration(400)}
-          className="px-4 pt-4 pb-6"
-        >
+        <Animated.View entering={FadeInDown.duration(400)} className="px-4 pt-4 pb-6">
           <Text className="text-4xl font-bold text-white mb-2">Settings</Text>
-          <Text className="text-white/70">
-            Manage your account and preferences
-          </Text>
+          <Text className="text-white/70">Manage your account and preferences</Text>
         </Animated.View>
 
-        <ScrollView
-          className="flex-1 px-4"
-          showsVerticalScrollIndicator={false}
-        >
+        <ScrollView className="flex-1 px-4" showsVerticalScrollIndicator={false}>
           {sections.map((section, sectionIndex) => (
             <Animated.View
               key={sectionIndex}
               entering={FadeInDown.delay(200 + sectionIndex * 100).duration(600)}
             >
-              <GlassCard
-                variant="default"
-                intensity={60}
-                className="p-6 mb-4"
-              >
-                <Text className="text-white text-lg font-bold mb-4">
-                  {section.title}
-                </Text>
-                {section.items.map((item, itemIndex) =>
-                  renderSettingsItem(item, itemIndex)
-                )}
+              <GlassCard variant="default" intensity={60} className="p-6 mb-4">
+                <Text className="text-white text-lg font-bold mb-4">{section.title}</Text>
+                {section.items.map((item, itemIndex) => renderSettingsItem(item, itemIndex))}
               </GlassCard>
             </Animated.View>
           ))}
 
           {/* Sign Out Button */}
-          <Animated.View
-            entering={FadeInDown.delay(200 + sections.length * 100).duration(600)}
-          >
+          <Animated.View entering={FadeInDown.delay(200 + sections.length * 100).duration(600)}>
             <GlassButton
               title="Sign Out"
               variant="secondary"
@@ -311,9 +283,7 @@ export default function SettingsScreen() {
 
           {/* Footer */}
           <View className="items-center pb-8">
-            <Text className="text-white/40 text-xs">
-              Built with Expo SDK 54 • NativeWind v4
-            </Text>
+            <Text className="text-white/40 text-xs">Built with Expo SDK 54 • NativeWind v4</Text>
           </View>
         </ScrollView>
       </SafeAreaView>

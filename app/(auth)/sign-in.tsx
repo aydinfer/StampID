@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
-import { View, Text, ImageBackground, KeyboardAvoidingView, Platform, Pressable, Alert } from 'react-native';
+import {
+  View,
+  Text,
+  ImageBackground,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  Alert,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
-import {
-  GlassCard,
-  GlassButton,
-  GlassInput,
-  GlassSwitch,
-} from '@/components/ui/glass';
+import { GlassCard, GlassButton, GlassInput, GlassSwitch } from '@/components/ui/glass';
 import { useAuth } from '@/lib/hooks/useAuth';
 import { validateEmail, validatePasswordSimple } from '@/lib/utils/validation';
 
@@ -63,7 +66,10 @@ export default function SignInScreen() {
       if (errorMessage.includes('Invalid login credentials')) {
         Alert.alert('Sign In Failed', 'Invalid email or password. Please try again.');
       } else if (errorMessage.includes('Email not confirmed')) {
-        Alert.alert('Email Not Confirmed', 'Please check your email and confirm your account before signing in.');
+        Alert.alert(
+          'Email Not Confirmed',
+          'Please check your email and confirm your account before signing in.'
+        );
       } else {
         Alert.alert('Sign In Failed', errorMessage);
       }
@@ -112,9 +118,7 @@ export default function SignInScreen() {
                 <Text className="text-white text-3xl font-bold">A</Text>
               </View>
               <Text className="text-3xl font-bold text-white mb-2">Welcome Back</Text>
-              <Text className="text-white/70 text-center">
-                Sign in to your account to continue
-              </Text>
+              <Text className="text-white/70 text-center">Sign in to your account to continue</Text>
             </View>
 
             {/* Email Input */}
@@ -161,9 +165,7 @@ export default function SignInScreen() {
               />
 
               <Pressable onPress={handleForgotPassword} disabled={loading}>
-                <Text className="text-primary-400 text-sm font-medium">
-                  Forgot Password?
-                </Text>
+                <Text className="text-primary-400 text-sm font-medium">Forgot Password?</Text>
               </Pressable>
             </View>
 

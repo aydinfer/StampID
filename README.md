@@ -5,6 +5,7 @@ A production-ready Expo starter template with **glassmorphic UI design system**.
 ## ✨ Features
 
 ### Core Stack
+
 - ✅ **Expo SDK 54** - Latest version with React 19.1.0
 - ✅ **Glassmorphic UI** - 13 custom glass components
 - ✅ **NativeWind v4** - Tailwind CSS for React Native
@@ -14,12 +15,14 @@ A production-ready Expo starter template with **glassmorphic UI design system**.
 - ✅ **TypeScript** - Strict mode with full type safety
 
 ### Backend & Monetization
+
 - ✅ **Supabase** - Authentication, database, and storage
 - ✅ **RevenueCat** - In-app purchases and subscriptions
 - ✅ **React Query** - Server state management
 - ✅ **Zustand** - Client state management
 
 ### 13 Glass Components Included
+
 1. **GlassCard** - Glassmorphic containers with 3 variants
 2. **GlassButton** - Interactive buttons with loading states
 3. **GlassInput** - Form inputs with floating labels
@@ -42,6 +45,7 @@ This template comes in **3 flavors** to suit different app requirements:
 **Best for:** Most production apps, SaaS, social apps, multi-device apps
 
 **Includes:**
+
 - ✅ Supabase authentication & database
 - ✅ RevenueCat subscriptions
 - ✅ Multi-device sync
@@ -56,6 +60,7 @@ This template comes in **3 flavors** to suit different app requirements:
 **Best for:** Games, utilities, tools, content apps that don't need user accounts
 
 **Includes:**
+
 - ✅ RevenueCat subscriptions (works without auth!)
 - ✅ All 13 glass components
 - ❌ No login/signup
@@ -74,6 +79,7 @@ This template comes in **3 flavors** to suit different app requirements:
 **Best for:** Privacy-focused apps, offline-first apps, regulated industries
 
 **Includes:**
+
 - ✅ RevenueCat subscriptions
 - ✅ Local authentication (encrypted with SecureStore)
 - ✅ SQLite database (all data on-device)
@@ -110,6 +116,7 @@ npx expo start
 ```
 
 **Why --legacy-peer-deps?**
+
 - Expo 54 requires React 19.1.0 specifically
 - React ecosystem is catching up to React 19
 - Some packages show peer warnings but work correctly
@@ -118,6 +125,7 @@ npx expo start
 See [docs/13-troubleshooting.md](./docs/13-troubleshooting.md) for detailed installation troubleshooting.
 
 Then press:
+
 - `i` for iOS Simulator
 - `a` for Android Emulator
 - Scan QR code with Expo Go app
@@ -125,6 +133,7 @@ Then press:
 ## 📱 What's Included
 
 ### Complete Authentication System
+
 - ✅ **Sign-in screen** - Email/password + social login buttons
 - ✅ **Sign-up screen** - Real-time validation with password strength indicator
 - ✅ **Forgot password screen** - Email-based password reset flow
@@ -134,6 +143,7 @@ Then press:
 - ✅ **useAuth hook** - Complete Supabase integration with TypeScript
 
 ### Onboarding Flow
+
 - ✅ **3-screen swipeable carousel** - Welcome, Features, Get Started
 - ✅ **Pagination dots** - Active state indicators
 - ✅ **Skip functionality** - Available on all screens
@@ -142,6 +152,7 @@ Then press:
 - ✅ **Smart routing** - Onboarding → Auth → App flow
 
 ### Subscription & Monetization
+
 - ✅ **RevenueCat integration** - Complete subscription management
 - ✅ **Subscription screen** - View plan, renewal dates, manage subscription
 - ✅ **Restore purchases** - Cross-device subscription restoration
@@ -150,6 +161,7 @@ Then press:
 - ✅ **useSubscription hook** - Full RevenueCat SDK integration
 
 ### Core Application Screens
+
 - ✅ **Settings screen** - Account, notifications, preferences, app info
   - Dark mode toggle (Zustand integration)
   - Push and email notification toggles
@@ -170,6 +182,7 @@ Then press:
   - Empty state handling
 
 ### Design System
+
 - ✅ **NativeWind integration** - Tailwind CSS for React Native
 - ✅ **Design tokens** - All colors in tailwind.config.js
 - ✅ **Dark mode support** - Ready for full implementation
@@ -177,6 +190,7 @@ Then press:
 - ✅ **Custom color palette** - Primary, success, warning, error scales
 
 ### Data Management
+
 - ✅ **React Query** - Server state with automatic caching
 - ✅ **Zustand** - Client state (theme, preferences)
 - ✅ **AsyncStorage** - Persistent local storage
@@ -184,6 +198,7 @@ Then press:
 - ✅ **Real-time ready** - Supabase subscriptions setup
 
 ### Developer Experience
+
 - ✅ **TypeScript strict mode** - Full type safety
 - ✅ **Path aliases** - `@/` imports throughout
 - ✅ **Hot reload** - Fast Refresh enabled
@@ -304,14 +319,16 @@ This starter uses Tailwind CSS via NativeWind. All design tokens are in `tailwin
 // Using NativeWind classes
 <View className="bg-primary-500 p-4 rounded-xl">
   <Text className="text-white font-bold">Hello World</Text>
-</View>
+</View>;
 
 // For native components
 import { colors } from '@/lib/utils/colors';
 
-<Tabs screenOptions={{
-  tabBarActiveTintColor: colors.primary[600]
-}} />
+<Tabs
+  screenOptions={{
+    tabBarActiveTintColor: colors.primary[600],
+  }}
+/>;
 ```
 
 Read the [Design System Guide](./docs/03-design-system.md) for more.
@@ -319,30 +336,36 @@ Read the [Design System Guide](./docs/03-design-system.md) for more.
 ## 🧩 Tech Stack
 
 ### Core
+
 - [Expo](https://docs.expo.dev/) - React Native framework
 - [React Native](https://reactnative.dev/) - Mobile framework
 - [TypeScript](https://www.typescriptlang.org/) - Type safety
 
 ### UI & Styling
+
 - [NativeWind](https://www.nativewind.dev/) - Tailwind CSS for RN
 - [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS
 - [React Native Reanimated](https://docs.swmansion.com/react-native-reanimated/) - Animations
 - [expo-blur](https://docs.expo.dev/versions/latest/sdk/blur-view/) - Blur effects
 
 ### Backend & Data
+
 - [Supabase](https://supabase.com/docs) - Backend as a service
 - [React Query](https://tanstack.com/query/latest/docs/react/overview) - Data fetching
 - [Zustand](https://zustand-demo.pmnd.rs/) - State management
 
 ### Monetization
+
 - [RevenueCat](https://www.revenuecat.com/docs) - In-app purchases
 
 ### Routing
+
 - [Expo Router](https://docs.expo.dev/router/introduction/) - File-based routing
 
 ## 📝 Best Practices
 
 This starter follows:
+
 - ✅ Official Expo documentation
 - ✅ Official NativeWind setup
 - ✅ TypeScript strict mode

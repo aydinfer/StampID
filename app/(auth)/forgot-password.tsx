@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
-import { View, Text, ImageBackground, KeyboardAvoidingView, Platform, Pressable, Alert } from 'react-native';
+import {
+  View,
+  Text,
+  ImageBackground,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  Alert,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
-import {
-  GlassCard,
-  GlassButton,
-  GlassInput,
-} from '@/components/ui/glass';
+import { GlassCard, GlassButton, GlassInput } from '@/components/ui/glass';
 import { useAuth } from '@/lib/hooks/useAuth';
 import { validateEmail } from '@/lib/utils/validation';
 
@@ -23,7 +27,7 @@ export default function ForgotPasswordScreen() {
   const { resetPassword } = useAuth();
 
   const [email, setEmail] = useState('');
-  const [isLoading, setIsLoading] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const [emailError, setEmailError] = useState('');
   const [emailSent, setEmailSent] = useState(false);
 
@@ -79,25 +83,19 @@ export default function ForgotPasswordScreen() {
                 <Text className="text-white/70 text-center">
                   We've sent a password reset link to
                 </Text>
-                <Text className="text-white font-semibold text-center mt-2">
-                  {email}
-                </Text>
+                <Text className="text-white font-semibold text-center mt-2">{email}</Text>
               </View>
 
               {/* Instructions */}
               <View className="bg-white/5 rounded-xl p-4 mb-6">
-                <Text className="text-white/90 text-sm mb-3">
-                  What to do next:
-                </Text>
+                <Text className="text-white/90 text-sm mb-3">What to do next:</Text>
                 <Text className="text-white/70 text-sm mb-2">
                   1. Check your email inbox (and spam folder)
                 </Text>
                 <Text className="text-white/70 text-sm mb-2">
                   2. Click the reset link in the email
                 </Text>
-                <Text className="text-white/70 text-sm">
-                  3. Create your new password
-                </Text>
+                <Text className="text-white/70 text-sm">3. Create your new password</Text>
               </View>
 
               {/* Back to Sign In Button */}
@@ -148,9 +146,7 @@ export default function ForgotPasswordScreen() {
               <View className="w-16 h-16 bg-warning-500 rounded-full items-center justify-center mb-4">
                 <Text className="text-white text-3xl">🔒</Text>
               </View>
-              <Text className="text-3xl font-bold text-white mb-2 text-center">
-                Reset Password
-              </Text>
+              <Text className="text-3xl font-bold text-white mb-2 text-center">Reset Password</Text>
               <Text className="text-white/70 text-center">
                 Enter your email address and we'll send you a link to reset your password
               </Text>

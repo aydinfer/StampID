@@ -90,10 +90,7 @@ export function useAuth() {
   /**
    * Update user profile metadata
    */
-  const updateProfile = async (updates: {
-    email?: string;
-    data?: Record<string, any>;
-  }) => {
+  const updateProfile = async (updates: { email?: string; data?: Record<string, any> }) => {
     const { error } = await supabase.auth.updateUser(updates);
     if (error) throw error;
   };

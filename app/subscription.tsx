@@ -3,12 +3,7 @@ import { View, Text, ImageBackground, ScrollView, Alert, Pressable } from 'react
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import Animated, { FadeInDown } from 'react-native-reanimated';
-import {
-  GlassCard,
-  GlassButton,
-  GlassLoadingSpinner,
-  GlassEmptyStateError,
-} from '@/components/ui/glass';
+import { GlassCard, GlassButton, GlassLoadingSpinner } from '@/components/ui/glass';
 import { useSubscription } from '@/lib/hooks/useSubscription';
 import { formatDate } from '@/lib/utils/format';
 
@@ -23,7 +18,6 @@ import { formatDate } from '@/lib/utils/format';
  */
 export default function SubscriptionScreen() {
   const {
-    customerInfo,
     isLoading,
     isPro,
     hasActiveSubscription,
@@ -51,7 +45,7 @@ export default function SubscriptionScreen() {
   const handleManageSubscription = async () => {
     try {
       await manageSubscription();
-    } catch (error) {
+    } catch {
       Alert.alert(
         'Error',
         'Unable to open subscription management. Please check your app store settings.'
@@ -94,23 +88,15 @@ export default function SubscriptionScreen() {
 
       <SafeAreaView className="flex-1" edges={['top', 'bottom']}>
         {/* Header */}
-        <Animated.View
-          entering={FadeInDown.duration(400)}
-          className="px-4 pt-4 pb-6"
-        >
+        <Animated.View entering={FadeInDown.duration(400)} className="px-4 pt-4 pb-6">
           <Pressable onPress={() => router.back()}>
             <Text className="text-primary-400 text-base font-medium mb-4">← Back</Text>
           </Pressable>
           <Text className="text-4xl font-bold text-white mb-2">Subscription</Text>
-          <Text className="text-white/70">
-            Manage your subscription and billing
-          </Text>
+          <Text className="text-white/70">Manage your subscription and billing</Text>
         </Animated.View>
 
-        <ScrollView
-          className="flex-1 px-4"
-          showsVerticalScrollIndicator={false}
-        >
+        <ScrollView className="flex-1 px-4" showsVerticalScrollIndicator={false}>
           {/* Current Plan Card */}
           <Animated.View entering={FadeInDown.delay(200).duration(600)}>
             <GlassCard variant="premium" intensity={80} className="p-6 mb-4">
@@ -154,9 +140,7 @@ export default function SubscriptionScreen() {
                       {/* Product ID */}
                       <View className="flex-row justify-between py-2">
                         <Text className="text-white/70">Plan</Text>
-                        <Text className="text-white text-sm">
-                          {subscriptionStatus.productId}
-                        </Text>
+                        <Text className="text-white text-sm">{subscriptionStatus.productId}</Text>
                       </View>
                     </View>
                   )}
@@ -164,9 +148,7 @@ export default function SubscriptionScreen() {
               ) : (
                 <View>
                   <Text className="text-white text-3xl font-bold mb-2">Free Plan</Text>
-                  <Text className="text-white/70 mb-6">
-                    Upgrade to Pro to unlock all features
-                  </Text>
+                  <Text className="text-white/70 mb-6">Upgrade to Pro to unlock all features</Text>
 
                   <GlassButton
                     title="Upgrade to Pro"
@@ -183,9 +165,7 @@ export default function SubscriptionScreen() {
           {!hasActiveSubscription && (
             <Animated.View entering={FadeInDown.delay(300).duration(600)}>
               <GlassCard variant="default" intensity={60} className="p-6 mb-4">
-                <Text className="text-white text-lg font-bold mb-4">
-                  Pro Features
-                </Text>
+                <Text className="text-white text-lg font-bold mb-4">Pro Features</Text>
 
                 {[
                   'Unlimited access to all features',
@@ -231,8 +211,8 @@ export default function SubscriptionScreen() {
               />
 
               <Text className="text-white/50 text-xs mt-4 text-center">
-                If you previously purchased a subscription on another device,
-                tap "Restore Purchases" to activate it on this device.
+                If you previously purchased a subscription on another device, tap "Restore
+                Purchases" to activate it on this device.
               </Text>
             </GlassCard>
           </Animated.View>
@@ -242,7 +222,8 @@ export default function SubscriptionScreen() {
             <GlassCard variant="subtle" intensity={40} className="p-6 mb-8">
               <Text className="text-white text-lg font-bold mb-2">Need Help?</Text>
               <Text className="text-white/70 text-sm mb-4">
-                Have questions about your subscription or billing? Visit our help center or contact support.
+                Have questions about your subscription or billing? Visit our help center or contact
+                support.
               </Text>
 
               <Pressable onPress={() => {}}>

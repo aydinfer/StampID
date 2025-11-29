@@ -46,6 +46,7 @@ Uses Next.js-style file-based routing. Route structure:
 - `app/[param].tsx` - Dynamic routes
 
 **Navigation:**
+
 ```tsx
 import { router, Link } from 'expo-router';
 
@@ -55,7 +56,7 @@ router.replace('/path');
 router.back();
 
 // Component
-<Link href="/path">Link</Link>
+<Link href="/path">Link</Link>;
 ```
 
 ### Directory Structure
@@ -95,23 +96,27 @@ import { useAuth } from '@/lib/hooks/useAuth';
 ## Tech Stack
 
 ### Core
+
 - **Expo SDK 54** - React Native framework (DO NOT downgrade)
 - **React 19.1.0** - Required by Expo 54 (DO NOT downgrade)
 - **TypeScript** - Strict mode enabled
 - **React Native 0.81.5**
 
 ### UI & Styling
+
 - **NativeWind v4** - Tailwind CSS for React Native
 - **expo-blur** - Native blur effects for glassmorphism
 - **react-native-reanimated** - 60fps animations
 
 ### Backend & State
+
 - **Supabase** - Auth, database, storage
 - **React Query (@tanstack/react-query)** - Server state management
 - **Zustand** - Client state management
 - **RevenueCat** - In-app purchases
 
 ### Key Dependencies
+
 - `@react-native-async-storage/async-storage` - Supabase session persistence
 - `react-native-gesture-handler` - Touch gestures
 - `react-native-url-polyfill` - Required for Supabase
@@ -121,6 +126,7 @@ import { useAuth } from '@/lib/hooks/useAuth';
 ### Single Source of Truth
 
 All design tokens live in `tailwind.config.js`:
+
 - Color scales: primary, success, warning, error
 - Each color has 50-900 shades
 - Use NativeWind classes: `className="bg-primary-500 text-white"`
@@ -132,9 +138,11 @@ For components that don't support className (like Tab Bar):
 ```tsx
 import { colors } from '@/lib/utils/colors';
 
-<Tabs screenOptions={{
-  tabBarActiveTintColor: colors.primary[600]
-}} />
+<Tabs
+  screenOptions={{
+    tabBarActiveTintColor: colors.primary[600],
+  }}
+/>;
 ```
 
 ## Glassmorphic UI System
@@ -161,24 +169,21 @@ All exported from `@/components/ui/glass`.
 ### Glass Component Architecture
 
 All glass components use:
+
 - `expo-blur`'s `BlurView` for native blur effects
 - NativeWind classes for styling
 - react-native-reanimated for animations
 - Consistent API (variant, intensity, className props)
 
 **Example:**
+
 ```tsx
 import { GlassCard, GlassButton } from '@/components/ui/glass';
 
 <GlassCard variant="premium" intensity={80}>
   <Text className="text-white">Content</Text>
-  <GlassButton
-    title="Action"
-    variant="primary"
-    loading={isLoading}
-    onPress={handlePress}
-  />
-</GlassCard>
+  <GlassButton title="Action" variant="primary" loading={isLoading} onPress={handlePress} />
+</GlassCard>;
 ```
 
 ### Performance Considerations
@@ -187,12 +192,16 @@ import { GlassCard, GlassButton } from '@/components/ui/glass';
 
 ```tsx
 // ❌ BAD - Multiple blurs in list
-{items.map(item => <BlurView>...</BlurView>)}
+{
+  items.map((item) => <BlurView>...</BlurView>);
+}
 
 // ✅ GOOD - Single blur container
 <BlurView>
-  {items.map(item => <View>...</View>)}
-</BlurView>
+  {items.map((item) => (
+    <View>...</View>
+  ))}
+</BlurView>;
 ```
 
 ## State Management
@@ -200,23 +209,21 @@ import { GlassCard, GlassButton } from '@/components/ui/glass';
 ### Two-tier Strategy
 
 **Server State (React Query)** - For data from APIs:
+
 ```tsx
 import { useQuery } from '@tanstack/react-query';
 
 const { data, isLoading } = useQuery({
   queryKey: ['users', userId],
   queryFn: async () => {
-    const { data } = await supabase
-      .from('users')
-      .select('*')
-      .eq('id', userId)
-      .single();
+    const { data } = await supabase.from('users').select('*').eq('id', userId).single();
     return data;
   },
 });
 ```
 
 **Client State (Zustand)** - For UI state:
+
 ```tsx
 import { create } from 'zustand';
 
@@ -227,6 +234,7 @@ const useAppStore = create((set) => ({
 ```
 
 React Query client configured in `app/_layout.tsx` with:
+
 - 2 retries
 - 5 minute stale time
 
@@ -242,12 +250,14 @@ const { user, session, loading, signIn, signUp, signOut } = useAuth();
 ```
 
 Features:
+
 - AsyncStorage session persistence
 - Auto-refresh tokens
 - Auth state listener
 - Email/password auth methods
 
 Environment variables required:
+
 ```
 EXPO_PUBLIC_SUPABASE_URL
 EXPO_PUBLIC_SUPABASE_ANON_KEY
@@ -303,7 +313,7 @@ import Animated, { FadeInDown } from 'react-native-reanimated';
   <GlassCard variant="premium">
     <Text className="text-white">Animated!</Text>
   </GlassCard>
-</Animated.View>
+</Animated.View>;
 ```
 
 ### React Query Mutations
@@ -323,6 +333,7 @@ const mutation = useMutation({
 ## Documentation
 
 Comprehensive docs in `docs/`:
+
 - `01-getting-started.md` - Installation
 - `02-project-structure.md` - Architecture details
 - `03-design-system.md` - Theming and colors

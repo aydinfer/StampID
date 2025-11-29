@@ -88,21 +88,6 @@ export default function ProfileScreen() {
     }
   };
 
-  // Get initials for avatar
-  const getInitials = (): string => {
-    if (displayName) {
-      const names = displayName.split(' ');
-      if (names.length >= 2) {
-        return `${names[0][0]}${names[1][0]}`.toUpperCase();
-      }
-      return displayName.substring(0, 2).toUpperCase();
-    }
-    if (user?.email) {
-      return user.email.substring(0, 2).toUpperCase();
-    }
-    return 'U';
-  };
-
   return (
     <ImageBackground
       source={{ uri: 'https://images.unsplash.com/photo-1557683316-973673baf926' }}
@@ -114,10 +99,7 @@ export default function ProfileScreen() {
 
       <SafeAreaView className="flex-1" edges={['top', 'bottom']}>
         {/* Header */}
-        <Animated.View
-          entering={FadeInDown.duration(400)}
-          className="px-4 pt-4 pb-6"
-        >
+        <Animated.View entering={FadeInDown.duration(400)} className="px-4 pt-4 pb-6">
           <Pressable onPress={() => router.back()}>
             <Text className="text-primary-400 text-base font-medium mb-4">← Back</Text>
           </Pressable>
@@ -127,26 +109,21 @@ export default function ProfileScreen() {
           </Text>
         </Animated.View>
 
-        <ScrollView
-          className="flex-1 px-4"
-          showsVerticalScrollIndicator={false}
-        >
+        <ScrollView className="flex-1 px-4" showsVerticalScrollIndicator={false}>
           {/* Avatar Card */}
           <Animated.View entering={FadeInDown.delay(200).duration(600)}>
             <GlassCard variant="premium" intensity={80} className="p-6 mb-4 items-center">
               <GlassAvatar
                 size="xl"
-                initials={getInitials()}
-                // imageUrl={user?.user_metadata?.avatarUrl} // Uncomment when image upload is implemented
+                name={displayName || user?.email || 'User'}
+                // source={{ uri: user?.user_metadata?.avatarUrl }} // Uncomment when image upload is implemented
               />
 
               <Text className="text-white text-2xl font-bold mt-4">
                 {displayName || 'No name set'}
               </Text>
 
-              <Text className="text-white/70 text-sm mt-1">
-                {user?.email}
-              </Text>
+              <Text className="text-white/70 text-sm mt-1">{user?.email}</Text>
 
               {!isEditing && (
                 <GlassButton
@@ -184,9 +161,7 @@ export default function ProfileScreen() {
               ) : (
                 <View className="mb-4 pb-4 border-b border-white/10">
                   <Text className="text-white/70 text-sm mb-1">Display Name</Text>
-                  <Text className="text-white font-medium">
-                    {displayName || 'Not set'}
-                  </Text>
+                  <Text className="text-white font-medium">{displayName || 'Not set'}</Text>
                 </View>
               )}
 
@@ -208,9 +183,7 @@ export default function ProfileScreen() {
               ) : (
                 <View className="mb-4 pb-4 border-b border-white/10">
                   <Text className="text-white/70 text-sm mb-1">Phone</Text>
-                  <Text className="text-white font-medium">
-                    {phone || 'Not set'}
-                  </Text>
+                  <Text className="text-white font-medium">{phone || 'Not set'}</Text>
                 </View>
               )}
 
@@ -229,9 +202,7 @@ export default function ProfileScreen() {
               ) : (
                 <View className="mb-4">
                   <Text className="text-white/70 text-sm mb-1">Bio</Text>
-                  <Text className="text-white font-medium">
-                    {bio || 'Not set'}
-                  </Text>
+                  <Text className="text-white font-medium">{bio || 'Not set'}</Text>
                 </View>
               )}
 
@@ -273,17 +244,13 @@ export default function ProfileScreen() {
 
                 <View className="mb-3 pb-3 border-b border-white/10">
                   <Text className="text-white/70 text-sm mb-1">User ID</Text>
-                  <Text className="text-white font-medium text-xs">
-                    {user?.id}
-                  </Text>
+                  <Text className="text-white font-medium text-xs">{user?.id}</Text>
                 </View>
 
                 <View>
                   <Text className="text-white/70 text-sm mb-1">Account Created</Text>
                   <Text className="text-white font-medium">
-                    {user?.created_at
-                      ? new Date(user.created_at).toLocaleDateString()
-                      : 'Unknown'}
+                    {user?.created_at ? new Date(user.created_at).toLocaleDateString() : 'Unknown'}
                   </Text>
                 </View>
               </GlassCard>

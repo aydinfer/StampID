@@ -112,6 +112,7 @@ export default function RootLayout() {
 ```
 
 **Key Changes:**
+
 - Removed Supabase imports
 - Removed session listener
 - Simplified layout structure
@@ -162,6 +163,7 @@ export default function Index() {
 ```
 
 **Key Changes:**
+
 - Removed auth session checking
 - Direct navigation to app after onboarding
 - No sign-in redirect
@@ -347,15 +349,9 @@ export default function SettingsScreen() {
 
     if (item.type === 'button') {
       return (
-        <Pressable
-          key={index}
-          onPress={item.onPress}
-          className="py-3 border-b border-white/10"
-        >
+        <Pressable key={index} onPress={item.onPress} className="py-3 border-b border-white/10">
           <Text className="text-white font-medium mb-1">{item.label}</Text>
-          {item.subtitle && (
-            <Text className="text-white/50 text-sm">{item.subtitle}</Text>
-          )}
+          {item.subtitle && <Text className="text-white/50 text-sm">{item.subtitle}</Text>}
         </Pressable>
       );
     }
@@ -378,44 +374,26 @@ export default function SettingsScreen() {
       <View className="absolute inset-0 bg-black/60" />
 
       <SafeAreaView className="flex-1" edges={['top', 'bottom']}>
-        <Animated.View
-          entering={FadeInDown.duration(400)}
-          className="px-4 pt-4 pb-6"
-        >
+        <Animated.View entering={FadeInDown.duration(400)} className="px-4 pt-4 pb-6">
           <Text className="text-4xl font-bold text-white mb-2">Settings</Text>
-          <Text className="text-white/70">
-            Manage your preferences
-          </Text>
+          <Text className="text-white/70">Manage your preferences</Text>
         </Animated.View>
 
-        <ScrollView
-          className="flex-1 px-4"
-          showsVerticalScrollIndicator={false}
-        >
+        <ScrollView className="flex-1 px-4" showsVerticalScrollIndicator={false}>
           {sections.map((section, sectionIndex) => (
             <Animated.View
               key={sectionIndex}
               entering={FadeInDown.delay(200 + sectionIndex * 100).duration(600)}
             >
-              <GlassCard
-                variant="default"
-                intensity={60}
-                className="p-6 mb-4"
-              >
-                <Text className="text-white text-lg font-bold mb-4">
-                  {section.title}
-                </Text>
-                {section.items.map((item, itemIndex) =>
-                  renderSettingsItem(item, itemIndex)
-                )}
+              <GlassCard variant="default" intensity={60} className="p-6 mb-4">
+                <Text className="text-white text-lg font-bold mb-4">{section.title}</Text>
+                {section.items.map((item, itemIndex) => renderSettingsItem(item, itemIndex))}
               </GlassCard>
             </Animated.View>
           ))}
 
           <View className="items-center pb-8">
-            <Text className="text-white/40 text-xs">
-              Built with Expo SDK 54 • NativeWind v4
-            </Text>
+            <Text className="text-white/40 text-xs">Built with Expo SDK 54 • NativeWind v4</Text>
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -425,6 +403,7 @@ export default function SettingsScreen() {
 ```
 
 **Key Changes:**
+
 - Removed Account section (email, profile)
 - Removed sign-out button
 - Removed useAuth hook
@@ -442,6 +421,7 @@ rm app/notifications.tsx
 ```
 
 Update navigation references:
+
 - Remove profile navigation from settings
 - Remove notification navigation from tab bar (if applicable)
 
@@ -455,11 +435,7 @@ RevenueCat works perfectly without user authentication by using **anonymous IDs*
 
 ```tsx
 import { useEffect, useState } from 'react';
-import Purchases, {
-  CustomerInfo,
-  PurchasesOffering,
-  LOG_LEVEL,
-} from 'react-native-purchases';
+import Purchases, { CustomerInfo, PurchasesOffering, LOG_LEVEL } from 'react-native-purchases';
 import { Platform } from 'react-native';
 
 const REVENUECAT_API_KEY = {
@@ -603,12 +579,14 @@ export function useSubscription() {
 ```
 
 **Key Features:**
+
 - No user login required
 - RevenueCat automatically generates anonymous IDs
 - Purchases are tied to device
 - Restore purchases works across reinstalls
 
 **Official Docs:**
+
 - [RevenueCat Anonymous IDs](https://www.revenuecat.com/docs/user-ids#anonymous-user-ids)
 - [Purchases SDK Configuration](https://www.revenuecat.com/docs/configuring-sdk)
 
@@ -715,6 +693,7 @@ console.log('Anonymous ID:', anonymousId);
 ### Q: Can I add user accounts later?
 
 **A:** Yes! You can upgrade to the Full Stack variant by:
+
 1. Installing Supabase packages
 2. Adding auth screens back
 3. Linking RevenueCat to user IDs

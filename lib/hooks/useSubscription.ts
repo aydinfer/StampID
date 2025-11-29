@@ -112,9 +112,7 @@ export function useSubscription() {
       if (Platform.OS === 'ios') {
         await Linking.openURL('https://apps.apple.com/account/subscriptions');
       } else {
-        await Linking.openURL(
-          'https://play.google.com/store/account/subscriptions'
-        );
+        await Linking.openURL('https://play.google.com/store/account/subscriptions');
       }
     } catch (error) {
       console.error('Error opening subscription management:', error);
@@ -157,8 +155,7 @@ export function useSubscription() {
 
   // Check if any active subscription exists
   const hasActiveSubscription =
-    customerInfo !== null &&
-    Object.keys(customerInfo.entitlements.active).length > 0;
+    customerInfo !== null && Object.keys(customerInfo.entitlements.active).length > 0;
 
   return {
     offerings,

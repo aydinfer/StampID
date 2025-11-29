@@ -62,6 +62,7 @@ npm install -D @types/bcryptjs --legacy-peer-deps
 ```
 
 **Official Docs:**
+
 - [expo-secure-store](https://docs.expo.dev/versions/latest/sdk/securestore/)
 - [expo-sqlite](https://docs.expo.dev/versions/latest/sdk/sqlite/)
 
@@ -217,10 +218,9 @@ class DatabaseService {
   async getUserByEmail(email: string): Promise<User | null> {
     if (!this.db) throw new Error('Database not initialized');
 
-    const result = await this.db.getFirstAsync<User>(
-      'SELECT * FROM users WHERE email = ?',
-      [email.toLowerCase()]
-    );
+    const result = await this.db.getFirstAsync<User>('SELECT * FROM users WHERE email = ?', [
+      email.toLowerCase(),
+    ]);
 
     return result || null;
   }
@@ -231,10 +231,7 @@ class DatabaseService {
   async getUserById(userId: string): Promise<User | null> {
     if (!this.db) throw new Error('Database not initialized');
 
-    const result = await this.db.getFirstAsync<User>(
-      'SELECT * FROM users WHERE id = ?',
-      [userId]
-    );
+    const result = await this.db.getFirstAsync<User>('SELECT * FROM users WHERE id = ?', [userId]);
 
     return result || null;
   }
@@ -280,10 +277,7 @@ class DatabaseService {
 
     values.push(userId);
 
-    await this.db.runAsync(
-      `UPDATE profiles SET ${updates.join(', ')} WHERE user_id = ?`,
-      values
-    );
+    await this.db.runAsync(`UPDATE profiles SET ${updates.join(', ')} WHERE user_id = ?`, values);
   }
 
   /**
@@ -292,10 +286,10 @@ class DatabaseService {
   async updatePassword(userId: string, newPasswordHash: string): Promise<void> {
     if (!this.db) throw new Error('Database not initialized');
 
-    await this.db.runAsync(
-      'UPDATE users SET password_hash = ? WHERE id = ?',
-      [newPasswordHash, userId]
-    );
+    await this.db.runAsync('UPDATE users SET password_hash = ? WHERE id = ?', [
+      newPasswordHash,
+      userId,
+    ]);
   }
 
   /**
@@ -500,10 +494,7 @@ export function useLocalAuth() {
   /**
    * Sign up a new user
    */
-  const signUp = async (
-    email: string,
-    password: string
-  ): Promise<SignInResult | SignInError> => {
+  const signUp = async (email: string, password: string): Promise<SignInResult | SignInError> => {
     try {
       // Check if email already exists
       const exists = await database.emailExists(email);
@@ -548,10 +539,7 @@ export function useLocalAuth() {
   /**
    * Sign in existing user
    */
-  const signIn = async (
-    email: string,
-    password: string
-  ): Promise<SignInResult | SignInError> => {
+  const signIn = async (email: string, password: string): Promise<SignInResult | SignInError> => {
     try {
       // Get user from database
       const dbUser = await database.getUserByEmail(email);
@@ -971,11 +959,13 @@ npm start
 ### Q: Is this secure enough for production?
 
 **A:** Yes, for offline apps. The implementation uses:
+
 - **Bcrypt** (industry standard) for password hashing
 - **SecureStore** (iOS Keychain / Android EncryptedSharedPreferences)
 - **SQLite** with parameterized queries (SQL injection protection)
 
 However, consider:
+
 - No cloud backup means data loss if device is lost
 - No password recovery (users can't reset forgotten passwords)
 - No centralized audit logs
@@ -983,6 +973,7 @@ However, consider:
 ### Q: Can I add cloud sync later?
 
 **A:** Yes! You can:
+
 1. Keep local database as cache
 2. Add Supabase for cloud sync
 3. Implement sync logic to merge local + cloud data
@@ -990,6 +981,7 @@ However, consider:
 ### Q: How do I backup user data?
 
 **A:** Options:
+
 1. **Export to file**: Let users export JSON/CSV
 2. **iCloud/Google Drive**: Use expo-file-system + cloud storage APIs
 3. **Add cloud backend**: Upgrade to Full Stack variant
@@ -997,6 +989,7 @@ However, consider:
 ### Q: What about password recovery?
 
 **A:** Options:
+
 1. **Security questions**: Store hashed answers in SQLite
 2. **Email verification**: Requires backend (add Supabase)
 3. **Admin reset**: Support team manually resets
@@ -1005,10 +998,12 @@ However, consider:
 ### Q: Is data encrypted at rest?
 
 **A:**
+
 - **SecureStore**: ✅ Yes (iOS Keychain / Android EncryptedSharedPreferences)
 - **SQLite database**: ❌ No (by default)
 
 To encrypt SQLite:
+
 ```bash
 npm install @journeyapps/react-native-sqlcipher --legacy-peer-deps
 ```

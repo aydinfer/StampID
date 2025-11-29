@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ImageBackground, KeyboardAvoidingView, Platform, Pressable, Alert, ScrollView } from 'react-native';
+import {
+  View,
+  Text,
+  ImageBackground,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  Alert,
+  ScrollView,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
-import {
-  GlassCard,
-  GlassButton,
-  GlassInput,
-  GlassSwitch,
-} from '@/components/ui/glass';
+import { GlassCard, GlassButton, GlassInput, GlassSwitch } from '@/components/ui/glass';
 import { useAuth } from '@/lib/hooks/useAuth';
 import { validateEmail, validatePassword, validatePasswordMatch } from '@/lib/utils/validation';
 
@@ -93,7 +97,10 @@ export default function SignUpScreen() {
     }
 
     if (!acceptTerms) {
-      Alert.alert('Terms Required', 'Please accept the Terms of Service and Privacy Policy to continue.');
+      Alert.alert(
+        'Terms Required',
+        'Please accept the Terms of Service and Privacy Policy to continue.'
+      );
       return;
     }
 
@@ -168,9 +175,7 @@ export default function SignUpScreen() {
                   <Text className="text-white text-3xl font-bold">A</Text>
                 </View>
                 <Text className="text-3xl font-bold text-white mb-2">Create Account</Text>
-                <Text className="text-white/70 text-center">
-                  Sign up to get started
-                </Text>
+                <Text className="text-white/70 text-center">Sign up to get started</Text>
               </View>
 
               {/* Email Input */}
@@ -205,16 +210,24 @@ export default function SignUpScreen() {
               {password.length > 0 && (
                 <View className="mb-4 px-1">
                   <Text className="text-white/60 text-xs mb-2">Password must contain:</Text>
-                  <Text className={`text-xs ${/[A-Z]/.test(password) ? 'text-success-400' : 'text-white/50'}`}>
+                  <Text
+                    className={`text-xs ${/[A-Z]/.test(password) ? 'text-success-400' : 'text-white/50'}`}
+                  >
                     • At least one uppercase letter
                   </Text>
-                  <Text className={`text-xs ${/[a-z]/.test(password) ? 'text-success-400' : 'text-white/50'}`}>
+                  <Text
+                    className={`text-xs ${/[a-z]/.test(password) ? 'text-success-400' : 'text-white/50'}`}
+                  >
                     • At least one lowercase letter
                   </Text>
-                  <Text className={`text-xs ${/\d/.test(password) ? 'text-success-400' : 'text-white/50'}`}>
+                  <Text
+                    className={`text-xs ${/\d/.test(password) ? 'text-success-400' : 'text-white/50'}`}
+                  >
                     • At least one number
                   </Text>
-                  <Text className={`text-xs ${password.length >= 8 ? 'text-success-400' : 'text-white/50'}`}>
+                  <Text
+                    className={`text-xs ${password.length >= 8 ? 'text-success-400' : 'text-white/50'}`}
+                  >
                     • Minimum 8 characters
                   </Text>
                 </View>
@@ -244,9 +257,7 @@ export default function SignUpScreen() {
                 />
                 <View className="ml-12 -mt-6">
                   <Text className="text-white/70 text-sm">
-                    I accept the{' '}
-                    <Text className="text-primary-400">Terms of Service</Text>
-                    {' '}and{' '}
+                    I accept the <Text className="text-primary-400">Terms of Service</Text> and{' '}
                     <Text className="text-primary-400">Privacy Policy</Text>
                   </Text>
                 </View>
