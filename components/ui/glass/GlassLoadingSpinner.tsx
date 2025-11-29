@@ -87,20 +87,14 @@ export function GlassLoadingSpinner({
   const sizeStyle = sizeConfig[size];
 
   const SpinnerContent = () => (
-    <View
-      className={`items-center justify-center ${sizeStyle.container}`}
-    >
+    <View className={`items-center justify-center ${sizeStyle.container}`}>
       {useCustomSpinner ? (
         <CustomSpinner size={sizeStyle.customSize} color={color} />
       ) : (
         <ActivityIndicator size={sizeStyle.spinner} color={color} />
       )}
       {text && (
-        <Text
-          className={`${sizeStyle.text} text-white font-medium mt-3 text-center`}
-        >
-          {text}
-        </Text>
+        <Text className={`${sizeStyle.text} text-white font-medium mt-3 text-center`}>{text}</Text>
       )}
     </View>
   );
@@ -108,11 +102,7 @@ export function GlassLoadingSpinner({
   if (fullScreen) {
     return (
       <View className="absolute inset-0 items-center justify-center z-50">
-        <BlurView
-          intensity={60}
-          tint="dark"
-          className="absolute inset-0 bg-black/50"
-        />
+        <BlurView intensity={60} tint="dark" className="absolute inset-0 bg-black/50" />
         <View className="bg-white/10 rounded-2xl overflow-hidden border border-white/20">
           <BlurView intensity={40} tint="dark">
             <SpinnerContent />
@@ -136,12 +126,8 @@ function CustomSpinner({ size, color }: { size: number; color: string }) {
   const rotation = useSharedValue(0);
 
   React.useEffect(() => {
-    rotation.value = withRepeat(
-      withTiming(360, { duration: 1000 }),
-      -1,
-      false
-    );
-  }, []);
+    rotation.value = withRepeat(withTiming(360, { duration: 1000 }), -1, false);
+  }, [rotation]);
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
@@ -197,26 +183,14 @@ export function GlassLoadingDots({ color = '#FFFFFF' }: { color?: string }) {
   const dot3 = useSharedValue(0);
 
   React.useEffect(() => {
-    dot1.value = withRepeat(
-      withTiming(1, { duration: 600 }),
-      -1,
-      true
-    );
+    dot1.value = withRepeat(withTiming(1, { duration: 600 }), -1, true);
     setTimeout(() => {
-      dot2.value = withRepeat(
-        withTiming(1, { duration: 600 }),
-        -1,
-        true
-      );
+      dot2.value = withRepeat(withTiming(1, { duration: 600 }), -1, true);
     }, 200);
     setTimeout(() => {
-      dot3.value = withRepeat(
-        withTiming(1, { duration: 600 }),
-        -1,
-        true
-      );
+      dot3.value = withRepeat(withTiming(1, { duration: 600 }), -1, true);
     }, 400);
-  }, []);
+  }, [dot1, dot2, dot3]);
 
   const dot1Style = useAnimatedStyle(() => ({
     opacity: dot1.value,

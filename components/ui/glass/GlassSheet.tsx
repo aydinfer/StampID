@@ -45,19 +45,22 @@ export function GlassSheet({
   const translateY = useSharedValue(0);
   const context = useSharedValue({ y: 0 });
 
-  const snapToPoint = (point: number) => {
-    'worklet';
-    translateY.value = withSpring(-SCREEN_HEIGHT * point, {
-      damping: 50,
-      stiffness: 400,
-    });
-  };
+  const snapToPoint = React.useCallback(
+    (point: number) => {
+      'worklet';
+      translateY.value = withSpring(-SCREEN_HEIGHT * point, {
+        damping: 50,
+        stiffness: 400,
+      });
+    },
+    [translateY]
+  );
 
   React.useEffect(() => {
     if (visible) {
       snapToPoint(snapPoints[initialSnapPoint]);
     }
-  }, [visible]);
+  }, [visible, snapToPoint, snapPoints, initialSnapPoint]);
 
   const gesture = Gesture.Pan()
     .onStart(() => {

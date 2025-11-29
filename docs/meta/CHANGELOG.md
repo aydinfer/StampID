@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 #### Core Stack
+
 - Expo SDK 54 with React Native 0.81.5
 - NativeWind v4 with Tailwind CSS v3 for styling
 - Expo Router for file-based routing
@@ -18,12 +19,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - TypeScript with strict mode enabled
 
 #### Backend & Services
+
 - Supabase integration (authentication, database, storage)
 - RevenueCat SDK for in-app purchases and subscriptions
 - React Query (@tanstack/react-query) for data fetching and caching
 - Zustand for lightweight global state management
 
 #### Authentication
+
 - Complete auth hooks (sign in, sign up, sign out, password reset)
 - Session persistence with AsyncStorage
 - Email/password authentication
@@ -31,6 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Auth state management
 
 #### UI & Design
+
 - Design token system with single source of truth (tailwind.config.js)
 - Proper color exports for React Native components (lib/utils/colors.ts)
 - Dark mode support throughout
@@ -39,12 +43,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Responsive layout utilities
 
 #### Project Structure
+
 - Proper separation: /app for UI, /lib for business logic
 - Custom hooks: useAuth, useSubscription, useData
 - Example components: Button, Card, Input, Loading, EmptyState
 - Utility functions: helpers, API client, color tokens
 
 #### Documentation
+
 - Comprehensive docs/ folder with 15 guides
 - Getting started guide
 - Project structure explanation
@@ -56,6 +62,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - All docs under 300 lines for easy reading
 
 #### Developer Experience
+
 - Hot reload with Fast Refresh
 - TypeScript path aliases configured
 - ESLint and Prettier ready
@@ -65,18 +72,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Technical Details
 
 #### Installation Method
+
 - All packages installed via official `npx expo install` commands
 - Following official Expo and NativeWind documentation
 - No manual package.json editing
 - Proper peer dependency resolution
 
 #### Design System
+
 - Tailwind CSS v3.4.17 (peer dependency for NativeWind)
 - NativeWind metro plugin configured
 - Custom theme extensions in tailwind.config.js
 - Color scales from 50 (lightest) to 950 (darkest)
 
 #### Configuration Files
+
 - babel.config.js - NativeWind + Reanimated setup
 - metro.config.js - NativeWind metro plugin
 - tailwind.config.js - Design tokens
@@ -84,23 +94,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - global.css - Tailwind directives
 
 ### Removed
+
 - Tamagui (third-party UI library) - replaced with NativeWind
 - @expo/ui (beta package) - replaced with custom components
 - Sentry (optional error tracking) - kept as optional
 
 ### Security
+
 - Row Level Security examples for Supabase
-- Environment variables properly scoped with EXPO_PUBLIC_ prefix
+- Environment variables properly scoped with EXPO*PUBLIC* prefix
 - No sensitive data in git repository
 - .env in .gitignore
 
 ### Known Issues
+
 - Metro bundler may require cache clearing on first run
 - Some peer dependency warnings (non-breaking)
 
 ## Future Roadmap
 
 ### Planned for v1.1.0
+
 - State management guide (08-state-management.md)
 - Routing guide (09-routing.md)
 - Building & deployment guide (10-deployment.md)
@@ -111,6 +125,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - API reference (15-api-reference.md)
 
 ### Planned for v1.2.0
+
 - Complete component library (Button, Input, Modal, etc.)
 - Example authentication screens
 - Example paywall screen
@@ -119,6 +134,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Image upload helpers
 
 ### Planned for v2.0.0
+
 - Expo SDK 55 upgrade
 - Additional backend options (Firebase, AWS Amplify)
 - Advanced animations library
@@ -129,6 +145,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Contributing
 
 We welcome contributions! Please:
+
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes

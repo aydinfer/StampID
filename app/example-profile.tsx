@@ -68,9 +68,7 @@ export default function ExampleProfileScreen() {
             {/* Avatar & Info */}
             <View className="items-center mb-6">
               <View className="w-24 h-24 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full items-center justify-center mb-4 border-4 border-white/20">
-                <Text className="text-white text-4xl font-bold">
-                  {name.charAt(0)}
-                </Text>
+                <Text className="text-white text-4xl font-bold">{name.charAt(0)}</Text>
               </View>
 
               <Text className="text-white text-2xl font-bold mb-1">{name}</Text>
@@ -117,9 +115,7 @@ export default function ExampleProfileScreen() {
               <Text className="text-white text-xl font-bold px-2">Recent Posts</Text>
               {[1, 2, 3].map((i) => (
                 <GlassCard key={i} className="p-4">
-                  <Text className="text-white font-semibold mb-2">
-                    Post Title {i}
-                  </Text>
+                  <Text className="text-white font-semibold mb-2">Post Title {i}</Text>
                   <Text className="text-white/70 text-sm">
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit...
                   </Text>
@@ -143,12 +139,8 @@ export default function ExampleProfileScreen() {
                   <View className="flex-row items-center">
                     <Text className="text-5xl mr-4">{achievement.icon}</Text>
                     <View className="flex-1">
-                      <Text className="text-white font-bold text-lg mb-1">
-                        {achievement.title}
-                      </Text>
-                      <Text className="text-white/70 text-sm">
-                        {achievement.description}
-                      </Text>
+                      <Text className="text-white font-bold text-lg mb-1">{achievement.title}</Text>
+                      <Text className="text-white/70 text-sm">{achievement.description}</Text>
                     </View>
                   </View>
                 </GlassCard>
@@ -163,9 +155,7 @@ export default function ExampleProfileScreen() {
                 <GlassCard key={i} className="p-4">
                   <View className="flex-row items-center justify-between">
                     <View className="flex-1">
-                      <Text className="text-white font-semibold">
-                        Activity {i}
-                      </Text>
+                      <Text className="text-white font-semibold">Activity {i}</Text>
                       <Text className="text-white/60 text-sm mt-1">
                         {i === 1 && 'Liked a post'}
                         {i === 2 && 'Commented on a post'}
@@ -193,12 +183,7 @@ export default function ExampleProfileScreen() {
         intensity={80}
       >
         <View className="gap-4">
-          <GlassInput
-            label="Name"
-            placeholder="Your name"
-            value={name}
-            onChangeText={setName}
-          />
+          <GlassInput label="Name" placeholder="Your name" value={name} onChangeText={setName} />
 
           <GlassInput
             label="Bio"
@@ -218,11 +203,7 @@ export default function ExampleProfileScreen() {
             }}
           />
 
-          <GlassButton
-            title="Cancel"
-            variant="ghost"
-            onPress={() => setEditModalVisible(false)}
-          />
+          <GlassButton title="Cancel" variant="ghost" onPress={() => setEditModalVisible(false)} />
         </View>
       </GlassModal>
     </ImageBackground>

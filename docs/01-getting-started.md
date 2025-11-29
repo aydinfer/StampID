@@ -25,25 +25,30 @@ This is a production-ready Expo starter template built with official Expo packag
 ## Installation
 
 1. **Clone and install dependencies**:
+
 ```bash
 npm install
 ```
 
 2. **Set up environment variables**:
+
 ```bash
 cp .env.example .env
 ```
 
 Then fill in your credentials:
+
 - Supabase URL and anon key
 - RevenueCat API keys for iOS and Android
 
 3. **Start the development server**:
+
 ```bash
 npx expo start
 ```
 
 4. **Run on a device**:
+
 - Press `i` for iOS Simulator
 - Press `a` for Android Emulator
 - Scan QR code with Expo Go app
@@ -83,11 +88,13 @@ npx expo start
 - **NativeWind**: The translator (converts Tailwind classes to React Native styles)
 
 **How it works:**
+
 1. You define your design tokens in [tailwind.config.js](../tailwind.config.js)
 2. You use Tailwind classes: `className="bg-primary-500 p-4 rounded-xl"`
 3. NativeWind converts them to React Native styles at build time
 
 **Example:**
+
 ```tsx
 <View className="bg-primary-500 p-4 rounded-xl">
   <Text className="text-white font-bold">Hello</Text>
@@ -95,12 +102,15 @@ npx expo start
 ```
 
 Becomes:
+
 ```tsx
-<View style={{
-  backgroundColor: '#3b82f6',
-  padding: 16,
-  borderRadius: 12
-}}>
+<View
+  style={{
+    backgroundColor: '#3b82f6',
+    padding: 16,
+    borderRadius: 12,
+  }}
+>
   <Text style={{ color: '#fff', fontWeight: 'bold' }}>Hello</Text>
 </View>
 ```
@@ -137,6 +147,6 @@ npx expo build:android
 
 **TypeScript errors**: Run `npx tsc --noEmit` to see all errors
 
-**NativeWind not working**: Make sure global.css is imported in app/_layout.tsx
+**NativeWind not working**: Make sure global.css is imported in app/\_layout.tsx
 
 **Supabase errors**: Check your .env file has correct credentials

@@ -44,11 +44,7 @@ export function GlassModal({
     >
       <View className="flex-1 justify-end bg-black/50">
         {/* Backdrop - dismisses modal */}
-        <Animated.View
-          entering={FadeIn}
-          exiting={FadeOut}
-          className="absolute inset-0"
-        >
+        <Animated.View entering={FadeIn} exiting={FadeOut} className="absolute inset-0">
           <Pressable className="flex-1" onPress={onClose} />
         </Animated.View>
 
@@ -67,11 +63,7 @@ export function GlassModal({
               {/* Header */}
               {(title || showCloseButton) && (
                 <View className="flex-row items-center justify-between px-6 py-4 border-b border-white/10">
-                  {title ? (
-                    <Text className="text-xl font-bold text-white">{title}</Text>
-                  ) : (
-                    <View />
-                  )}
+                  {title ? <Text className="text-xl font-bold text-white">{title}</Text> : <View />}
                   {showCloseButton && (
                     <Pressable
                       onPress={onClose}

@@ -5,6 +5,7 @@ Pragmatic testing approach: Test critical paths, not everything.
 ## Philosophy
 
 **We follow pragmatic testing:**
+
 - ✅ Test critical business logic
 - ✅ Test authentication flows
 - ✅ Test payment processing
@@ -17,11 +18,11 @@ Pragmatic testing approach: Test critical paths, not everything.
 
 ## Testing Stack
 
-| Type | Library | Use For |
-|------|---------|---------|
-| **Unit** | Jest | Functions, hooks, utils |
-| **Component** | React Native Testing Library | Component logic |
-| **E2E** | Detox (optional) | Critical user flows |
+| Type          | Library                      | Use For                 |
+| ------------- | ---------------------------- | ----------------------- |
+| **Unit**      | Jest                         | Functions, hooks, utils |
+| **Component** | React Native Testing Library | Component logic         |
+| **E2E**       | Detox (optional)             | Critical user flows     |
 
 ## Setup
 
@@ -391,9 +392,7 @@ export default {
   getOfferings: jest.fn(() =>
     Promise.resolve({
       current: {
-        availablePackages: [
-          { identifier: 'monthly', product: { price: 9.99 } },
-        ],
+        availablePackages: [{ identifier: 'monthly', product: { price: 9.99 } }],
       },
     })
   ),
@@ -424,6 +423,7 @@ npm run test:coverage
 ```
 
 **Target coverage:**
+
 - Critical paths: 90%+
 - Utilities: 80%+
 - Components: 60%+
@@ -434,6 +434,7 @@ npm run test:coverage
 ## Best Practices
 
 1. **Test behavior, not implementation**
+
    ```typescript
    // ❌ Bad
    expect(component.state.isLoading).toBe(true);
@@ -443,6 +444,7 @@ npm run test:coverage
    ```
 
 2. **Use descriptive test names**
+
    ```typescript
    // ❌ Bad
    it('works', () => {});
@@ -452,6 +454,7 @@ npm run test:coverage
    ```
 
 3. **Arrange, Act, Assert**
+
    ```typescript
    it('increments counter', () => {
      // Arrange
@@ -466,6 +469,7 @@ npm run test:coverage
    ```
 
 4. **Don't test implementation details**
+
    ```typescript
    // ❌ Bad - testing hook internals
    expect(result.current.internalState).toBe('something');
@@ -482,6 +486,7 @@ npm run test:coverage
 ## What to Test
 
 ### ✅ Always Test
+
 - Authentication flows
 - Payment processing
 - Data mutations (create, update, delete)
@@ -490,12 +495,14 @@ npm run test:coverage
 - Error handling
 
 ### ⚠️ Sometimes Test
+
 - Complex components
 - Custom hooks
 - Utility functions
 - Navigation flows
 
 ### ❌ Don't Test
+
 - Third-party libraries
 - React Native components
 - Styling (use visual regression instead)

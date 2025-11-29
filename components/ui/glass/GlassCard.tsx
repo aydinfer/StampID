@@ -47,11 +47,7 @@ export function GlassCard({
   );
 
   if (animated) {
-    return (
-      <Animated.View entering={FadeInDown.duration(600).springify()}>
-        {content}
-      </Animated.View>
-    );
+    return <Animated.View entering={FadeInDown.duration(600).springify()}>{content}</Animated.View>;
   }
 
   return content;

@@ -7,6 +7,7 @@ Common issues and solutions when building with this starter.
 ### ⚠️ CRITICAL: React 19 Peer Dependency Issues
 
 **Symptoms:**
+
 ```
 npm ERR! ERESOLVE could not resolve
 npm ERR! peer react@"^19.2.0" from react-dom@19.2.0
@@ -17,6 +18,7 @@ npm ERR! Conflicting peer dependency: react@19.2.0
 Expo SDK 54 requires **React 19.1.0** specifically. The React ecosystem is still catching up to React 19, causing peer dependency conflicts during installation.
 
 **❌ WRONG Solution (DO NOT DO THIS):**
+
 ```bash
 # DO NOT downgrade to React 18!
 npm install react@18.3.1  # ❌ Wrong! Expo 54 expects React 19
@@ -39,6 +41,7 @@ npm install react@19.1.0 react-dom@19.1.0 react-native@0.81.5 --legacy-peer-deps
 ```
 
 **Why `--legacy-peer-deps`?**
+
 - Expo 54 was released with React 19 support
 - Some ecosystem packages haven't updated their peer dependencies yet
 - The flag allows npm to proceed despite peer dependency warnings
@@ -46,12 +49,14 @@ npm install react@19.1.0 react-dom@19.1.0 react-native@0.81.5 --legacy-peer-deps
 
 **Metro Warning After Install:**
 If you see this warning, it confirms React 19 is correct:
+
 ```
 ⚠️  The following packages should be updated for best compatibility:
    react@19.1.0 - expected version: 19.1.0 ✅
 ```
 
 **Key Principle:**
+
 > Always use the **latest compatible dependencies** for your Expo SDK version.
 > Never downgrade major versions (React 19 → 18) to fix peer dependency warnings.
 > Use `--legacy-peer-deps` when the ecosystem is catching up.
@@ -59,11 +64,13 @@ If you see this warning, it confirms React 19 is correct:
 ### Missing babel-preset-expo
 
 **Symptoms:**
+
 ```
 ERROR node_modules/expo-router/entry.js: Cannot find module 'babel-preset-expo'
 ```
 
 **Solution:**
+
 ```bash
 npm install --save-dev babel-preset-expo --legacy-peer-deps
 npx expo start --clear
@@ -74,6 +81,7 @@ This is a required dev dependency for Expo projects that's sometimes missing aft
 ### Missing react-native-worklets-core (Reanimated Issue)
 
 **Symptoms:**
+
 ```
 ERROR Cannot find module 'react-native-worklets/plugin'
 Require stack:
@@ -84,6 +92,7 @@ Require stack:
 React Native Reanimated 4.x requires `react-native-worklets-core` but it's not always installed as a peer dependency with React 19.
 
 **Solution:**
+
 ```bash
 npm install react-native-worklets-core --legacy-peer-deps
 npx expo start --clear
@@ -94,17 +103,20 @@ This is another React 19 ecosystem catch-up issue. The worklets plugin is requir
 ### Metro Bundler Won't Start
 
 **Symptoms:**
+
 ```
 Error: ENOSPC: System limit for number of file watchers reached
 ```
 
 **Solution (Linux):**
+
 ```bash
 echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf
 sudo sysctl -p
 ```
 
 **Solution (macOS/Windows):**
+
 ```bash
 # Clear cache and restart
 npx expo start --clear
@@ -113,11 +125,13 @@ npx expo start --clear
 ### Dependency Conflicts
 
 **Symptoms:**
+
 ```
 npm ERR! ERESOLVE could not resolve
 ```
 
 **Solution:**
+
 ```bash
 # Use legacy peer deps
 npm install --legacy-peer-deps
@@ -132,11 +146,13 @@ yarn install
 ### TypeScript Errors After Install
 
 **Symptoms:**
+
 ```
 Cannot find module '@/lib/...' or its corresponding type declarations
 ```
 
 **Solution:**
+
 ```bash
 # Restart TypeScript server in VS Code
 Cmd/Ctrl + Shift + P → "TypeScript: Restart TS Server"
@@ -151,11 +167,13 @@ npx tsc --noEmit
 ### White Screen on Startup
 
 **Possible Causes:**
+
 1. JavaScript error before render
 2. Missing font loading
 3. Expo Router misconfiguration
 
 **Debug Steps:**
+
 ```bash
 # 1. Check Metro logs
 npx expo start
@@ -167,6 +185,7 @@ npx expo start
 ```
 
 **Common Fix:**
+
 ```tsx
 // app/_layout.tsx
 import { useFonts } from 'expo-font';
@@ -194,17 +213,20 @@ export default function RootLayout() {
 ### NativeWind Styles Not Applying
 
 **Symptoms:**
+
 ```tsx
 <View className="bg-primary-500" /> // No background color
 ```
 
 **Checklist:**
+
 1. Is `global.css` imported in `_layout.tsx`?
 2. Is `metro.config.js` configured with NativeWind plugin?
 3. Is `babel.config.js` using NativeWind preset?
 4. Did you restart Metro after config changes?
 
 **Solution:**
+
 ```bash
 # 1. Clear cache
 npx expo start --clear
@@ -228,6 +250,7 @@ import '../global.css';
 ### BlurView Not Working
 
 **Symptoms:**
+
 ```tsx
 <BlurView intensity={80} /> // No blur effect
 ```
@@ -235,6 +258,7 @@ import '../global.css';
 **Common Issues:**
 
 1. **Missing `overflow-hidden`:**
+
 ```tsx
 // ❌ Bad
 <BlurView intensity={80} className="rounded-2xl">
@@ -244,6 +268,7 @@ import '../global.css';
 ```
 
 2. **No content behind blur:**
+
 ```tsx
 // ❌ Bad - Nothing to blur
 <BlurView intensity={80}>
@@ -259,9 +284,12 @@ import '../global.css';
 ```
 
 3. **Missing background color:**
+
 ```tsx
 <BlurView intensity={80} className="overflow-hidden">
-  <View className="bg-white/5"> {/* Add this! */}
+  <View className="bg-white/5">
+    {' '}
+    {/* Add this! */}
     <Text>Content</Text>
   </View>
 </BlurView>
@@ -275,6 +303,7 @@ import '../global.css';
 User logs in but session is lost on app restart.
 
 **Solution:**
+
 ```tsx
 // lib/supabase/client.ts
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -292,12 +321,14 @@ export const supabase = createClient(url, key, {
 ### CORS Errors on Web
 
 **Symptoms:**
+
 ```
 Access to fetch at 'https://xxx.supabase.co' has been blocked by CORS policy
 ```
 
 **Solution:**
 Add your web URL to Supabase allowed origins:
+
 1. Go to Supabase Dashboard
 2. Settings → API
 3. Add `http://localhost:8081` to allowed origins
@@ -305,11 +336,13 @@ Add your web URL to Supabase allowed origins:
 ### RLS Policies Blocking Queries
 
 **Symptoms:**
+
 ```
 Row level security policy violation
 ```
 
 **Debug:**
+
 ```sql
 -- Check if RLS is enabled
 SELECT tablename, rowsecurity FROM pg_tables WHERE schemaname = 'public';
@@ -320,6 +353,7 @@ ALTER TABLE profiles DISABLE ROW LEVEL SECURITY;
 
 **Solution:**
 Create proper RLS policies:
+
 ```sql
 -- Allow users to read their own profile
 CREATE POLICY "Users can view own profile"
@@ -343,6 +377,7 @@ Network tab shows continuous refetching.
 Query key changes on every render.
 
 **Solution:**
+
 ```tsx
 // ❌ Bad - New array every render
 useQuery({
@@ -363,6 +398,7 @@ useQuery({
 UI shows old data even after mutation.
 
 **Solution:**
+
 ```tsx
 const mutation = useMutation({
   mutationFn: updateProfile,
@@ -378,11 +414,13 @@ const mutation = useMutation({
 ### TypeScript Build Fails
 
 **Symptoms:**
+
 ```
 error TS2304: Cannot find name 'View'
 ```
 
 **Solution:**
+
 ```bash
 # Check tsconfig.json has correct types
 {
@@ -401,18 +439,21 @@ npm install --save-dev @types/react @types/react-native
 **Common Errors:**
 
 1. **Missing credentials:**
+
 ```bash
 eas credentials
 # Follow prompts to set up Apple/Google credentials
 ```
 
 2. **Environment variables not set:**
+
 ```bash
 eas secret:list
 eas secret:create --name SUPABASE_URL --value https://...
 ```
 
 3. **Out of memory:**
+
 ```json
 // eas.json
 {
@@ -432,12 +473,14 @@ eas secret:create --name SUPABASE_URL --value https://...
 ### 404 on Navigation
 
 **Symptoms:**
+
 ```tsx
 router.push('/profile'); // Shows "Unmatched Route"
 ```
 
 **Solution:**
 Check file exists at correct path:
+
 ```
 app/
 └── profile.tsx  ← Must exist!
@@ -446,11 +489,13 @@ app/
 ### Params Not Received
 
 **Symptoms:**
+
 ```tsx
 const { id } = useLocalSearchParams(); // id is undefined
 ```
 
 **Solution:**
+
 ```tsx
 // Make sure file is named correctly
 // app/post/[id].tsx  ← Must have brackets!
@@ -468,6 +513,7 @@ router.push({
 Tabs/Stack not showing.
 
 **Solution:**
+
 ```tsx
 // app/(tabs)/_layout.tsx must export default
 export default function TabLayout() {
@@ -476,9 +522,9 @@ export default function TabLayout() {
 
 // And screens must be registered
 <Tabs>
-  <Tabs.Screen name="home" />  {/* app/(tabs)/home.tsx */}
+  <Tabs.Screen name="home" /> {/* app/(tabs)/home.tsx */}
   <Tabs.Screen name="explore" /> {/* app/(tabs)/explore.tsx */}
-</Tabs>
+</Tabs>;
 ```
 
 ## Performance Issues
@@ -486,12 +532,12 @@ export default function TabLayout() {
 ### Slow FlatList Scrolling
 
 **Solution:**
+
 ```tsx
 <FlatList
   data={items}
   renderItem={({ item }) => <MemoizedItem item={item} />}
   keyExtractor={(item) => item.id}
-
   // Add these performance props
   removeClippedSubviews={true}
   maxToRenderPerBatch={10}
@@ -501,7 +547,7 @@ export default function TabLayout() {
     offset: ITEM_HEIGHT * index,
     index,
   })}
-/>
+/>;
 
 // Memoize list items
 const MemoizedItem = React.memo(ListItem);
@@ -510,6 +556,7 @@ const MemoizedItem = React.memo(ListItem);
 ### Animations Janky
 
 **Solution:**
+
 ```tsx
 // Use Reanimated instead of Animated API
 import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated';
@@ -528,6 +575,7 @@ App lags with multiple glassmorphic components.
 
 **Solution:**
 Limit to 2-3 BlurViews per screen. Use single container:
+
 ```tsx
 // ❌ Bad
 <FlatList
@@ -602,14 +650,14 @@ useEffect(() => {
 
 ## Common Error Messages
 
-| Error | Cause | Solution |
-|-------|-------|----------|
-| `Invariant Violation: "main" has not been registered` | Entry point misconfigured | Check `"main": "expo-router/entry"` in package.json |
-| `Unable to resolve module` | Missing dependency | `npm install <module>` |
-| `Unexpected token '<'` | Wrong file extension | Rename `.js` to `.tsx` for JSX |
-| `Objects are not valid as a React child` | Rendering object instead of string | Use `JSON.stringify()` or extract value |
-| `Maximum update depth exceeded` | setState in render | Move to useEffect or event handler |
-| `Can't perform a React state update on an unmounted component` | Async operation after unmount | Use cleanup function or React Query |
+| Error                                                          | Cause                              | Solution                                            |
+| -------------------------------------------------------------- | ---------------------------------- | --------------------------------------------------- |
+| `Invariant Violation: "main" has not been registered`          | Entry point misconfigured          | Check `"main": "expo-router/entry"` in package.json |
+| `Unable to resolve module`                                     | Missing dependency                 | `npm install <module>`                              |
+| `Unexpected token '<'`                                         | Wrong file extension               | Rename `.js` to `.tsx` for JSX                      |
+| `Objects are not valid as a React child`                       | Rendering object instead of string | Use `JSON.stringify()` or extract value             |
+| `Maximum update depth exceeded`                                | setState in render                 | Move to useEffect or event handler                  |
+| `Can't perform a React state update on an unmounted component` | Async operation after unmount      | Use cleanup function or React Query                 |
 
 ## Reset Everything
 

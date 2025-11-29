@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text, Pressable } from 'react-native';
-import { BlurView } from 'expo-blur';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -38,7 +37,7 @@ export function GlassSwitch({
 
   React.useEffect(() => {
     progress.value = withSpring(value ? 1 : 0);
-  }, [value]);
+  }, [value, progress]);
 
   const trackStyle = useAnimatedStyle(() => {
     const backgroundColor = interpolateColor(
@@ -76,10 +75,7 @@ export function GlassSwitch({
             ${disabled ? 'opacity-50' : ''}
           `}
         >
-          <Animated.View
-            style={thumbStyle}
-            className="w-6 h-6 bg-white rounded-full shadow-lg"
-          />
+          <Animated.View style={thumbStyle} className="w-6 h-6 bg-white rounded-full shadow-lg" />
         </Animated.View>
       </Pressable>
     </View>

@@ -89,11 +89,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
     if (this.state.hasError) {
       // Custom fallback provided
       if (this.props.fallback) {
-        return this.props.fallback(
-          this.state.error!,
-          this.state.errorInfo!,
-          this.retry
-        );
+        return this.props.fallback(this.state.error!, this.state.errorInfo!, this.retry);
       }
 
       // Default fallback UI
@@ -126,12 +122,8 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
             {/* Dev Error Details */}
             {__DEV__ && this.state.error && (
               <ScrollView className="w-full mt-6 max-h-64 bg-gray-800 rounded-lg p-4">
-                <Text className="text-red-400 text-xs font-mono mb-2">
-                  Error Stack:
-                </Text>
-                <Text className="text-gray-300 text-xs font-mono">
-                  {this.state.error.stack}
-                </Text>
+                <Text className="text-red-400 text-xs font-mono mb-2">Error Stack:</Text>
+                <Text className="text-gray-300 text-xs font-mono">{this.state.error.stack}</Text>
                 {this.state.errorInfo && (
                   <>
                     <Text className="text-red-400 text-xs font-mono mt-4 mb-2">

@@ -50,14 +50,12 @@ function ProfileScreen({ userId }) {
   data={items}
   renderItem={({ item }) => <ListItem item={item} />}
   keyExtractor={(item) => item.id}
-
   // Performance props
   removeClippedSubviews={true}
   maxToRenderPerBatch={10}
   windowSize={10}
   initialNumToRender={10}
   updateCellsBatchingPeriod={50}
-
   // Optimization
   getItemLayout={(data, index) => ({
     length: ITEM_HEIGHT,
@@ -289,13 +287,13 @@ useQuery({
 ```tsx
 // ❌ Bad - Re-renders for any data change
 const { data } = useQuery({ queryKey: ['todos'], queryFn: fetchTodos });
-const completedCount = data?.filter(t => t.completed).length;
+const completedCount = data?.filter((t) => t.completed).length;
 
 // ✅ Good - Only re-renders when count changes
 const completedCount = useQuery({
   queryKey: ['todos'],
   queryFn: fetchTodos,
-  select: (data) => data.filter(t => t.completed).length,
+  select: (data) => data.filter((t) => t.completed).length,
 });
 ```
 
@@ -322,7 +320,7 @@ const handleHover = () => {
 const store = useAppStore();
 
 // ✅ Good - Only re-renders when theme changes
-const theme = useAppStore(state => state.theme);
+const theme = useAppStore((state) => state.theme);
 ```
 
 ### Split Large Stores
@@ -357,7 +355,7 @@ import { Profiler } from 'react';
   }}
 >
   <ProfileScreen />
-</Profiler>
+</Profiler>;
 ```
 
 ### Flipper
@@ -388,10 +386,7 @@ if (__DEV__) {
 
 ```tsx
 useEffect(() => {
-  const subscription = supabase
-    .channel('posts')
-    .on('*', handleChange)
-    .subscribe();
+  const subscription = supabase.channel('posts').on('*', handleChange).subscribe();
 
   // ✅ Always clean up
   return () => {
@@ -405,7 +400,7 @@ useEffect(() => {
 ```tsx
 // ❌ Bad - setState after unmount
 useEffect(() => {
-  fetchData().then(data => {
+  fetchData().then((data) => {
     setData(data); // Component might be unmounted!
   });
 }, []);
@@ -414,7 +409,7 @@ useEffect(() => {
 useEffect(() => {
   let isMounted = true;
 
-  fetchData().then(data => {
+  fetchData().then((data) => {
     if (isMounted) {
       setData(data);
     }
@@ -450,11 +445,7 @@ const { user, posts, comments } = await fetchUserData(userId);
 
 ```tsx
 // ✅ Infinite scroll with React Query
-const {
-  data,
-  fetchNextPage,
-  hasNextPage,
-} = useInfiniteQuery({
+const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
   queryKey: ['posts'],
   queryFn: ({ pageParam = 0 }) => fetchPosts(pageParam),
   getNextPageParam: (lastPage, pages) => lastPage.nextCursor,

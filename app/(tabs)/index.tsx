@@ -99,9 +99,7 @@ export default function HomeScreen() {
               <Text className="text-white text-4xl font-bold">E</Text>
             </View>
 
-            <Text className="text-white text-3xl font-bold text-center mb-2">
-              Expo Starter
-            </Text>
+            <Text className="text-white text-3xl font-bold text-center mb-2">Expo Starter</Text>
             <Text className="text-white/70 text-center text-base mb-4">
               Production-ready React Native template with glassmorphic UI
             </Text>
@@ -125,9 +123,7 @@ export default function HomeScreen() {
 
           {/* Tech Stack */}
           <View>
-            <Text className="text-white text-xl font-bold px-2 mb-3">
-              🚀 Tech Stack
-            </Text>
+            <Text className="text-white text-xl font-bold px-2 mb-3">🚀 Tech Stack</Text>
 
             <View className="flex-row flex-wrap gap-3">
               {techStack.map((tech, index) => (
@@ -136,9 +132,7 @@ export default function HomeScreen() {
                     <View className="flex-row items-center mb-2">
                       <Text className="text-3xl mr-2">{tech.icon}</Text>
                       <View className="flex-1">
-                        <Text className="text-white font-bold text-base">
-                          {tech.name}
-                        </Text>
+                        <Text className="text-white font-bold text-base">{tech.name}</Text>
                       </View>
                     </View>
                     <Text className="text-white/70 text-sm">{tech.description}</Text>
@@ -150,9 +144,7 @@ export default function HomeScreen() {
 
           {/* Quick Start Guide */}
           <View>
-            <Text className="text-white text-xl font-bold px-2 mb-3">
-              📚 Quick Start
-            </Text>
+            <Text className="text-white text-xl font-bold px-2 mb-3">📚 Quick Start</Text>
 
             {quickStart.map((item, index) => (
               <GlassCard key={index} className="p-4 mb-3">
@@ -164,12 +156,8 @@ export default function HomeScreen() {
 
                   {/* Content */}
                   <View className="flex-1">
-                    <Text className="text-white font-bold text-base mb-1">
-                      {item.title}
-                    </Text>
-                    <Text className="text-white/70 text-sm mb-3">
-                      {item.description}
-                    </Text>
+                    <Text className="text-white font-bold text-base mb-1">{item.title}</Text>
+                    <Text className="text-white/70 text-sm mb-3">{item.description}</Text>
 
                     <Pressable
                       onPress={item.onPress}
@@ -187,9 +175,7 @@ export default function HomeScreen() {
 
           {/* Features List */}
           <GlassCard className="p-6">
-            <Text className="text-white text-lg font-bold mb-4">
-              ✨ What's Included
-            </Text>
+            <Text className="text-white text-lg font-bold mb-4">✨ What's Included</Text>
 
             {[
               'Glassmorphic UI components',
@@ -211,9 +197,7 @@ export default function HomeScreen() {
 
           {/* Example Screens */}
           <View>
-            <Text className="text-white text-xl font-bold px-2 mb-3">
-              🎨 Example Screens
-            </Text>
+            <Text className="text-white text-xl font-bold px-2 mb-3">🎨 Example Screens</Text>
 
             <View className="gap-3">
               <Pressable
@@ -224,12 +208,8 @@ export default function HomeScreen() {
                   <View className="flex-row items-center flex-1">
                     <Text className="text-3xl mr-3">🔐</Text>
                     <View className="flex-1">
-                      <Text className="text-white font-bold text-base">
-                        Login Screen
-                      </Text>
-                      <Text className="text-white/70 text-sm">
-                        Form validation & social auth
-                      </Text>
+                      <Text className="text-white font-bold text-base">Login Screen</Text>
+                      <Text className="text-white/70 text-sm">Form validation & social auth</Text>
                     </View>
                   </View>
                   <Text className="text-white/40 text-xl">›</Text>
@@ -244,12 +224,8 @@ export default function HomeScreen() {
                   <View className="flex-row items-center flex-1">
                     <Text className="text-3xl mr-3">👤</Text>
                     <View className="flex-1">
-                      <Text className="text-white font-bold text-base">
-                        Profile Screen
-                      </Text>
-                      <Text className="text-white/70 text-sm">
-                        Stats, tabs & edit modal
-                      </Text>
+                      <Text className="text-white font-bold text-base">Profile Screen</Text>
+                      <Text className="text-white/70 text-sm">Stats, tabs & edit modal</Text>
                     </View>
                   </View>
                   <Text className="text-white/40 text-xl">›</Text>
@@ -264,12 +240,8 @@ export default function HomeScreen() {
                   <View className="flex-row items-center flex-1">
                     <Text className="text-3xl mr-3">⚙️</Text>
                     <View className="flex-1">
-                      <Text className="text-white font-bold text-base">
-                        Settings Screen
-                      </Text>
-                      <Text className="text-white/70 text-sm">
-                        Switches & bottom sheet
-                      </Text>
+                      <Text className="text-white font-bold text-base">Settings Screen</Text>
+                      <Text className="text-white/70 text-sm">Switches & bottom sheet</Text>
                     </View>
                   </View>
                   <Text className="text-white/40 text-xl">›</Text>

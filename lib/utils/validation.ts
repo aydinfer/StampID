@@ -141,7 +141,10 @@ export function validateUsername(username: string): ValidationResult {
 
   // Only allow alphanumeric, underscore, and hyphen
   if (!/^[a-zA-Z0-9_-]+$/.test(username)) {
-    return { isValid: false, error: 'Username can only contain letters, numbers, underscores, and hyphens' };
+    return {
+      isValid: false,
+      error: 'Username can only contain letters, numbers, underscores, and hyphens',
+    };
   }
 
   return { isValid: true };
@@ -166,7 +169,10 @@ export function validateURL(url: string): ValidationResult {
 /**
  * Required field validation
  */
-export function validateRequired(value: string, fieldName: string = 'This field'): ValidationResult {
+export function validateRequired(
+  value: string,
+  fieldName: string = 'This field'
+): ValidationResult {
   if (!value || value.trim() === '') {
     return { isValid: false, error: `${fieldName} is required` };
   }
@@ -177,7 +183,11 @@ export function validateRequired(value: string, fieldName: string = 'This field'
 /**
  * Minimum length validation
  */
-export function validateMinLength(value: string, minLength: number, fieldName: string = 'This field'): ValidationResult {
+export function validateMinLength(
+  value: string,
+  minLength: number,
+  fieldName: string = 'This field'
+): ValidationResult {
   if (!value || value.trim() === '') {
     return { isValid: false, error: `${fieldName} is required` };
   }
@@ -192,7 +202,11 @@ export function validateMinLength(value: string, minLength: number, fieldName: s
 /**
  * Maximum length validation
  */
-export function validateMaxLength(value: string, maxLength: number, fieldName: string = 'This field'): ValidationResult {
+export function validateMaxLength(
+  value: string,
+  maxLength: number,
+  fieldName: string = 'This field'
+): ValidationResult {
   if (value && value.length > maxLength) {
     return { isValid: false, error: `${fieldName} must be less than ${maxLength} characters` };
   }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, ImageBackground, Pressable } from 'react-native';
+import { View, Text, ScrollView, ImageBackground } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { GlassCard, GlassButton, GlassModal, GlassInput } from '@/components/ui/glass';
 
@@ -35,9 +35,7 @@ export default function ComponentsDemo() {
         >
           {/* Header */}
           <GlassCard variant="premium" intensity={80} className="p-6">
-            <Text className="text-3xl font-bold text-white mb-2">
-              Glassmorphism Components
-            </Text>
+            <Text className="text-3xl font-bold text-white mb-2">Glassmorphism Components</Text>
             <Text className="text-white/70 text-base">
               Interactive showcase of all glass UI components
             </Text>
@@ -63,9 +61,7 @@ export default function ComponentsDemo() {
 
             <GlassCard variant="subtle" intensity={40} className="p-6">
               <Text className="text-white font-semibold text-lg mb-2">Subtle Card</Text>
-              <Text className="text-white/70">
-                Minimal glass effect for understated elegance.
-              </Text>
+              <Text className="text-white/70">Minimal glass effect for understated elegance.</Text>
             </GlassCard>
           </View>
 
@@ -96,12 +92,7 @@ export default function ComponentsDemo() {
                 onPress={() => console.log('Ghost pressed')}
               />
 
-              <GlassButton
-                title="Disabled Button"
-                variant="primary"
-                disabled
-                onPress={() => {}}
-              />
+              <GlassButton title="Disabled Button" variant="primary" disabled onPress={() => {}} />
             </GlassCard>
           </View>
 
@@ -119,11 +110,7 @@ export default function ComponentsDemo() {
                 autoCapitalize="none"
               />
 
-              <GlassInput
-                label="Password"
-                placeholder="Enter your password"
-                secureTextEntry
-              />
+              <GlassInput label="Password" placeholder="Enter your password" secureTextEntry />
 
               <GlassInput
                 label="With Error"
@@ -229,15 +216,10 @@ export default function ComponentsDemo() {
       >
         <View className="gap-4">
           <Text className="text-white/70">
-            This is a beautiful glassmorphic modal with smooth slide-in animations and blur
-            effects.
+            This is a beautiful glassmorphic modal with smooth slide-in animations and blur effects.
           </Text>
 
-          <GlassInput
-            label="Your Name"
-            placeholder="Enter your name"
-            intensity={30}
-          />
+          <GlassInput label="Your Name" placeholder="Enter your name" intensity={30} />
 
           <GlassButton
             title="Submit"
@@ -248,11 +230,7 @@ export default function ComponentsDemo() {
             }}
           />
 
-          <GlassButton
-            title="Cancel"
-            variant="ghost"
-            onPress={() => setModalVisible(false)}
-          />
+          <GlassButton title="Cancel" variant="ghost" onPress={() => setModalVisible(false)} />
         </View>
       </GlassModal>
     </ImageBackground>

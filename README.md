@@ -5,6 +5,7 @@ A production-ready Expo starter template with **glassmorphic UI design system**.
 ## ✨ Features
 
 ### Core Stack
+
 - ✅ **Expo SDK 54** - Latest version with React 19.1.0
 - ✅ **Glassmorphic UI** - 7 custom glass components
 - ✅ **NativeWind v4** - Tailwind CSS for React Native
@@ -14,12 +15,14 @@ A production-ready Expo starter template with **glassmorphic UI design system**.
 - ✅ **TypeScript** - Strict mode with full type safety
 
 ### Backend & Monetization
+
 - ✅ **Supabase** - Authentication, database, and storage
 - ✅ **RevenueCat** - In-app purchases and subscriptions
 - ✅ **React Query** - Server state management
 - ✅ **Zustand** - Client state management
 
 ### Glass Components Included
+
 1. **GlassCard** - Glassmorphic containers with 3 variants
 2. **GlassButton** - Interactive buttons with loading states
 3. **GlassInput** - Form inputs with floating labels
@@ -49,6 +52,7 @@ npx expo start
 ```
 
 **Why --legacy-peer-deps?**
+
 - Expo 54 requires React 19.1.0 specifically
 - React ecosystem is catching up to React 19
 - Some packages show peer warnings but work correctly
@@ -57,6 +61,7 @@ npx expo start
 See [docs/13-troubleshooting.md](./docs/13-troubleshooting.md) for detailed installation troubleshooting.
 
 Then press:
+
 - `i` for iOS Simulator
 - `a` for Android Emulator
 - Scan QR code with Expo Go app
@@ -95,6 +100,7 @@ clean-build/
 ## What's Included
 
 ### Authentication
+
 - Sign in / Sign up screens
 - Email/password authentication
 - Password reset flow
@@ -102,6 +108,7 @@ clean-build/
 - Protected routes
 
 ### Styling
+
 - NativeWind (Tailwind CSS) integration
 - Design token system
 - Dark mode support
@@ -109,18 +116,21 @@ clean-build/
 - Custom color palette
 
 ### Data Management
+
 - React Query for server state
 - Zustand for client state
 - Example CRUD operations
 - Real-time subscriptions ready
 
 ### Monetization
+
 - RevenueCat SDK integrated
 - Subscription management
 - Purchase restoration
 - Example paywall
 
 ### Developer Experience
+
 - TypeScript with strict mode
 - Path aliases (`@/` imports)
 - Hot reload with Fast Refresh
@@ -178,14 +188,16 @@ This starter uses Tailwind CSS via NativeWind. All design tokens are in `tailwin
 // Using NativeWind classes
 <View className="bg-primary-500 p-4 rounded-xl">
   <Text className="text-white font-bold">Hello World</Text>
-</View>
+</View>;
 
 // For native components
 import { colors } from '@/lib/utils/colors';
 
-<Tabs screenOptions={{
-  tabBarActiveTintColor: colors.primary[600]
-}} />
+<Tabs
+  screenOptions={{
+    tabBarActiveTintColor: colors.primary[600],
+  }}
+/>;
 ```
 
 Read the [Design System Guide](./docs/03-design-system.md) for more.
@@ -193,30 +205,36 @@ Read the [Design System Guide](./docs/03-design-system.md) for more.
 ## Tech Stack
 
 ### Core
+
 - [Expo](https://expo.dev/) - React Native framework
 - [React Native](https://reactnative.dev/) - Mobile framework
 - [TypeScript](https://www.typescriptlang.org/) - Type safety
 
 ### UI & Styling
+
 - [NativeWind](https://www.nativewind.dev/) - Tailwind CSS for RN
 - [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS
 - [React Native Reanimated](https://docs.swmansion.com/react-native-reanimated/) - Animations
 - [expo-blur](https://docs.expo.dev/versions/latest/sdk/blur-view/) - Blur effects
 
 ### Backend & Data
+
 - [Supabase](https://supabase.com/) - Backend as a service
 - [React Query](https://tanstack.com/query/) - Data fetching
 - [Zustand](https://zustand-demo.pmnd.rs/) - State management
 
 ### Monetization
+
 - [RevenueCat](https://www.revenuecat.com/) - In-app purchases
 
 ### Routing
+
 - [Expo Router](https://docs.expo.dev/router/introduction/) - File-based routing
 
 ## Contributing
 
 This is a starter template. Feel free to:
+
 - Fork and customize for your needs
 - Submit issues for bugs
 - Suggest improvements
@@ -224,6 +242,7 @@ This is a starter template. Feel free to:
 ## Best Practices
 
 This starter follows:
+
 - ✅ Official Expo documentation
 - ✅ Official NativeWind setup
 - ✅ TypeScript strict mode

@@ -23,6 +23,7 @@ app/
 ```
 
 **Key concepts:**
+
 - Folders in parentheses `(tabs)` create route groups without adding to URL
 - `_layout.tsx` files define layouts for nested routes
 - `index.tsx` is the default route for that directory
@@ -47,6 +48,7 @@ lib/
 ```
 
 **Best practices:**
+
 - Keep hooks focused on a single responsibility
 - Use React Query for server state
 - Use Zustand for client state
@@ -71,6 +73,7 @@ components/
 ```
 
 **Component guidelines:**
+
 - Use NativeWind for styling: `className="bg-primary-500"`
 - Export as named exports: `export function Button()`
 - Keep components small and focused
@@ -92,6 +95,7 @@ This folder! All project documentation.
 ## Configuration Files
 
 ### `tailwind.config.js`
+
 Single source of truth for your design system.
 
 ```javascript
@@ -99,17 +103,26 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: { /* blue scale */ },
-        success: { /* green scale */ },
-        warning: { /* yellow scale */ },
-        error: { /* red scale */ },
+        primary: {
+          /* blue scale */
+        },
+        success: {
+          /* green scale */
+        },
+        warning: {
+          /* yellow scale */
+        },
+        error: {
+          /* red scale */
+        },
       },
     },
   },
-}
+};
 ```
 
 ### `metro.config.js`
+
 Configures Metro bundler to process NativeWind CSS.
 
 ```javascript
@@ -121,16 +134,14 @@ module.exports = withNativeWind(config, { input: './global.css' });
 ```
 
 ### `babel.config.js`
+
 Configures Babel for NativeWind and Reanimated.
 
 ```javascript
-module.exports = function(api) {
+module.exports = function (api) {
   api.cache(true);
   return {
-    presets: [
-      ["babel-preset-expo", { jsxImportSource: "nativewind" }],
-      "nativewind/babel",
-    ],
+    presets: [['babel-preset-expo', { jsxImportSource: 'nativewind' }], 'nativewind/babel'],
     plugins: [
       'react-native-reanimated/plugin', // Must be last!
     ],
@@ -139,6 +150,7 @@ module.exports = function(api) {
 ```
 
 ### `app.json`
+
 Expo configuration.
 
 ```json
@@ -160,7 +172,7 @@ Expo configuration.
 import { Link, router } from 'expo-router';
 
 // Using Link component
-<Link href="/explore">Go to Explore</Link>
+<Link href="/explore">Go to Explore</Link>;
 
 // Using router programmatically
 router.push('/explore');
@@ -189,7 +201,7 @@ Navigate: `router.push('/user/123')`
 // Push with params
 router.push({
   pathname: '/details',
-  params: { id: '123', name: 'John' }
+  params: { id: '123', name: 'John' },
 });
 
 // Access params
@@ -210,11 +222,7 @@ function useUser(userId: string) {
   return useQuery({
     queryKey: ['user', userId],
     queryFn: async () => {
-      const { data } = await supabase
-        .from('users')
-        .select('*')
-        .eq('id', userId)
-        .single();
+      const { data } = await supabase.from('users').select('*').eq('id', userId).single();
       return data;
     },
   });
@@ -254,6 +262,7 @@ Configure TypeScript path aliases in `tsconfig.json`:
 ```
 
 Usage:
+
 ```tsx
 import { supabase } from '@/lib/supabase/client';
 import { useAuth } from '@/lib/hooks/useAuth';

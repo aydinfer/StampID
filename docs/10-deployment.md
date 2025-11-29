@@ -7,6 +7,7 @@ Learn how to build and deploy your app to iOS App Store and Google Play Store us
 EAS (Expo Application Services) Build compiles your React Native app in the cloud.
 
 **Benefits:**
+
 - No need for Xcode or Android Studio locally
 - Build iOS apps from Windows/Linux
 - Consistent build environment
@@ -229,9 +230,9 @@ eas submit --platform android
 ```json
 {
   "expo": {
-    "version": "1.0.0",  // User-facing version
+    "version": "1.0.0", // User-facing version
     "ios": {
-      "buildNumber": "1"  // Increment for each build
+      "buildNumber": "1" // Increment for each build
     }
   }
 }
@@ -242,9 +243,9 @@ eas submit --platform android
 ```json
 {
   "expo": {
-    "version": "1.0.0",      // User-facing version
+    "version": "1.0.0", // User-facing version
     "android": {
-      "versionCode": 1        // Increment for each build
+      "versionCode": 1 // Increment for each build
     }
   }
 }

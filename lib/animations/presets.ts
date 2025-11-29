@@ -33,10 +33,7 @@ export const springConfig = {
  */
 export const fadeIn = (duration: number = 300, delay: number = 0) => {
   'worklet';
-  return withDelay(
-    delay,
-    withTiming(1, { duration, easing: Easing.out(Easing.ease) })
-  );
+  return withDelay(delay, withTiming(1, { duration, easing: Easing.out(Easing.ease) }));
 };
 
 /**
@@ -44,10 +41,7 @@ export const fadeIn = (duration: number = 300, delay: number = 0) => {
  */
 export const fadeOut = (duration: number = 300, delay: number = 0) => {
   'worklet';
-  return withDelay(
-    delay,
-    withTiming(0, { duration, easing: Easing.in(Easing.ease) })
-  );
+  return withDelay(delay, withTiming(0, { duration, easing: Easing.in(Easing.ease) }));
 };
 
 /**
@@ -87,10 +81,7 @@ export const slideInTop = (distance: number = 300, duration: number = 300) => {
  */
 export const scaleIn = (duration: number = 300, delay: number = 0) => {
   'worklet';
-  return withDelay(
-    delay,
-    withSpring(1, springConfig.gentle)
-  );
+  return withDelay(delay, withSpring(1, springConfig.gentle));
 };
 
 /**
@@ -98,10 +89,7 @@ export const scaleIn = (duration: number = 300, delay: number = 0) => {
  */
 export const scaleOut = (duration: number = 300, delay: number = 0) => {
   'worklet';
-  return withDelay(
-    delay,
-    withTiming(0, { duration, easing: Easing.in(Easing.ease) })
-  );
+  return withDelay(delay, withTiming(0, { duration, easing: Easing.in(Easing.ease) }));
 };
 
 /**

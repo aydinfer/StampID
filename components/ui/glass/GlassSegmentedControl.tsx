@@ -1,11 +1,7 @@
 import React from 'react';
 import { View, Text, Pressable } from 'react-native';
 import { BlurView } from 'expo-blur';
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withSpring,
-} from 'react-native-reanimated';
+import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
 interface GlassSegmentedControlProps {
   options: string[];
@@ -37,7 +33,7 @@ export function GlassSegmentedControl({
       damping: 20,
       stiffness: 200,
     });
-  }, [selectedIndex]);
+  }, [selectedIndex, position]);
 
   const segmentWidth = 100 / options.length;
 

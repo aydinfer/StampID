@@ -46,7 +46,7 @@ type UserProps = {
 
 ```tsx
 // ❌ Bad
-function handleData(data: any) { }
+function handleData(data: any) {}
 
 // ✅ Good
 function handleData(data: unknown) {
@@ -148,9 +148,9 @@ function ButtonIcon({ ... }) { }
 ### Components: PascalCase
 
 ```tsx
-UserProfile.tsx
-ChatScreen.tsx
-LoadingSpinner.tsx
+UserProfile.tsx;
+ChatScreen.tsx;
+LoadingSpinner.tsx;
 ```
 
 ### Files: kebab-case or PascalCase
@@ -185,15 +185,15 @@ const submit = form.isValid;
 
 ```tsx
 // ✅ Good
-function fetchUserData() { }
-function handleButtonPress() { }
-function validateEmail() { }
-function calculateTotal() { }
+function fetchUserData() {}
+function handleButtonPress() {}
+function validateEmail() {}
+function calculateTotal() {}
 
 // ❌ Bad
-function user() { }
-function button() { }
-function email() { }
+function user() {}
+function button() {}
+function email() {}
 ```
 
 ## State Management Rules
@@ -214,7 +214,7 @@ export function useProfile(userId: string) {
 // ❌ Bad - Don't store server data in Zustand
 const useStore = create((set) => ({
   profile: null,
-  fetchProfile: async () => { }
+  fetchProfile: async () => {},
 }));
 ```
 
@@ -230,7 +230,7 @@ export const useAppStore = create<AppState>((set) => ({
 
 // ❌ Bad - Don't use Zustand for server data
 const useStore = create((set) => ({
-  users: [],  // This should be React Query
+  users: [], // This should be React Query
 }));
 ```
 
@@ -251,10 +251,7 @@ const [inputValue, setInputValue] = useState('');
 
 ```tsx
 // ✅ Good - Memoize expensive calculations
-const sortedItems = useMemo(
-  () => items.sort((a, b) => a.price - b.price),
-  [items]
-);
+const sortedItems = useMemo(() => items.sort((a, b) => a.price - b.price), [items]);
 
 // ✅ Good - Memoize callbacks passed to children
 const handlePress = useCallback(() => {
@@ -262,7 +259,7 @@ const handlePress = useCallback(() => {
 }, [id]);
 
 // ❌ Bad - Unnecessary memoization
-const name = useMemo(() => user.name, [user]);  // Just use user.name
+const name = useMemo(() => user.name, [user]); // Just use user.name
 ```
 
 ### 2. Component Memoization
@@ -402,20 +399,20 @@ async function handleSubmit() {
 
 ```tsx
 // ✅ Good - Use design tokens
-className="bg-primary-500 text-white"
+className = 'bg-primary-500 text-white';
 
 // ❌ Bad - Hardcoded values
-className="bg-[#3b82f6] text-[#ffffff]"
+className = 'bg-[#3b82f6] text-[#ffffff]';
 ```
 
 ### 3. Consistent Spacing
 
 ```tsx
 // ✅ Good - Use spacing scale (4px increments)
-className="p-4 mb-6 gap-2"  // 16px, 24px, 8px
+className = 'p-4 mb-6 gap-2'; // 16px, 24px, 8px
 
 // ❌ Bad - Arbitrary values
-className="p-[13px] mb-[23px]"
+className = 'p-[13px] mb-[23px]';
 ```
 
 ## Testing Strategy (Pragmatic)
@@ -423,22 +420,26 @@ className="p-[13px] mb-[23px]"
 ### What to Test
 
 **✅ Critical Paths:**
+
 - Authentication flows
 - Payment processing
 - Data mutations
 - Business logic
 
 **✅ Utilities:**
+
 - Helper functions
 - Validators
 - Formatters
 
 **⚠️ Components (selectively):**
+
 - Complex state management
 - Edge cases
 - Accessibility
 
 **❌ Don't Test:**
+
 - Simple presentational components
 - Third-party library behavior
 - Obvious code
@@ -472,26 +473,31 @@ describe('Sign In Flow', () => {
 Before submitting code:
 
 **TypeScript:**
+
 - [ ] No `any` types
 - [ ] All props have interfaces
 - [ ] Strict mode enabled
 
 **Performance:**
+
 - [ ] No unnecessary re-renders
 - [ ] FlatList optimized
 - [ ] Images optimized
 
 **Styling:**
+
 - [ ] NativeWind classes used
 - [ ] Design tokens only
 - [ ] Dark mode support
 
 **Error Handling:**
+
 - [ ] Try-catch for async operations
 - [ ] User-friendly error messages
 - [ ] Loading states shown
 
 **Code Quality:**
+
 - [ ] No code duplication
 - [ ] Functions < 50 lines
 - [ ] Components < 300 lines
@@ -532,7 +538,7 @@ export function UserDashboard() {
       <D user={user} />
     </C>
   </B>
-</A>
+</A>;
 
 // ✅ Good - Use context or state management
 const { user } = useAuth();
@@ -546,7 +552,7 @@ const memoizedValue = useMemo(() => x + y, [x, y]);
 
 // ✅ Good - Optimize when needed
 // Profile first, then optimize
-const sum = x + y;  // Simple calculation doesn't need memo
+const sum = x + y; // Simple calculation doesn't need memo
 ```
 
 ## Git Commit Messages
@@ -566,16 +572,19 @@ chore: update dependencies
 ## When to Extract Code
 
 **Extract to a function when:**
+
 - Used more than once
 - Logic is complex (> 10 lines)
 - Needs testing independently
 
 **Extract to a component when:**
+
 - Used more than once
 - Has its own state/logic
 - File exceeds 300 lines
 
 **Extract to a hook when:**
+
 - Reusable logic with state
 - Side effects (useEffect)
 - Used across components
@@ -583,6 +592,7 @@ chore: update dependencies
 ## Summary
 
 **Key Takeaways:**
+
 1. TypeScript strict mode, no exceptions
 2. NativeWind for all styling
 3. React Query for server state, Zustand for client state
@@ -592,6 +602,7 @@ chore: update dependencies
 7. Memoize expensive operations only
 
 **Remember:** The best code is code that:
+
 - Works correctly
 - Is easy to understand
 - Is easy to change

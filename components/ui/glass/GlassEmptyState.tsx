@@ -95,11 +95,7 @@ export function GlassEmptyState({
   const sizeStyle = sizeConfig[size];
 
   return (
-    <GlassCard
-      variant="default"
-      intensity={40}
-      className={`items-center ${sizeStyle.container}`}
-    >
+    <GlassCard variant="default" intensity={40} className={`items-center ${sizeStyle.container}`}>
       {/* Icon */}
       {iconComponent ? (
         <View className="mb-4">{iconComponent}</View>
@@ -108,29 +104,18 @@ export function GlassEmptyState({
       ) : null}
 
       {/* Title */}
-      <Text
-        className={`${sizeStyle.title} font-bold text-white text-center mb-2`}
-      >
-        {title}
-      </Text>
+      <Text className={`${sizeStyle.title} font-bold text-white text-center mb-2`}>{title}</Text>
 
       {/* Description */}
       {description && (
-        <Text
-          className={`${sizeStyle.description} text-gray-300 text-center mb-6`}
-        >
+        <Text className={`${sizeStyle.description} text-gray-300 text-center mb-6`}>
           {description}
         </Text>
       )}
 
       {/* Action Button */}
       {actionText && onAction && (
-        <GlassButton
-          title={actionText}
-          onPress={onAction}
-          variant="primary"
-          size="md"
-        />
+        <GlassButton title={actionText} onPress={onAction} variant="primary" size="md" />
       )}
     </GlassCard>
   );
@@ -183,13 +168,7 @@ export function GlassEmptyStateNoResults({
 }
 
 /** Empty state for error */
-export function GlassEmptyStateError({
-  error,
-  onRetry,
-}: {
-  error?: string;
-  onRetry?: () => void;
-}) {
+export function GlassEmptyStateError({ error, onRetry }: { error?: string; onRetry?: () => void }) {
   return (
     <GlassEmptyState
       icon="⚠️"
@@ -221,9 +200,7 @@ export function GlassEmptyStateComingSoon({ feature }: { feature?: string }) {
       icon="🚀"
       title="Coming Soon"
       description={
-        feature
-          ? `${feature} will be available soon`
-          : 'This feature is under development'
+        feature ? `${feature} will be available soon` : 'This feature is under development'
       }
       size="lg"
     />

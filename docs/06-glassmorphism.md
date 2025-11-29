@@ -5,6 +5,7 @@ Learn how to create beautiful glassmorphic UI components with blur effects, tran
 ## What is Glassmorphism?
 
 Glassmorphism is a design trend featuring:
+
 - **Frosted glass appearance** with background blur
 - **Semi-transparent layers** with subtle borders
 - **Depth and hierarchy** through layering
@@ -13,6 +14,7 @@ Glassmorphism is a design trend featuring:
 ## Libraries We Use
 
 ### expo-blur
+
 Native blur component for iOS and Android.
 
 ```bash
@@ -22,6 +24,7 @@ npx expo install expo-blur
 Already installed in this starter!
 
 ### react-native-reanimated
+
 For smooth 60fps animations (already installed).
 
 ## Basic Usage
@@ -48,11 +51,11 @@ function GlassCard() {
 
 ### BlurView Props
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `intensity` | number | Blur strength (0-100) |
-| `tint` | string | `'light'`, `'dark'`, `'default'`, `'systemMaterialDark'`, etc. |
-| `className` | string | NativeWind classes |
+| Prop        | Type   | Description                                                    |
+| ----------- | ------ | -------------------------------------------------------------- |
+| `intensity` | number | Blur strength (0-100)                                          |
+| `tint`      | string | `'light'`, `'dark'`, `'default'`, `'systemMaterialDark'`, etc. |
+| `className` | string | NativeWind classes                                             |
 
 ## Pre-built Glass Components
 
@@ -65,10 +68,11 @@ import { GlassCard } from '@/components/ui/glass';
 
 <GlassCard variant="premium" intensity={80}>
   <Text className="text-white">Content goes here</Text>
-</GlassCard>
+</GlassCard>;
 ```
 
 **Variants:**
+
 - `default` - Standard glass effect
 - `premium` - Enhanced blur and rounded corners
 - `subtle` - Minimal glass effect
@@ -84,10 +88,11 @@ import { GlassButton } from '@/components/ui/glass';
   size="lg"
   onPress={handlePress}
   loading={isLoading}
-/>
+/>;
 ```
 
 **Features:**
+
 - Press animations with spring physics
 - Loading state with spinner
 - Three variants: `primary`, `secondary`, `ghost`
@@ -104,7 +109,7 @@ import { GlassInput } from '@/components/ui/glass';
   value={email}
   onChangeText={setEmail}
   error={emailError}
-/>
+/>;
 ```
 
 ### GlassModal
@@ -114,17 +119,13 @@ import { GlassModal } from '@/components/ui/glass';
 
 const [visible, setVisible] = useState(false);
 
-<GlassModal
-  visible={visible}
-  onClose={() => setVisible(false)}
-  title="Settings"
-  intensity={80}
->
+<GlassModal visible={visible} onClose={() => setVisible(false)} title="Settings" intensity={80}>
   <Text className="text-white">Modal content</Text>
-</GlassModal>
+</GlassModal>;
 ```
 
 **Features:**
+
 - Smooth slide-in/slide-out animations
 - Backdrop blur with dismissal
 - Auto-closes on backdrop tap
@@ -150,12 +151,8 @@ Glass components work seamlessly with NativeWind classes:
 ```tsx
 <GlassCard className="mx-4 my-2 shadow-2xl">
   <View className="p-6">
-    <Text className="text-white text-2xl font-bold mb-2">
-      Combine with Tailwind
-    </Text>
-    <Text className="text-white/70">
-      Use all your familiar Tailwind classes!
-    </Text>
+    <Text className="text-white text-2xl font-bold mb-2">Combine with Tailwind</Text>
+    <Text className="text-white/70">Use all your familiar Tailwind classes!</Text>
   </View>
 </GlassCard>
 ```
@@ -171,17 +168,13 @@ import Animated, { FadeInDown } from 'react-native-reanimated';
   <GlassCard variant="premium">
     <Text className="text-white">Animated entrance!</Text>
   </GlassCard>
-</Animated.View>
+</Animated.View>;
 ```
 
 ### Press Animations
 
 ```tsx
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withSpring
-} from 'react-native-reanimated';
+import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
@@ -242,7 +235,7 @@ const intensity = Platform.select({
   android: 60, // Android blur is heavier
 });
 
-<BlurView intensity={intensity} />
+<BlurView intensity={intensity} />;
 ```
 
 ### 3. Avoid Nesting BlurViews
@@ -278,10 +271,11 @@ import { LiquidGlass } from '@callstack/liquid-glass';
   <View className="p-6">
     <Text className="text-white">iOS 26+ Liquid Glass</Text>
   </View>
-</LiquidGlass>
+</LiquidGlass>;
 ```
 
 **Features:**
+
 - Real-time GPU-accelerated blur
 - Reflection and refraction effects
 - iOS 26+ only (gracefully degrades to BlurView on older versions)
@@ -307,12 +301,8 @@ export default function GlassExample() {
 
       <SafeAreaView className="flex-1 p-4 justify-center">
         <GlassCard variant="premium" intensity={80} className="p-6">
-          <Text className="text-3xl font-bold text-white mb-2">
-            Welcome Back
-          </Text>
-          <Text className="text-white/70 mb-6">
-            Sign in to your account
-          </Text>
+          <Text className="text-3xl font-bold text-white mb-2">Welcome Back</Text>
+          <Text className="text-white/70 mb-6">Sign in to your account</Text>
 
           <GlassInput
             label="Email"
@@ -345,13 +335,13 @@ export default function GlassExample() {
 
 ## Tint Options
 
-| Tint | Description | Best For |
-|------|-------------|----------|
-| `systemMaterialDark` | iOS system dark blur | Dark backgrounds |
+| Tint                  | Description           | Best For          |
+| --------------------- | --------------------- | ----------------- |
+| `systemMaterialDark`  | iOS system dark blur  | Dark backgrounds  |
 | `systemMaterialLight` | iOS system light blur | Light backgrounds |
-| `dark` | Dark tint | Photos, videos |
-| `light` | Light tint | Bright images |
-| `default` | Adaptive | Auto light/dark |
+| `dark`                | Dark tint             | Photos, videos    |
+| `light`               | Light tint            | Bright images     |
+| `default`             | Adaptive              | Auto light/dark   |
 
 ## Common Patterns
 
@@ -387,11 +377,7 @@ export default function GlassExample() {
 ### Bottom Sheet
 
 ```tsx
-<GlassModal
-  visible={visible}
-  onClose={() => setVisible(false)}
-  title="Options"
->
+<GlassModal visible={visible} onClose={() => setVisible(false)} title="Options">
   <View className="gap-3">
     <GlassButton title="Edit" variant="secondary" />
     <GlassButton title="Share" variant="secondary" />
@@ -418,10 +404,10 @@ export default function GlassExample() {
 
 ```tsx
 // ✅ Add border with alpha
-className="border border-white/10"
+className = 'border border-white/10';
 
 // ❌ Solid borders don't work well
-className="border border-white"
+className = 'border border-white';
 ```
 
 ## Next Steps

@@ -2,12 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, ImageBackground, KeyboardAvoidingView, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
-import {
-  GlassCard,
-  GlassButton,
-  GlassInput,
-  GlassSwitch,
-} from '@/components/ui/glass';
+import { GlassCard, GlassButton, GlassInput, GlassSwitch } from '@/components/ui/glass';
 
 /**
  * Example Login Screen - Demonstrates glassmorphic login form
@@ -86,9 +81,7 @@ export default function ExampleLoginScreen() {
                 <Text className="text-white text-3xl font-bold">A</Text>
               </View>
               <Text className="text-3xl font-bold text-white mb-2">Welcome Back</Text>
-              <Text className="text-white/70 text-center">
-                Sign in to your account to continue
-              </Text>
+              <Text className="text-white/70 text-center">Sign in to your account to continue</Text>
             </View>
 
             {/* Email Input */}
@@ -125,15 +118,9 @@ export default function ExampleLoginScreen() {
 
             {/* Remember Me & Forgot Password */}
             <View className="flex-row items-center justify-between mb-6">
-              <GlassSwitch
-                value={rememberMe}
-                onValueChange={setRememberMe}
-                label="Remember me"
-              />
+              <GlassSwitch value={rememberMe} onValueChange={setRememberMe} label="Remember me" />
 
-              <Text className="text-primary-400 text-sm font-medium">
-                Forgot Password?
-              </Text>
+              <Text className="text-primary-400 text-sm font-medium">Forgot Password?</Text>
             </View>
 
             {/* Sign In Button */}

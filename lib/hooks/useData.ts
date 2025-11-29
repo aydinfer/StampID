@@ -9,11 +9,7 @@ export function useProfile(userId: string) {
   return useQuery({
     queryKey: ['profile', userId],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', userId)
-        .single();
+      const { data, error } = await supabase.from('profiles').select('*').eq('id', userId).single();
 
       if (error) throw error;
       return data;
@@ -87,11 +83,7 @@ export function useCreateItem() {
 
   return useMutation({
     mutationFn: async (item: { title: string; description?: string }) => {
-      const { data, error } = await supabase
-        .from('items')
-        .insert([item])
-        .select()
-        .single();
+      const { data, error } = await supabase.from('items').insert([item]).select().single();
 
       if (error) throw error;
       return data;
@@ -111,10 +103,7 @@ export function useDeleteItem() {
 
   return useMutation({
     mutationFn: async (itemId: string) => {
-      const { error } = await supabase
-        .from('items')
-        .delete()
-        .eq('id', itemId);
+      const { error } = await supabase.from('items').delete().eq('id', itemId);
 
       if (error) throw error;
       return itemId;

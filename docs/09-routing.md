@@ -41,7 +41,7 @@ router.back();
 // Navigate with params
 router.push({
   pathname: '/post/[id]',
-  params: { id: '123', title: 'Hello' }
+  params: { id: '123', title: 'Hello' },
 });
 
 // Set params on current route
@@ -95,7 +95,11 @@ export default function UserPostScreen() {
     postId: string;
   }>();
 
-  return <Text>User {userId}, Post {postId}</Text>;
+  return (
+    <Text>
+      User {userId}, Post {postId}
+    </Text>
+  );
 }
 
 // Navigate: router.push('/user/456/post/789')
@@ -171,18 +175,14 @@ export default function TabLayout() {
         name="home"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="home" size={size} color={color} />
-          ),
+          tabBarIcon: ({ color, size }) => <Ionicons name="home" size={size} color={color} />,
         }}
       />
       <Tabs.Screen
         name="explore"
         options={{
           title: 'Explore',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="search" size={size} color={color} />
-          ),
+          tabBarIcon: ({ color, size }) => <Ionicons name="search" size={size} color={color} />,
         }}
       />
     </Tabs>
@@ -272,11 +272,7 @@ import { router } from 'expo-router';
 
 export default function ShareModal() {
   return (
-    <GlassModal
-      visible={true}
-      onClose={() => router.back()}
-      title="Share"
-    >
+    <GlassModal visible={true} onClose={() => router.back()} title="Share">
       <Text className="text-white">Share content here</Text>
     </GlassModal>
   );
@@ -477,8 +473,8 @@ export default function RootLayout() {
 import { router } from 'expo-router';
 
 // Type-safe navigation
-router.push('/post/123');  // ✅ Valid route
-router.push('/invalid');   // ❌ TypeScript error (if configured)
+router.push('/post/123'); // ✅ Valid route
+router.push('/invalid'); // ❌ TypeScript error (if configured)
 ```
 
 ### Typed Params
@@ -517,10 +513,7 @@ function PostScreen() {
 ```tsx
 import { router } from 'expo-router';
 
-<GlassButton
-  title="Open Options"
-  onPress={() => router.push('/options-sheet')}
-/>
+<GlassButton title="Open Options" onPress={() => router.push('/options-sheet')} />;
 
 // app/options-sheet.tsx with presentation: 'modal'
 ```

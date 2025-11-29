@@ -43,11 +43,7 @@ export const api = {
   /**
    * POST request
    */
-  post: async <T>(
-    endpoint: string,
-    body?: any,
-    options: RequestOptions = {}
-  ): Promise<T> => {
+  post: async <T>(endpoint: string, body?: any, options: RequestOptions = {}): Promise<T> => {
     const response = await fetch(buildUrl(endpoint), {
       ...options,
       method: 'POST',
@@ -64,11 +60,7 @@ export const api = {
   /**
    * PUT request
    */
-  put: async <T>(
-    endpoint: string,
-    body?: any,
-    options: RequestOptions = {}
-  ): Promise<T> => {
+  put: async <T>(endpoint: string, body?: any, options: RequestOptions = {}): Promise<T> => {
     const response = await fetch(buildUrl(endpoint), {
       ...options,
       method: 'PUT',
@@ -85,11 +77,7 @@ export const api = {
   /**
    * PATCH request
    */
-  patch: async <T>(
-    endpoint: string,
-    body?: any,
-    options: RequestOptions = {}
-  ): Promise<T> => {
+  patch: async <T>(endpoint: string, body?: any, options: RequestOptions = {}): Promise<T> => {
     const response = await fetch(buildUrl(endpoint), {
       ...options,
       method: 'PATCH',

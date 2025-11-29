@@ -38,10 +38,7 @@ export interface DateFormatOptions {
  * formatCurrency(1234.56, { currency: 'EUR', locale: 'de-DE' }) // "1.234,56 €"
  * formatCurrency(1234, { minimumFractionDigits: 0 }) // "$1,234"
  */
-export function formatCurrency(
-  amount: number,
-  options: CurrencyFormatOptions = {}
-): string {
+export function formatCurrency(amount: number, options: CurrencyFormatOptions = {}): string {
   const {
     locale = 'en-US',
     currency = 'USD',
@@ -56,7 +53,7 @@ export function formatCurrency(
       minimumFractionDigits,
       maximumFractionDigits,
     }).format(amount);
-  } catch (error) {
+  } catch {
     // Fallback to simple formatting
     return `$${amount.toFixed(2)}`;
   }
@@ -71,10 +68,7 @@ export function formatCurrency(
  * formatDate(new Date(), { dateStyle: 'short', timeStyle: 'short' }) // "11/17/25, 2:30 PM"
  * formatDate('2025-11-17') // "Nov 17, 2025"
  */
-export function formatDate(
-  date: Date | string | number,
-  options: DateFormatOptions = {}
-): string {
+export function formatDate(date: Date | string | number, options: DateFormatOptions = {}): string {
   try {
     const dateObj = typeof date === 'string' || typeof date === 'number' ? new Date(date) : date;
 
@@ -85,12 +79,11 @@ export function formatDate(
     const { locale = 'en-US', ...formatOptions } = options;
 
     // Default to medium date style if no options provided
-    const defaultOptions = Object.keys(formatOptions).length === 0
-      ? { dateStyle: 'medium' as const }
-      : formatOptions;
+    const defaultOptions =
+      Object.keys(formatOptions).length === 0 ? { dateStyle: 'medium' as const } : formatOptions;
 
     return new Intl.DateTimeFormat(locale, defaultOptions).format(dateObj);
-  } catch (error) {
+  } catch {
     return 'Invalid date';
   }
 }
@@ -103,10 +96,7 @@ export function formatDate(
  * formatRelativeTime(new Date(Date.now() + 86400000)) // "in 1 day"
  * formatRelativeTime(new Date(Date.now() - 60000)) // "1 minute ago"
  */
-export function formatRelativeTime(
-  date: Date | string | number,
-  locale: string = 'en-US'
-): string {
+export function formatRelativeTime(date: Date | string | number, locale: string = 'en-US'): string {
   try {
     const dateObj = typeof date === 'string' || typeof date === 'number' ? new Date(date) : date;
 
@@ -137,7 +127,7 @@ export function formatRelativeTime(
     if (diffInSeconds < 2592000) return rtf.format(-Math.floor(diffInSeconds / 86400), 'day');
     if (diffInSeconds < 31536000) return rtf.format(-Math.floor(diffInSeconds / 2592000), 'month');
     return rtf.format(-Math.floor(diffInSeconds / 31536000), 'year');
-  } catch (error) {
+  } catch {
     return 'Invalid date';
   }
 }
@@ -188,7 +178,7 @@ export function formatNumber(
 
   try {
     return new Intl.NumberFormat(locale, formatOptions).format(num);
-  } catch (error) {
+  } catch {
     return num.toString();
   }
 }
@@ -217,7 +207,7 @@ export function formatPercent(
       minimumFractionDigits,
       maximumFractionDigits,
     }).format(value);
-  } catch (error) {
+  } catch {
     return `${(value * 100).toFixed(2)}%`;
   }
 }
@@ -324,10 +314,7 @@ export function capitalize(text: string): string {
  * formatInitials('John Michael Doe', { maxLength: 3 }) // "JMD"
  * formatInitials('john doe') // "JD"
  */
-export function formatInitials(
-  name: string,
-  options: { maxLength?: number } = {}
-): string {
+export function formatInitials(name: string, options: { maxLength?: number } = {}): string {
   const { maxLength = 2 } = options;
 
   const words = name.trim().split(/\s+/);

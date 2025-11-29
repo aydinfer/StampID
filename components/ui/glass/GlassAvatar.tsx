@@ -133,11 +133,7 @@ export function GlassAvatar({
       >
         {source ? (
           // Image Avatar
-          <Image
-            source={source}
-            className="w-full h-full"
-            resizeMode="cover"
-          />
+          <Image source={source} className="w-full h-full" resizeMode="cover" />
         ) : (
           // Initials Fallback with Blur
           <BlurView
@@ -145,10 +141,7 @@ export function GlassAvatar({
             tint="dark"
             className="w-full h-full items-center justify-center"
           >
-            <Text
-              className={`${sizeStyles.text} font-bold`}
-              style={{ color: textColor }}
-            >
+            <Text className={`${sizeStyles.text} font-bold`} style={{ color: textColor }}>
               {initials}
             </Text>
           </BlurView>
@@ -206,11 +199,7 @@ export function GlassAvatarGroup({
   return (
     <View className="flex-row items-center">
       {visibleAvatars.map((avatar, index) => (
-        <View
-          key={index}
-          style={{ marginLeft: index === 0 ? 0 : spacing }}
-          className="relative"
-        >
+        <View key={index} style={{ marginLeft: index === 0 ? 0 : spacing }} className="relative">
           {React.cloneElement(avatar, { size, variant: 'default' })}
         </View>
       ))}
@@ -228,9 +217,7 @@ export function GlassAvatarGroup({
             tint="dark"
             className="w-full h-full items-center justify-center"
           >
-            <Text className={`${sizeStyles.text} font-bold text-white`}>
-              +{remaining}
-            </Text>
+            <Text className={`${sizeStyles.text} font-bold text-white`}>+{remaining}</Text>
           </BlurView>
         </View>
       )}

@@ -5,11 +5,13 @@ Complete documentation for the Expo Starter template.
 ## Table of Contents
 
 ### Getting Started
+
 1. [Getting Started](./01-getting-started.md) - Installation and first run
 2. [Project Structure](./02-project-structure.md) - Understanding the codebase
 3. [Design System](./03-design-system.md) - Customizing colors and theme
 
 ### Core Features
+
 4. [Components Guide](./04-components.md) - Building reusable components
 5. [Animations](./05-animations.md) - Using React Native Reanimated
 6. [Glassmorphism](./06-glassmorphism.md) - Liquid Glass & blur effects
@@ -17,6 +19,7 @@ Complete documentation for the Expo Starter template.
 8. [RevenueCat Setup](./07-revenuecat-setup.md) - In-app purchases
 
 ### Advanced Topics
+
 9. [State Management](./08-state-management.md) - React Query + Zustand
 10. [Routing Guide](./09-routing.md) - Expo Router patterns
 11. [Building & Deployment](./10-deployment.md) - EAS Build and app stores
@@ -24,11 +27,13 @@ Complete documentation for the Expo Starter template.
 13. [Performance](./12-performance.md) - Optimization tips
 
 ### Reference
+
 14. [Troubleshooting](./13-troubleshooting.md) - Common issues and fixes
 15. [Best Practices](./14-best-practices.md) - Code standards
 16. [API Reference](./15-api-reference.md) - Hooks and utilities
 
 ### Meta Documentation
+
 - [Coding Guide](./meta/CODING_GUIDE.md) - Opinionated best practices (DRY, YAGNI, KISS)
 - [Changelog](./meta/CHANGELOG.md) - Version history and roadmap
 - [LLM.txt](./meta/LLM.txt) - AI assistant optimization guide
@@ -61,6 +66,7 @@ This starter template includes:
 ## Contributing
 
 When adding documentation:
+
 1. Keep files under 300 lines
 2. Use clear headings and examples
 3. Include code snippets

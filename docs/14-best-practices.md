@@ -28,12 +28,14 @@ clean-build/
 ### Naming Conventions
 
 **Files:**
+
 - Components: `PascalCase.tsx` (e.g., `GlassButton.tsx`)
 - Hooks: `camelCase.ts` starting with `use` (e.g., `useAuth.ts`)
 - Utils: `camelCase.ts` (e.g., `helpers.ts`)
 - Screens: `kebab-case.tsx` or `PascalCase.tsx` (e.g., `user-profile.tsx`)
 
 **Variables:**
+
 - Components: `PascalCase` (e.g., `const GlassCard =`)
 - Functions: `camelCase` (e.g., `const handlePress =`)
 - Constants: `UPPER_SNAKE_CASE` (e.g., `const API_URL =`)
@@ -115,11 +117,7 @@ interface GlassCardProps extends ViewProps {
 
 ```tsx
 // ✅ Good - Destructure with defaults
-function GlassCard({
-  variant = 'default',
-  intensity = 60,
-  children,
-}: GlassCardProps) {
+function GlassCard({ variant = 'default', intensity = 60, children }: GlassCardProps) {
   // ...
 }
 
@@ -260,7 +258,7 @@ const variants = {
 const [isOpen, setIsOpen] = useState(false);
 
 // ✅ Zustand - Global UI state
-const theme = useAppStore(state => state.theme);
+const theme = useAppStore((state) => state.theme);
 
 // ✅ React Query - Server state
 const { data: user } = useQuery({
@@ -269,7 +267,7 @@ const { data: user } = useQuery({
 });
 
 // ❌ Don't use Zustand for server data
-const user = useAppStore(state => state.user); // Bad!
+const user = useAppStore((state) => state.user); // Bad!
 ```
 
 ### State Colocation
@@ -304,7 +302,7 @@ const useFormStore = create((set) => ({
 ```tsx
 // ✅ Good - Memo expensive components
 const ExpensiveList = React.memo(({ items }) => {
-  return items.map(item => <Item key={item.id} item={item} />);
+  return items.map((item) => <Item key={item.id} item={item} />);
 });
 
 // ✅ Good - useMemo for calculations
@@ -380,7 +378,7 @@ class ErrorBoundary extends React.Component {
 // Usage
 <ErrorBoundary>
   <App />
-</ErrorBoundary>
+</ErrorBoundary>;
 ```
 
 ## Security Best Practices
@@ -485,19 +483,15 @@ interface ButtonProps {
 ```tsx
 // ❌ Bad - Overcomplicated
 const isValid = useMemo(() => {
-  return compose(
-    pipe(validate, normalize),
-    filter(isNotEmpty),
-    map(transform)
-  )(data);
+  return compose(pipe(validate, normalize), filter(isNotEmpty), map(transform))(data);
 }, [data]);
 
 // ✅ Good - Clear and simple
 const isValid = useMemo(() => {
   return data
-    .filter(item => item !== '')
-    .map(item => item.trim())
-    .every(item => item.length > 0);
+    .filter((item) => item !== '')
+    .map((item) => item.trim())
+    .every((item) => item.length > 0);
 }, [data]);
 ```
 

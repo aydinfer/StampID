@@ -5,6 +5,7 @@ Complete guide to implementing in-app purchases and subscriptions with RevenueCa
 ## What is RevenueCat?
 
 RevenueCat is a subscription platform that handles:
+
 - **In-app purchases**: iOS and Android
 - **Subscription management**: Track active subscriptions
 - **Analytics**: Revenue metrics and charts
@@ -21,12 +22,14 @@ RevenueCat is a subscription platform that handles:
 ### 2. Add Your Apps
 
 **For iOS:**
+
 1. Go to **Project Settings** > **Apps**
 2. Click "Add App" > iOS
 3. Enter your Bundle ID (from app.json)
 4. Upload App Store Connect API Key (optional but recommended)
 
 **For Android:**
+
 1. Click "Add App" > Android
 2. Enter your Package Name (from app.json)
 3. Upload Google Play Service Account JSON
@@ -40,6 +43,7 @@ RevenueCat is a subscription platform that handles:
    - Lifetime purchase (optional)
 
 **Example products:**
+
 - `pro_monthly` - $9.99/month
 - `pro_yearly` - $79.99/year (save 33%)
 
@@ -116,9 +120,7 @@ export default function PaywallScreen() {
           className="bg-primary-500 p-4 rounded-lg mb-2"
           onPress={() => handlePurchase(pkg)}
         >
-          <Text className="text-white font-bold">
-            {pkg.product.title}
-          </Text>
+          <Text className="text-white font-bold">{pkg.product.title}</Text>
           <Text className="text-white">
             {pkg.product.priceString}/{pkg.product.subscriptionPeriod}
           </Text>
@@ -196,6 +198,7 @@ export default function SettingsScreen() {
    - Price: $9.99
 
 **Repeat for yearly:**
+
 - Product ID: `pro_yearly`
 - Duration: 1 year
 - Price: $79.99
@@ -277,16 +280,17 @@ const { offerings } = useSubscription();
 const current = offerings?.current;
 
 // Available packages
-current?.availablePackages.map(pkg => ({
-  identifier: pkg.identifier,    // 'monthly', 'annual'
+current?.availablePackages.map((pkg) => ({
+  identifier: pkg.identifier, // 'monthly', 'annual'
   price: pkg.product.priceString, // '$9.99'
-  period: pkg.product.subscriptionPeriod // 'P1M', 'P1Y'
+  period: pkg.product.subscriptionPeriod, // 'P1M', 'P1Y'
 }));
 ```
 
 ## Analytics
 
 RevenueCat Dashboard shows:
+
 - **Active subscriptions**: How many paying users
 - **MRR**: Monthly recurring revenue
 - **Churn**: How many cancel
@@ -310,6 +314,7 @@ Get notified of subscription events:
 ### Check User Status
 
 In RevenueCat Dashboard:
+
 1. Go to **Customers**
 2. Search by email or App User ID
 3. See all purchases and status
@@ -318,6 +323,7 @@ In RevenueCat Dashboard:
 ### Handle Refunds
 
 When Apple/Google issues refund:
+
 - RevenueCat automatically revokes entitlement
 - User loses pro access
 - No code changes needed
@@ -325,17 +331,20 @@ When Apple/Google issues refund:
 ## Common Issues
 
 ### "Products not found"
+
 - Check product IDs match exactly (case-sensitive)
 - Ensure products are approved in App Store Connect/Play Console
 - Wait 24 hours after creating products
 - Check bundle ID matches
 
 ### "Purchase failed"
+
 - Enable "In-App Purchases" capability in Xcode
 - Check billing is set up for sandbox account
 - Ensure product is active and available
 
 ### "Already own this product"
+
 - Use sandbox tester account to reset
 - Or use `restorePurchases()` to acknowledge
 
@@ -362,9 +371,7 @@ export default function PaywallScreen() {
 
   return (
     <ScrollView className="flex-1 bg-white dark:bg-gray-900 p-6">
-      <Text className="text-3xl font-bold text-center mb-2">
-        Unlock Pro Features
-      </Text>
+      <Text className="text-3xl font-bold text-center mb-2">Unlock Pro Features</Text>
       <Text className="text-gray-600 dark:text-gray-400 text-center mb-8">
         Get unlimited access to all features
       </Text>
@@ -393,16 +400,13 @@ export default function PaywallScreen() {
               {pkg.product.title}
             </Text>
             <Text className="text-lg text-gray-600 dark:text-gray-400">
-              {pkg.product.priceString}/
-              {isYearly ? 'year' : 'month'}
+              {pkg.product.priceString}/{isYearly ? 'year' : 'month'}
             </Text>
           </Pressable>
         );
       })}
 
-      <Text className="text-center text-gray-500 text-sm mt-4">
-        Cancel anytime. Terms apply.
-      </Text>
+      <Text className="text-center text-gray-500 text-sm mt-4">Cancel anytime. Terms apply.</Text>
     </ScrollView>
   );
 }

@@ -123,6 +123,27 @@ export function GlassBadge({
   const variantStyle = variantConfig[variant];
   const sizeStyle = sizeConfig[size];
 
+  // Pulse animation - hooks must be called before any early returns
+  const scale = useSharedValue(1);
+
+  React.useEffect(() => {
+    if (pulse) {
+      scale.value = withRepeat(
+        withSequence(withTiming(1.2, { duration: 600 }), withTiming(1, { duration: 600 })),
+        -1,
+        false
+      );
+    } else {
+      scale.value = withTiming(1, { duration: 300 });
+    }
+  }, [pulse, scale]);
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ scale: scale.value }],
+    };
+  }, [scale]);
+
   // Don't render if content is 0 and showZero is false
   if (!showZero && content === 0) {
     return null;
@@ -134,34 +155,10 @@ export function GlassBadge({
     displayContent = `${max}+`;
   }
 
-  // Pulse animation
-  const scale = useSharedValue(1);
-
-  React.useEffect(() => {
-    if (pulse) {
-      scale.value = withRepeat(
-        withSequence(
-          withTiming(1.2, { duration: 600 }),
-          withTiming(1, { duration: 600 })
-        ),
-        -1,
-        false
-      );
-    }
-  }, [pulse]);
-
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      transform: [{ scale: scale.value }],
-    };
-  });
-
   if (dot) {
     return (
       <Animated.View style={pulse ? animatedStyle : undefined}>
-        <View
-          className={`${sizeStyle.dot} rounded-full ${variantStyle.bg}`}
-        />
+        <View className={`${sizeStyle.dot} rounded-full ${variantStyle.bg}`} />
       </Animated.View>
     );
   }
@@ -176,10 +173,7 @@ export function GlassBadge({
           tint="dark"
           className={`absolute inset-0 ${variantStyle.bg}`}
         />
-        <Text
-          className={`${sizeStyle.text} font-bold ${variantStyle.text}`}
-          numberOfLines={1}
-        >
+        <Text className={`${sizeStyle.text} font-bold ${variantStyle.text}`} numberOfLines={1}>
           {displayContent}
         </Text>
       </View>
@@ -215,11 +209,7 @@ const positionConfig = {
   'bottom-left': '-bottom-1 -left-1',
 };
 
-export function GlassBadgedIcon({
-  children,
-  badge,
-  position = 'top-right',
-}: GlassBadgedIconProps) {
+export function GlassBadgedIcon({ children, badge, position = 'top-right' }: GlassBadgedIconProps) {
   const positionStyle = positionConfig[position];
 
   return (
@@ -262,19 +252,9 @@ const statusMap = {
   warning: { variant: 'warning' as const, label: 'Warning' },
 };
 
-export function GlassStatusBadge({
-  status,
-  label,
-  size = 'md',
-}: GlassStatusBadgeProps) {
+export function GlassStatusBadge({ status, label, size = 'md' }: GlassStatusBadgeProps) {
   const config = statusMap[status];
   const displayLabel = label || config.label;
 
-  return (
-    <GlassBadge
-      content={displayLabel}
-      variant={config.variant}
-      size={size}
-    />
-  );
+  return <GlassBadge content={displayLabel} variant={config.variant} size={size} />;
 }

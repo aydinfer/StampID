@@ -6,22 +6,24 @@ Learn when and how to use React Query for server state and Zustand for client st
 
 We use **two specialized libraries** instead of one do-it-all solution:
 
-| Library | Use For | Why |
-|---------|---------|-----|
+| Library         | Use For                 | Why                                     |
+| --------------- | ----------------------- | --------------------------------------- |
 | **React Query** | Server state (API data) | Caching, refetching, optimistic updates |
-| **Zustand** | Client state (UI state) | Simple, fast, no boilerplate |
+| **Zustand**     | Client state (UI state) | Simple, fast, no boilerplate            |
 
 ## React Query (Server State)
 
 ### What is Server State?
 
 Data that lives on a server:
+
 - User profiles
 - Posts, comments
 - Real-time data
 - Database records
 
 **Key characteristics:**
+
 - Asynchronous
 - Can be stale
 - Shared across users
@@ -35,13 +37,14 @@ import { supabase } from '@/lib/supabase/client';
 
 function ProfileScreen() {
   // Fetch data
-  const { data: profile, isLoading, error } = useQuery({
+  const {
+    data: profile,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ['profile'],
     queryFn: async () => {
-      const { data } = await supabase
-        .from('profiles')
-        .select('*')
-        .single();
+      const { data } = await supabase.from('profiles').select('*').single();
       return data;
     },
   });
@@ -61,10 +64,7 @@ function UpdateProfile() {
 
   const mutation = useMutation({
     mutationFn: async (newProfile: Profile) => {
-      const { data } = await supabase
-        .from('profiles')
-        .update(newProfile)
-        .eq('id', user.id);
+      const { data } = await supabase.from('profiles').update(newProfile).eq('id', user.id);
       return data;
     },
     onSuccess: () => {
@@ -119,11 +119,7 @@ export function useProfile(userId: string) {
   return useQuery({
     queryKey: ['profile', userId],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', userId)
-        .single();
+      const { data, error } = await supabase.from('profiles').select('*').eq('id', userId).single();
 
       if (error) throw error;
       return data;
@@ -137,10 +133,7 @@ export function useUpdateProfile() {
 
   return useMutation({
     mutationFn: async (profile: Partial<Profile>) => {
-      const { data, error } = await supabase
-        .from('profiles')
-        .update(profile)
-        .eq('id', profile.id);
+      const { data, error } = await supabase.from('profiles').update(profile).eq('id', profile.id);
 
       if (error) throw error;
       return data;
@@ -156,12 +149,7 @@ function Profile() {
   const { data: profile } = useProfile(userId);
   const updateProfile = useUpdateProfile();
 
-  return (
-    <GlassButton
-      title="Update"
-      onPress={() => updateProfile.mutate({ name: 'New Name' })}
-    />
-  );
+  return <GlassButton title="Update" onPress={() => updateProfile.mutate({ name: 'New Name' })} />;
 }
 ```
 
@@ -170,6 +158,7 @@ function Profile() {
 ### What is Client State?
 
 UI state that doesn't need to persist on server:
+
 - Theme (dark/light mode)
 - Modals open/closed
 - Selected tab
@@ -266,15 +255,17 @@ export const useAuthStore = create<AuthStore>((set) => ({
 export const useCartStore = create<CartStore>((set) => ({
   items: [],
   addItem: (item) => set((state) => ({ items: [...state.items, item] })),
-  removeItem: (id) => set((state) => ({
-    items: state.items.filter((item) => item.id !== id),
-  })),
+  removeItem: (id) =>
+    set((state) => ({
+      items: state.items.filter((item) => item.id !== id),
+    })),
 }));
 ```
 
 ## When to Use Which?
 
 ### Use React Query for:
+
 - ✅ API data (GET, POST, PUT, DELETE)
 - ✅ Database queries
 - ✅ Data that can be stale
@@ -283,6 +274,7 @@ export const useCartStore = create<CartStore>((set) => ({
 - ✅ Shared data across screens
 
 ### Use Zustand for:
+
 - ✅ UI state (modals, selected items)
 - ✅ Theme/preferences
 - ✅ Form state (complex forms)
@@ -291,6 +283,7 @@ export const useCartStore = create<CartStore>((set) => ({
 - ✅ Local-only data
 
 ### ❌ Don't Use Either for:
+
 - Simple component state → `useState`
 - Parent-child communication → Props
 - Form libraries → React Hook Form
@@ -321,12 +314,7 @@ export default function ProtectedLayout() {
 import { useInfiniteQuery } from '@tanstack/react-query';
 
 function FeedScreen() {
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-  } = useInfiniteQuery({
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
     queryKey: ['posts'],
     queryFn: async ({ pageParam = 0 }) => {
       const { data } = await supabase
@@ -359,13 +347,17 @@ function useRealtimePosts() {
   useEffect(() => {
     const channel = supabase
       .channel('posts')
-      .on('postgres_changes', {
-        event: '*',
-        schema: 'public',
-        table: 'posts',
-      }, () => {
-        queryClient.invalidateQueries({ queryKey: ['posts'] });
-      })
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'posts',
+        },
+        () => {
+          queryClient.invalidateQueries({ queryKey: ['posts'] });
+        }
+      )
       .subscribe();
 
     return () => {

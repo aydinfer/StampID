@@ -5,6 +5,7 @@ Complete guide to setting up Supabase for authentication and database.
 ## What is Supabase?
 
 Supabase is an open-source Firebase alternative that provides:
+
 - **Authentication**: Email/password, magic links, OAuth
 - **Database**: PostgreSQL database with real-time subscriptions
 - **Storage**: File storage
@@ -173,7 +174,7 @@ const { signOut } = useAuth();
 
 <Pressable onPress={signOut}>
   <Text>Sign Out</Text>
-</Pressable>
+</Pressable>;
 ```
 
 ### Password Reset
@@ -379,9 +380,9 @@ const uploadAvatar = async () => {
   if (error) throw error;
 
   // Get public URL
-  const { data: { publicUrl } } = supabase.storage
-    .from('avatars')
-    .getPublicUrl(data.path);
+  const {
+    data: { publicUrl },
+  } = supabase.storage.from('avatars').getPublicUrl(data.path);
 
   return publicUrl;
 };
@@ -398,15 +399,18 @@ const uploadAvatar = async () => {
 ## Common Issues
 
 ### "Invalid API key"
+
 - Check `.env` file has correct values
 - Restart dev server after changing `.env`
 - Ensure variables start with `EXPO_PUBLIC_`
 
 ### "Row Level Security policy violation"
+
 - Make sure RLS policies are created
 - Check `auth.uid()` matches expected user
 
 ### "Email not confirmed"
+
 - Check email for confirmation link
 - Or disable email confirmation in auth settings
 

@@ -25,12 +25,14 @@ Thank you for considering contributing to this project! 🎉
 1. **Fork the repository**
 
 2. **Clone your fork**
+
    ```bash
    git clone https://github.com/YOUR_USERNAME/Expo-Starter.git
    cd Expo-Starter/clean-build
    ```
 
 3. **Create a branch**
+
    ```bash
    git checkout -b feature/your-feature-name
    ```
@@ -41,6 +43,7 @@ Thank you for considering contributing to this project! 🎉
    - Add tests if applicable
 
 5. **Test your changes**
+
    ```bash
    npm install
    npx expo start
@@ -52,6 +55,7 @@ Thank you for considering contributing to this project! 🎉
    - Update CHANGELOG.md if needed
 
 7. **Commit with conventional commits**
+
    ```bash
    git commit -m "feat: add user profile component"
    git commit -m "fix: resolve authentication issue"
@@ -69,6 +73,7 @@ Thank you for considering contributing to this project! 🎉
 ### Follow the Coding Guide
 
 Read [docs/meta/CODING_GUIDE.md](./docs/meta/CODING_GUIDE.md) for:
+
 - TypeScript standards
 - Component structure
 - Naming conventions
@@ -87,6 +92,7 @@ Read [docs/meta/CODING_GUIDE.md](./docs/meta/CODING_GUIDE.md) for:
 ### Code Review Checklist
 
 Before submitting:
+
 - [ ] No TypeScript errors (`npx tsc --noEmit`)
 - [ ] Follows NativeWind patterns
 - [ ] Uses design tokens (no hardcoded colors)
@@ -108,6 +114,7 @@ We use [Conventional Commits](https://www.conventionalcommits.org/):
 ```
 
 **Types:**
+
 - `feat`: New feature
 - `fix`: Bug fix
 - `docs`: Documentation only
@@ -118,6 +125,7 @@ We use [Conventional Commits](https://www.conventionalcommits.org/):
 - `chore`: Maintenance tasks
 
 **Examples:**
+
 ```bash
 feat(auth): add password reset flow
 fix(ui): resolve button alignment issue

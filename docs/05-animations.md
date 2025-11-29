@@ -5,6 +5,7 @@ How to create smooth 60fps animations with React Native Reanimated.
 ## Why Reanimated?
 
 React Native Reanimated runs animations on the **UI thread**, not the JavaScript thread. This means:
+
 - ✅ 60fps smooth animations
 - ✅ Animations continue even if JS is busy
 - ✅ Gestures feel native
@@ -17,11 +18,7 @@ React Native Reanimated runs animations on the **UI thread**, not the JavaScript
 ```tsx
 import { useEffect } from 'react';
 import { View, Text } from 'react-native';
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withTiming
-} from 'react-native-reanimated';
+import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
 export function FadeIn() {
   const opacity = useSharedValue(0);
@@ -45,11 +42,7 @@ export function FadeIn() {
 ### Slide In
 
 ```tsx
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withSpring
-} from 'react-native-reanimated';
+import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
 
 export function SlideIn() {
   const translateY = useSharedValue(100);
@@ -106,7 +99,7 @@ export function ScaleButton() {
 // Smooth linear animation
 opacity.value = withTiming(1, {
   duration: 300,
-  easing: Easing.inOut(Easing.ease)
+  easing: Easing.inOut(Easing.ease),
 });
 ```
 
@@ -131,10 +124,7 @@ opacity.value = withDelay(500, withTiming(1));
 
 ```tsx
 // Chain animations
-scale.value = withSequence(
-  withTiming(1.2, { duration: 200 }),
-  withTiming(1, { duration: 200 })
-);
+scale.value = withSequence(withTiming(1.2, { duration: 200 }), withTiming(1, { duration: 200 }));
 ```
 
 ## Gestures
@@ -143,11 +133,7 @@ scale.value = withSequence(
 
 ```tsx
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withSpring
-} from 'react-native-reanimated';
+import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
 
 export function Draggable() {
   const translateX = useSharedValue(0);
@@ -170,10 +156,7 @@ export function Draggable() {
     });
 
   const animatedStyle = useAnimatedStyle(() => ({
-    transform: [
-      { translateX: translateX.value },
-      { translateY: translateY.value },
-    ],
+    transform: [{ translateX: translateX.value }, { translateY: translateY.value }],
   }));
 
   return (
@@ -275,11 +258,7 @@ export function LoadingSpinner() {
     transform: [{ rotate: `${rotation.value}deg` }],
   }));
 
-  return (
-    <Animated.View style={animatedStyle}>
-      {/* Your spinner icon */}
-    </Animated.View>
-  );
+  return <Animated.View style={animatedStyle}>{/* Your spinner icon */}</Animated.View>;
 }
 ```
 
@@ -291,10 +270,7 @@ export function Skeleton() {
 
   useEffect(() => {
     opacity.value = withRepeat(
-      withSequence(
-        withTiming(1, { duration: 800 }),
-        withTiming(0.3, { duration: 800 })
-      ),
+      withSequence(withTiming(1, { duration: 800 }), withTiming(0.3, { duration: 800 })),
       -1
     );
   }, []);
@@ -304,10 +280,7 @@ export function Skeleton() {
   }));
 
   return (
-    <Animated.View
-      style={animatedStyle}
-      className="h-20 bg-gray-200 dark:bg-gray-700 rounded-lg"
-    />
+    <Animated.View style={animatedStyle} className="h-20 bg-gray-200 dark:bg-gray-700 rounded-lg" />
   );
 }
 ```
@@ -328,12 +301,7 @@ export function BottomSheet({ isOpen, onClose, children }) {
 
   return (
     <>
-      {isOpen && (
-        <Pressable
-          className="absolute inset-0 bg-black/50"
-          onPress={onClose}
-        />
-      )}
+      {isOpen && <Pressable className="absolute inset-0 bg-black/50" onPress={onClose} />}
       <Animated.View
         style={animatedStyle}
         className="absolute bottom-0 left-0 right-0 bg-white dark:bg-gray-900 rounded-t-3xl p-6"
@@ -392,10 +360,7 @@ setOpacity(1); // Causes re-render
 You can mix Reanimated styles with NativeWind classes:
 
 ```tsx
-<Animated.View
-  style={animatedStyle}
-  className="bg-white dark:bg-gray-800 p-4 rounded-xl"
->
+<Animated.View style={animatedStyle} className="bg-white dark:bg-gray-800 p-4 rounded-xl">
   <Text className="text-gray-900 dark:text-white">Content</Text>
 </Animated.View>
 ```

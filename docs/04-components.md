@@ -5,6 +5,7 @@ How to build reusable UI components with NativeWind and best practices.
 ## Component Philosophy
 
 **Keep components:**
+
 - Small and focused (one responsibility)
 - Reusable across screens
 - Well-typed with TypeScript
@@ -58,9 +59,7 @@ export function Button({
 
   return (
     <Pressable
-      className={`${baseStyles} ${variantStyles[variant]} ${
-        disabled ? 'opacity-50' : ''
-      }`}
+      className={`${baseStyles} ${variantStyles[variant]} ${disabled ? 'opacity-50' : ''}`}
       onPress={onPress}
       disabled={disabled || loading}
     >
@@ -104,10 +103,7 @@ export function Card({ children, variant = 'default', ...props }: CardProps) {
   };
 
   return (
-    <View
-      className={`${baseStyles} ${variantStyles[variant]}`}
-      {...props}
-    >
+    <View className={`${baseStyles} ${variantStyles[variant]}`} {...props}>
       {children}
     </View>
   );
@@ -132,9 +128,7 @@ export function Input({ label, error, ...props }: InputProps) {
   return (
     <View className="mb-4">
       {label && (
-        <Text className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-          {label}
-        </Text>
+        <Text className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{label}</Text>
       )}
       <TextInput
         className={`
@@ -148,9 +142,7 @@ export function Input({ label, error, ...props }: InputProps) {
         onBlur={() => setIsFocused(false)}
         {...props}
       />
-      {error && (
-        <Text className="text-error-600 text-sm mt-1">{error}</Text>
-      )}
+      {error && <Text className="text-error-600 text-sm mt-1">{error}</Text>}
     </View>
   );
 }
@@ -190,23 +182,12 @@ interface EmptyStateProps {
   onAction?: () => void;
 }
 
-export function EmptyState({
-  title,
-  description,
-  actionLabel,
-  onAction
-}: EmptyStateProps) {
+export function EmptyState({ title, description, actionLabel, onAction }: EmptyStateProps) {
   return (
     <View className="flex-1 items-center justify-center p-6">
-      <Text className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-        {title}
-      </Text>
-      <Text className="text-gray-600 dark:text-gray-400 text-center mb-6">
-        {description}
-      </Text>
-      {actionLabel && onAction && (
-        <Button title={actionLabel} onPress={onAction} />
-      )}
+      <Text className="text-2xl font-bold text-gray-900 dark:text-white mb-2">{title}</Text>
+      <Text className="text-gray-600 dark:text-gray-400 text-center mb-6">{description}</Text>
+      {actionLabel && onAction && <Button title={actionLabel} onPress={onAction} />}
     </View>
   );
 }
@@ -242,16 +223,11 @@ export class ErrorBoundary extends React.Component<Props, State> {
     if (this.state.hasError) {
       return (
         <View className="flex-1 items-center justify-center p-6 bg-white dark:bg-gray-900">
-          <Text className="text-2xl font-bold text-error-600 mb-2">
-            Oops! Something went wrong
-          </Text>
+          <Text className="text-2xl font-bold text-error-600 mb-2">Oops! Something went wrong</Text>
           <Text className="text-gray-600 dark:text-gray-400 text-center mb-6">
             We're sorry for the inconvenience. Please try again.
           </Text>
-          <Button
-            title="Reload App"
-            onPress={() => this.setState({ hasError: false })}
-          />
+          <Button title="Reload App" onPress={() => this.setState({ hasError: false })} />
         </View>
       );
     }
@@ -275,13 +251,7 @@ interface ListItemProps {
   rightIcon?: React.ReactNode;
 }
 
-export function ListItem({
-  title,
-  subtitle,
-  onPress,
-  leftIcon,
-  rightIcon
-}: ListItemProps) {
+export function ListItem({ title, subtitle, onPress, leftIcon, rightIcon }: ListItemProps) {
   return (
     <Pressable
       className="flex-row items-center p-4 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 active:bg-gray-50 dark:active:bg-gray-700"
@@ -290,13 +260,9 @@ export function ListItem({
       {leftIcon && <View className="mr-3">{leftIcon}</View>}
 
       <View className="flex-1">
-        <Text className="text-base font-medium text-gray-900 dark:text-white">
-          {title}
-        </Text>
+        <Text className="text-base font-medium text-gray-900 dark:text-white">{title}</Text>
         {subtitle && (
-          <Text className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-            {subtitle}
-          </Text>
+          <Text className="text-sm text-gray-600 dark:text-gray-400 mt-1">{subtitle}</Text>
         )}
       </View>
 
@@ -327,18 +293,13 @@ export function Avatar({ imageUrl, name, size = 'medium' }: AvatarProps) {
 
   const initials = name
     .split(' ')
-    .map(n => n[0])
+    .map((n) => n[0])
     .join('')
     .toUpperCase()
     .slice(0, 2);
 
   if (imageUrl) {
-    return (
-      <Image
-        source={{ uri: imageUrl }}
-        className={`${sizes[size]} rounded-full`}
-      />
-    );
+    return <Image source={{ uri: imageUrl }} className={`${sizes[size]} rounded-full`} />;
   }
 
   return (
@@ -361,7 +322,7 @@ interface ButtonProps {
 }
 
 // ❌ Bad
-function Button(props: any) { }
+function Button(props: any) {}
 ```
 
 ### 2. Use Composition
@@ -455,9 +416,7 @@ import { Button } from './Button';
 describe('Button', () => {
   it('calls onPress when pressed', () => {
     const onPress = jest.fn();
-    const { getByText } = render(
-      <Button title="Press me" onPress={onPress} />
-    );
+    const { getByText } = render(<Button title="Press me" onPress={onPress} />);
 
     fireEvent.press(getByText('Press me'));
     expect(onPress).toHaveBeenCalled();

@@ -2,12 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, ImageBackground, ScrollView, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
-import {
-  GlassCard,
-  GlassButton,
-  GlassSwitch,
-  GlassSheet,
-} from '@/components/ui/glass';
+import { GlassCard, GlassButton, GlassSwitch, GlassSheet } from '@/components/ui/glass';
 
 type SettingItem =
   | {
@@ -46,7 +41,7 @@ export default function ExampleSettingsScreen() {
 
   const languages = ['English', 'Spanish', 'French', 'German', 'Chinese', 'Japanese'];
 
-  const settingsSections: Array<{ title: string; items: SettingItem[] }> = [
+  const settingsSections: { title: string; items: SettingItem[] }[] = [
     {
       title: 'Appearance',
       items: [
@@ -162,9 +157,7 @@ export default function ExampleSettingsScreen() {
           {/* Settings Sections */}
           {settingsSections.map((section, sectionIndex) => (
             <View key={sectionIndex}>
-              <Text className="text-white text-lg font-bold px-2 mb-2">
-                {section.title}
-              </Text>
+              <Text className="text-white text-lg font-bold px-2 mb-2">{section.title}</Text>
 
               <GlassCard className="overflow-hidden">
                 {section.items.map((item, itemIndex) => (
@@ -189,12 +182,8 @@ export default function ExampleSettingsScreen() {
                       >
                         <Text className="text-2xl mr-3">{item.icon}</Text>
                         <Text className="text-white text-base flex-1">{item.label}</Text>
-                        {item.value && (
-                          <Text className="text-white/60 mr-2">{item.value}</Text>
-                        )}
-                        {item.showArrow && (
-                          <Text className="text-white/40 text-lg">›</Text>
-                        )}
+                        {item.value && <Text className="text-white/60 mr-2">{item.value}</Text>}
+                        {item.showArrow && <Text className="text-white/40 text-lg">›</Text>}
                       </Pressable>
                     )}
 

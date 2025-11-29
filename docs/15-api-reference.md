@@ -12,18 +12,19 @@ Authentication hook powered by Supabase.
 import { useAuth } from '@/lib/hooks/useAuth';
 
 const {
-  user,           // Current user or null
-  session,        // Session object
-  isLoading,      // Loading state
-  error,          // Error message
-  signIn,         // (email, password) => Promise<void>
-  signUp,         // (email, password) => Promise<void>
-  signOut,        // () => Promise<void>
-  resetPassword,  // (email) => Promise<void>
+  user, // Current user or null
+  session, // Session object
+  isLoading, // Loading state
+  error, // Error message
+  signIn, // (email, password) => Promise<void>
+  signUp, // (email, password) => Promise<void>
+  signOut, // () => Promise<void>
+  resetPassword, // (email) => Promise<void>
 } = useAuth();
 ```
 
 **Example:**
+
 ```tsx
 const { user, signIn, signOut } = useAuth();
 
@@ -42,25 +43,23 @@ RevenueCat subscription management.
 import { useSubscription } from '@/lib/hooks/useSubscription';
 
 const {
-  offerings,        // Available packages
+  offerings, // Available packages
   activeSubscriptions, // Active subscription IDs
-  isLoading,        // Loading state
-  error,            // Error message
-  purchasePackage,  // (pkg) => Promise<void>
+  isLoading, // Loading state
+  error, // Error message
+  purchasePackage, // (pkg) => Promise<void>
   restorePurchases, // () => Promise<void>
 } = useSubscription();
 ```
 
 **Example:**
+
 ```tsx
 const { offerings, purchasePackage } = useSubscription();
 
 const monthlyPackage = offerings?.current?.availablePackages[0];
 
-<GlassButton
-  title="Subscribe Monthly - $9.99"
-  onPress={() => purchasePackage(monthlyPackage)}
-/>
+<GlassButton title="Subscribe Monthly - $9.99" onPress={() => purchasePackage(monthlyPackage)} />;
 ```
 
 ### useData
@@ -96,10 +95,10 @@ Global app state using Zustand.
 import { useAppStore } from '@/lib/store/appStore';
 
 // Get specific value (re-renders only when theme changes)
-const theme = useAppStore(state => state.theme);
+const theme = useAppStore((state) => state.theme);
 
 // Get multiple values
-const { theme, setTheme } = useAppStore(state => ({
+const { theme, setTheme } = useAppStore((state) => ({
   theme: state.theme,
   setTheme: state.setTheme,
 }));
@@ -109,6 +108,7 @@ const store = useAppStore();
 ```
 
 **State:**
+
 ```tsx
 {
   theme: 'light' | 'dark';
@@ -126,13 +126,7 @@ const store = useAppStore();
 Common utility functions.
 
 ```tsx
-import {
-  formatDate,
-  formatCurrency,
-  debounce,
-  throttle,
-  generateId,
-} from '@/lib/utils/helpers';
+import { formatDate, formatCurrency, debounce, throttle, generateId } from '@/lib/utils/helpers';
 
 // Format date
 formatDate(new Date()); // "Nov 17, 2025"
@@ -166,16 +160,17 @@ import { colors } from '@/lib/utils/colors';
     tabBarActiveTintColor: colors.primary[600],
     tabBarInactiveTintColor: colors.gray[500],
   }}
-/>
+/>;
 ```
 
 **Available colors:**
+
 ```tsx
-colors.primary[50-950]  // Blue scale
-colors.success[50-950]  // Green scale
-colors.warning[50-950]  // Yellow scale
-colors.error[50-950]    // Red scale
-colors.gray[50-950]     // Gray scale
+colors.primary[50 - 950]; // Blue scale
+colors.success[50 - 950]; // Green scale
+colors.warning[50 - 950]; // Yellow scale
+colors.error[50 - 950]; // Red scale
+colors.gray[50 - 950]; // Gray scale
 ```
 
 ### api.ts
@@ -218,6 +213,7 @@ import { GlassCard } from '@/components/ui/glass';
 ```
 
 **Props:**
+
 - `variant` - Card style preset
 - `intensity` - Blur intensity (0-100)
 - `tint` - iOS tint style
@@ -244,6 +240,7 @@ import { GlassButton } from '@/components/ui/glass';
 ```
 
 **Props:**
+
 - `title` - Button text (required)
 - `variant` - Button style
 - `size` - Button size
@@ -268,10 +265,11 @@ import { GlassModal } from '@/components/ui/glass';
   showCloseButton={true}
 >
   <Text>Modal content</Text>
-</GlassModal>
+</GlassModal>;
 ```
 
 **Props:**
+
 - `visible` - Modal visibility (required)
 - `onClose` - Close handler (required)
 - `title` - Modal title
@@ -294,10 +292,11 @@ import { GlassInput } from '@/components/ui/glass';
   error={emailError}
   intensity={30}
   className=""
-/>
+/>;
 ```
 
 **Props:**
+
 - `label` - Input label
 - `error` - Error message
 - `intensity` - Blur intensity
@@ -314,11 +313,7 @@ Configured Supabase client.
 import { supabase } from '@/lib/supabase/client';
 
 // Query
-const { data, error } = await supabase
-  .from('profiles')
-  .select('*')
-  .eq('id', userId)
-  .single();
+const { data, error } = await supabase.from('profiles').select('*').eq('id', userId).single();
 
 // Insert
 const { data, error } = await supabase
@@ -326,27 +321,25 @@ const { data, error } = await supabase
   .insert({ name: 'John', email: 'john@example.com' });
 
 // Update
-const { data, error } = await supabase
-  .from('profiles')
-  .update({ name: 'Jane' })
-  .eq('id', userId);
+const { data, error } = await supabase.from('profiles').update({ name: 'Jane' }).eq('id', userId);
 
 // Delete
-const { data, error } = await supabase
-  .from('profiles')
-  .delete()
-  .eq('id', userId);
+const { data, error } = await supabase.from('profiles').delete().eq('id', userId);
 
 // Real-time subscription
 const channel = supabase
   .channel('posts')
-  .on('postgres_changes', {
-    event: '*',
-    schema: 'public',
-    table: 'posts',
-  }, (payload) => {
-    console.log('Change:', payload);
-  })
+  .on(
+    'postgres_changes',
+    {
+      event: '*',
+      schema: 'public',
+      table: 'posts',
+    },
+    (payload) => {
+      console.log('Change:', payload);
+    }
+  )
   .subscribe();
 ```
 
@@ -442,11 +435,7 @@ import { useQuery } from '@tanstack/react-query';
 const { data, isLoading, error, refetch } = useQuery({
   queryKey: ['profile', userId],
   queryFn: async () => {
-    const { data } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('id', userId)
-      .single();
+    const { data } = await supabase.from('profiles').select('*').eq('id', userId).single();
     return data;
   },
   staleTime: 5 * 60 * 1000, // 5 minutes
@@ -465,10 +454,7 @@ const queryClient = useQueryClient();
 
 const mutation = useMutation({
   mutationFn: async (newProfile) => {
-    const { data } = await supabase
-      .from('profiles')
-      .update(newProfile)
-      .eq('id', userId);
+    const { data } = await supabase.from('profiles').update(newProfile).eq('id', userId);
     return data;
   },
   onSuccess: () => {
@@ -541,10 +527,10 @@ type Status = 'idle' | 'loading' | 'success' | 'error';
 
 ```tsx
 // Available env vars (must start with EXPO_PUBLIC_)
-process.env.EXPO_PUBLIC_SUPABASE_URL
-process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY
-process.env.EXPO_PUBLIC_REVENUECAT_API_KEY_IOS
-process.env.EXPO_PUBLIC_REVENUECAT_API_KEY_ANDROID
+process.env.EXPO_PUBLIC_SUPABASE_URL;
+process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY;
+process.env.EXPO_PUBLIC_REVENUECAT_API_KEY_IOS;
+process.env.EXPO_PUBLIC_REVENUECAT_API_KEY_ANDROID;
 ```
 
 ## Resources
