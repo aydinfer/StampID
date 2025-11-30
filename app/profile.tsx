@@ -1,263 +1,259 @@
-import React, { useState } from 'react';
-import { View, Text, ScrollView, ImageBackground, Pressable, Alert } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React from 'react';
+import {
+  View,
+  Text,
+  Pressable,
+  ScrollView,
+  Image,
+  Alert,
+  ActivityIndicator,
+} from 'react-native';
 import { router } from 'expo-router';
-import Animated, { FadeInDown } from 'react-native-reanimated';
-import { GlassCard, GlassButton, GlassInput, GlassAvatar } from '@/components/ui/glass';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { BlurView } from 'expo-blur';
+import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
+import {
+  ChevronLeft,
+  User,
+  Mail,
+  Crown,
+  Calendar,
+  Edit3,
+  LogOut,
+  Trash2,
+  ChevronRight,
+} from 'lucide-react-native';
 import { useAuth } from '@/lib/hooks/useAuth';
-import { validateName, validatePhone } from '@/lib/utils/validation';
+import { useSubscriptionContext, FREE_SCANS_LIMIT } from '@/lib/providers/SubscriptionProvider';
+import { useProfile } from '@/lib/hooks/useProfile';
 
-/**
- * Profile Screen - View and edit user profile
- *
- * Features:
- * - View mode: Display user information
- * - Edit mode: Update profile details
- * - Avatar display
- * - Form validation
- * - Supabase profile updates
- */
 export default function ProfileScreen() {
-  const { user, updateProfile } = useAuth();
+  const { user, signOut } = useAuth();
+  const { isPro, presentPaywall, freeScansRemaining } = useSubscriptionContext();
+  const { data: profile, isLoading } = useProfile();
 
-  const [isEditing, setIsEditing] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
+  const tier = isPro ? 'pro' : 'free';
+  const isPremium = isPro;
+  const scansRemaining = freeScansRemaining;
+  const scanLimit = FREE_SCANS_LIMIT;
 
-  // Form state
-  const [displayName, setDisplayName] = useState(user?.user_metadata?.displayName || '');
-  const [phone, setPhone] = useState(user?.user_metadata?.phone || '');
-  const [bio, setBio] = useState(user?.user_metadata?.bio || '');
-
-  // Error state
-  const [displayNameError, setDisplayNameError] = useState('');
-  const [phoneError, setPhoneError] = useState('');
-
-  const handleEdit = () => {
-    setIsEditing(true);
-  };
-
-  const handleCancel = () => {
-    // Reset form to original values
-    setDisplayName(user?.user_metadata?.displayName || '');
-    setPhone(user?.user_metadata?.phone || '');
-    setBio(user?.user_metadata?.bio || '');
-    setDisplayNameError('');
-    setPhoneError('');
-    setIsEditing(false);
-  };
-
-  const handleSave = async () => {
-    // Reset errors
-    setDisplayNameError('');
-    setPhoneError('');
-
-    // Validate
-    if (displayName.trim()) {
-      const nameValidation = validateName(displayName, 'Display name');
-      if (!nameValidation.isValid) {
-        setDisplayNameError(nameValidation.error || '');
-        return;
-      }
-    }
-
-    if (phone.trim()) {
-      const phoneValidation = validatePhone(phone);
-      if (!phoneValidation.isValid) {
-        setPhoneError(phoneValidation.error || '');
-        return;
-      }
-    }
-
-    // Save to Supabase
-    setIsSaving(true);
-    try {
-      await updateProfile({
-        data: {
-          displayName: displayName.trim(),
-          phone: phone.trim(),
-          bio: bio.trim(),
+  const handleSignOut = () => {
+    Alert.alert(
+      'Sign Out',
+      'Are you sure you want to sign out?',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Sign Out',
+          style: 'destructive',
+          onPress: async () => {
+            await signOut();
+            router.replace('/(auth)/sign-in');
+          },
         },
-      });
-
-      Alert.alert('Success', 'Your profile has been updated');
-      setIsEditing(false);
-    } catch (error: any) {
-      Alert.alert('Error', error?.message || 'Failed to update profile');
-    } finally {
-      setIsSaving(false);
-    }
+      ]
+    );
   };
+
+  const handleDeleteAccount = () => {
+    Alert.alert(
+      'Delete Account',
+      'This will permanently delete your account and all your data. This action cannot be undone.',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: () => {
+            Alert.alert('Contact Support', 'Please contact support@stampid.app to delete your account.');
+          },
+        },
+      ]
+    );
+  };
+
+  const handleUpgrade = async () => {
+    await presentPaywall();
+  };
+
+  if (isLoading) {
+    return (
+      <SafeAreaView className="flex-1 bg-cream items-center justify-center">
+        <ActivityIndicator size="large" color="#1B4332" />
+      </SafeAreaView>
+    );
+  }
 
   return (
-    <ImageBackground
-      source={{ uri: 'https://images.unsplash.com/photo-1557683316-973673baf926' }}
-      className="flex-1"
-      resizeMode="cover"
-    >
-      {/* Dark overlay */}
-      <View className="absolute inset-0 bg-black/60" />
+    <SafeAreaView className="flex-1 bg-cream" edges={['top']}>
+      {/* Header */}
+      <View className="flex-row items-center px-4 py-3 border-b border-forest-900/10">
+        <Pressable onPress={() => router.back()} className="flex-row items-center py-2">
+          <ChevronLeft size={24} color="#1B4332" />
+          <Text className="text-forest-900 font-medium">Back</Text>
+        </Pressable>
+        <Text className="text-lg font-semibold text-ink flex-1 text-center mr-12">
+          Profile
+        </Text>
+      </View>
 
-      <SafeAreaView className="flex-1" edges={['top', 'bottom']}>
-        {/* Header */}
-        <Animated.View entering={FadeInDown.duration(400)} className="px-4 pt-4 pb-6">
-          <Pressable onPress={() => router.back()}>
-            <Text className="text-primary-400 text-base font-medium mb-4">← Back</Text>
-          </Pressable>
-          <Text className="text-4xl font-bold text-white mb-2">Profile</Text>
-          <Text className="text-white/70">
-            {isEditing ? 'Edit your profile' : 'View your profile'}
-          </Text>
+      <ScrollView className="flex-1" contentContainerClassName="pb-8">
+        {/* Profile Card */}
+        <Animated.View entering={FadeIn.duration(400)} className="px-4 pt-6">
+          <BlurView intensity={20} tint="light" className="rounded-2xl overflow-hidden">
+            <View className="bg-white/70 p-6 items-center">
+              {/* Avatar */}
+              <View className="w-24 h-24 rounded-full bg-forest-900/10 items-center justify-center mb-4">
+                {profile?.avatar_url ? (
+                  <Image
+                    source={{ uri: profile.avatar_url }}
+                    className="w-full h-full rounded-full"
+                  />
+                ) : (
+                  <User size={40} color="#1B4332" strokeWidth={1.5} />
+                )}
+              </View>
+
+              {/* Name & Email */}
+              <Text className="text-xl font-bold text-ink mb-1">
+                {profile?.display_name || 'Stamp Collector'}
+              </Text>
+              <Text className="text-ink-light">{user?.email}</Text>
+
+              {/* Edit Button */}
+              <Pressable className="mt-4 flex-row items-center">
+                <Edit3 size={16} color="#1B4332" />
+                <Text className="text-forest-900 font-medium ml-1">Edit Profile</Text>
+              </Pressable>
+            </View>
+          </BlurView>
         </Animated.View>
 
-        <ScrollView className="flex-1 px-4" showsVerticalScrollIndicator={false}>
-          {/* Avatar Card */}
-          <Animated.View entering={FadeInDown.delay(200).duration(600)}>
-            <GlassCard variant="premium" intensity={80} className="p-6 mb-4 items-center">
-              <GlassAvatar
-                size="xl"
-                name={displayName || user?.email || 'User'}
-                // source={{ uri: user?.user_metadata?.avatarUrl }} // Uncomment when image upload is implemented
+        {/* Subscription Card */}
+        <Animated.View entering={FadeInDown.delay(100).duration(400)} className="px-4 pt-4">
+          <BlurView intensity={20} tint="light" className="rounded-2xl overflow-hidden">
+            <View className={`p-4 ${isPremium ? 'bg-forest-900/10' : 'bg-white/70'}`}>
+              <View className="flex-row items-center justify-between">
+                <View className="flex-row items-center">
+                  <Crown
+                    size={24}
+                    color={isPremium ? '#1B4332' : '#6B6B6B'}
+                    fill={isPremium ? '#1B4332' : 'transparent'}
+                  />
+                  <View className="ml-3">
+                    <Text className="text-lg font-semibold text-ink capitalize">
+                      {tier} Plan
+                    </Text>
+                    {!isPremium && (
+                      <Text className="text-ink-light text-sm">
+                        {scansRemaining}/{scanLimit} scans remaining
+                      </Text>
+                    )}
+                  </View>
+                </View>
+                {!isPremium && (
+                  <Pressable
+                    onPress={handleUpgrade}
+                    className="bg-forest-900 px-4 py-2 rounded-lg active:opacity-90"
+                  >
+                    <Text className="text-white font-medium">Upgrade</Text>
+                  </Pressable>
+                )}
+              </View>
+            </View>
+          </BlurView>
+        </Animated.View>
+
+        {/* Account Info */}
+        <Animated.View entering={FadeInDown.delay(200).duration(400)} className="px-4 pt-6">
+          <Text className="text-sm text-ink-light font-medium mb-2 px-2">
+            ACCOUNT INFORMATION
+          </Text>
+          <BlurView intensity={20} tint="light" className="rounded-2xl overflow-hidden">
+            <View className="bg-white/70">
+              <ProfileRow
+                icon={<Mail size={20} color="#1B4332" />}
+                label="Email"
+                value={user?.email || 'Not set'}
               />
+              <View className="h-px bg-forest-900/10 mx-4" />
+              <ProfileRow
+                icon={<Calendar size={20} color="#1B4332" />}
+                label="Member Since"
+                value={formatDate(profile?.created_at)}
+              />
+            </View>
+          </BlurView>
+        </Animated.View>
 
-              <Text className="text-white text-2xl font-bold mt-4">
-                {displayName || 'No name set'}
-              </Text>
-
-              <Text className="text-white/70 text-sm mt-1">{user?.email}</Text>
-
-              {!isEditing && (
-                <GlassButton
-                  title="Edit Profile"
-                  variant="secondary"
-                  size="md"
-                  onPress={handleEdit}
-                  className="mt-4"
-                />
-              )}
-            </GlassCard>
-          </Animated.View>
-
-          {/* Profile Information Card */}
-          <Animated.View entering={FadeInDown.delay(300).duration(600)}>
-            <GlassCard variant="default" intensity={60} className="p-6 mb-4">
-              <Text className="text-white text-lg font-bold mb-4">
-                {isEditing ? 'Edit Information' : 'Information'}
-              </Text>
-
-              {/* Display Name */}
-              {isEditing ? (
-                <GlassInput
-                  label="Display Name"
-                  placeholder="Enter your name"
-                  value={displayName}
-                  onChangeText={(text: string) => {
-                    setDisplayName(text);
-                    setDisplayNameError('');
-                  }}
-                  error={displayNameError}
-                  editable={!isSaving}
-                  className="mb-4"
-                />
-              ) : (
-                <View className="mb-4 pb-4 border-b border-white/10">
-                  <Text className="text-white/70 text-sm mb-1">Display Name</Text>
-                  <Text className="text-white font-medium">{displayName || 'Not set'}</Text>
+        {/* Danger Zone */}
+        <Animated.View entering={FadeInDown.delay(300).duration(400)} className="px-4 pt-6">
+          <Text className="text-sm text-ink-light font-medium mb-2 px-2">
+            ACCOUNT ACTIONS
+          </Text>
+          <BlurView intensity={20} tint="light" className="rounded-2xl overflow-hidden">
+            <View className="bg-white/70">
+              <Pressable
+                onPress={handleSignOut}
+                className="flex-row items-center justify-between p-4 active:bg-forest-900/5"
+              >
+                <View className="flex-row items-center">
+                  <LogOut size={20} color="#1B4332" />
+                  <Text className="text-ink font-medium ml-3">Sign Out</Text>
                 </View>
-              )}
-
-              {/* Phone */}
-              {isEditing ? (
-                <GlassInput
-                  label="Phone Number"
-                  placeholder="+1 (555) 123-4567"
-                  value={phone}
-                  onChangeText={(text: string) => {
-                    setPhone(text);
-                    setPhoneError('');
-                  }}
-                  error={phoneError}
-                  keyboardType="phone-pad"
-                  editable={!isSaving}
-                  className="mb-4"
-                />
-              ) : (
-                <View className="mb-4 pb-4 border-b border-white/10">
-                  <Text className="text-white/70 text-sm mb-1">Phone</Text>
-                  <Text className="text-white font-medium">{phone || 'Not set'}</Text>
+                <ChevronRight size={20} color="#9CA3AF" />
+              </Pressable>
+              <View className="h-px bg-forest-900/10 mx-4" />
+              <Pressable
+                onPress={handleDeleteAccount}
+                className="flex-row items-center justify-between p-4 active:bg-error/5"
+              >
+                <View className="flex-row items-center">
+                  <Trash2 size={20} color="#EF4444" />
+                  <Text className="text-error font-medium ml-3">Delete Account</Text>
                 </View>
-              )}
+                <ChevronRight size={20} color="#9CA3AF" />
+              </Pressable>
+            </View>
+          </BlurView>
+        </Animated.View>
 
-              {/* Bio */}
-              {isEditing ? (
-                <GlassInput
-                  label="Bio"
-                  placeholder="Tell us about yourself"
-                  value={bio}
-                  onChangeText={setBio}
-                  multiline
-                  numberOfLines={4}
-                  editable={!isSaving}
-                  className="mb-4"
-                />
-              ) : (
-                <View className="mb-4">
-                  <Text className="text-white/70 text-sm mb-1">Bio</Text>
-                  <Text className="text-white font-medium">{bio || 'Not set'}</Text>
-                </View>
-              )}
-
-              {/* Edit Actions */}
-              {isEditing && (
-                <View className="flex-row gap-3">
-                  <GlassButton
-                    title="Cancel"
-                    variant="secondary"
-                    size="md"
-                    onPress={handleCancel}
-                    disabled={isSaving}
-                    className="flex-1"
-                  />
-                  <GlassButton
-                    title="Save"
-                    variant="primary"
-                    size="md"
-                    onPress={handleSave}
-                    loading={isSaving}
-                    disabled={isSaving}
-                    className="flex-1"
-                  />
-                </View>
-              )}
-            </GlassCard>
-          </Animated.View>
-
-          {/* Account Info Card */}
-          {!isEditing && (
-            <Animated.View entering={FadeInDown.delay(400).duration(600)}>
-              <GlassCard variant="subtle" intensity={40} className="p-6 mb-8">
-                <Text className="text-white text-lg font-bold mb-4">Account</Text>
-
-                <View className="mb-3 pb-3 border-b border-white/10">
-                  <Text className="text-white/70 text-sm mb-1">Email</Text>
-                  <Text className="text-white font-medium">{user?.email}</Text>
-                </View>
-
-                <View className="mb-3 pb-3 border-b border-white/10">
-                  <Text className="text-white/70 text-sm mb-1">User ID</Text>
-                  <Text className="text-white font-medium text-xs">{user?.id}</Text>
-                </View>
-
-                <View>
-                  <Text className="text-white/70 text-sm mb-1">Account Created</Text>
-                  <Text className="text-white font-medium">
-                    {user?.created_at ? new Date(user.created_at).toLocaleDateString() : 'Unknown'}
-                  </Text>
-                </View>
-              </GlassCard>
-            </Animated.View>
-          )}
-        </ScrollView>
-      </SafeAreaView>
-    </ImageBackground>
+        {/* App Version */}
+        <View className="items-center mt-8">
+          <Text className="text-ink-muted text-sm">StampID v1.0.0</Text>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
+}
+
+// Profile row component
+function ProfileRow({
+  icon,
+  label,
+  value,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+}) {
+  return (
+    <View className="flex-row items-center justify-between p-4">
+      <View className="flex-row items-center">
+        {icon}
+        <Text className="text-ink font-medium ml-3">{label}</Text>
+      </View>
+      <Text className="text-ink-light">{value}</Text>
+    </View>
+  );
+}
+
+// Format date helper
+function formatDate(dateString?: string): string {
+  if (!dateString) return 'Unknown';
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-US', {
+    month: 'long',
+    year: 'numeric',
+  });
 }

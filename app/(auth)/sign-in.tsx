@@ -2,221 +2,148 @@ import React, { useState } from 'react';
 import {
   View,
   Text,
-  ImageBackground,
+  TextInput,
+  Pressable,
   KeyboardAvoidingView,
   Platform,
-  Pressable,
+  ActivityIndicator,
   Alert,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { router } from 'expo-router';
-import { GlassCard, GlassButton, GlassInput, GlassSwitch } from '@/components/ui/glass';
+import { Link, router } from 'expo-router';
+import { BlurView } from 'expo-blur';
 import { useAuth } from '@/lib/hooks/useAuth';
-import { validateEmail, validatePasswordSimple } from '@/lib/utils/validation';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-/**
- * Sign In Screen - Production-ready authentication
- *
- * Features:
- * - Supabase authentication integration
- * - Real-time form validation
- * - Remember me functionality
- * - Social login buttons (Apple, Google)
- * - Error handling with user feedback
- */
 export default function SignInScreen() {
-  const { signIn, loading: authLoading } = useAuth();
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [rememberMe, setRememberMe] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
+  const { signIn } = useAuth();
+
+  const validate = () => {
+    const newErrors: { email?: string; password?: string } = {};
+
+    if (!email) {
+      newErrors.email = 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      newErrors.email = 'Please enter a valid email';
+    }
+
+    if (!password) {
+      newErrors.password = 'Password is required';
+    } else if (password.length < 6) {
+      newErrors.password = 'Password must be at least 6 characters';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSignIn = async () => {
-    // Reset errors
-    setEmailError('');
-    setPasswordError('');
+    if (!validate()) return;
 
-    // Validate email
-    const emailValidation = validateEmail(email);
-    if (!emailValidation.isValid) {
-      setEmailError(emailValidation.error || '');
-      return;
-    }
-
-    // Validate password
-    const passwordValidation = validatePasswordSimple(password, 6);
-    if (!passwordValidation.isValid) {
-      setPasswordError(passwordValidation.error || '');
-      return;
-    }
-
-    // Attempt sign in
-    setIsLoading(true);
+    setLoading(true);
     try {
       await signIn(email, password);
-      // Navigation will be handled by auth state change
       router.replace('/(tabs)');
     } catch (error: any) {
-      // Handle specific Supabase errors
-      const errorMessage = error?.message || 'Failed to sign in';
-
-      if (errorMessage.includes('Invalid login credentials')) {
-        Alert.alert('Sign In Failed', 'Invalid email or password. Please try again.');
-      } else if (errorMessage.includes('Email not confirmed')) {
-        Alert.alert(
-          'Email Not Confirmed',
-          'Please check your email and confirm your account before signing in.'
-        );
-      } else {
-        Alert.alert('Sign In Failed', errorMessage);
-      }
+      Alert.alert('Sign In Failed', error.message || 'Please check your credentials');
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
-  const handleForgotPassword = () => {
-    router.push('/(auth)/forgot-password');
-  };
-
-  const handleSignUp = () => {
-    router.push('/(auth)/sign-up');
-  };
-
-  const handleSocialLogin = (provider: 'google' | 'apple') => {
-    // TODO: Implement social login with Supabase
-    Alert.alert(
-      'Social Login',
-      `${provider === 'google' ? 'Google' : 'Apple'} sign-in will be implemented with your Supabase configuration.`,
-      [{ text: 'OK' }]
-    );
-  };
-
-  const loading = isLoading || authLoading;
-
   return (
-    <ImageBackground
-      source={{ uri: 'https://images.unsplash.com/photo-1557683316-973673baf926' }}
-      className="flex-1"
-      resizeMode="cover"
-    >
-      {/* Dark overlay */}
-      <View className="absolute inset-0 bg-black/50" />
+    <SafeAreaView className="flex-1 bg-cream">
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        className="flex-1"
+      >
+        <View className="flex-1 px-6 justify-center">
+          {/* Header */}
+          <View className="mb-10">
+            <Text className="text-4xl font-bold text-ink mb-2">
+              Welcome back
+            </Text>
+            <Text className="text-lg text-ink-light">
+              Sign in to continue to StampID
+            </Text>
+          </View>
 
-      <SafeAreaView className="flex-1" edges={['top', 'bottom']}>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          className="flex-1 justify-center px-4"
-        >
-          <GlassCard variant="premium" intensity={80} className="p-8">
-            {/* Logo / Title */}
-            <View className="items-center mb-8">
-              <View className="w-16 h-16 bg-primary-500 rounded-2xl items-center justify-center mb-4">
-                <Text className="text-white text-3xl font-bold">A</Text>
-              </View>
-              <Text className="text-3xl font-bold text-white mb-2">Welcome Back</Text>
-              <Text className="text-white/70 text-center">Sign in to your account to continue</Text>
-            </View>
-
+          {/* Form */}
+          <View className="space-y-4">
             {/* Email Input */}
-            <GlassInput
-              label="Email Address"
-              placeholder="you@example.com"
-              value={email}
-              onChangeText={(text) => {
-                setEmail(text);
-                setEmailError('');
-              }}
-              error={emailError}
-              keyboardType="email-address"
-              autoCapitalize="none"
-              autoComplete="email"
-              editable={!loading}
-              className="mb-4"
-            />
+            <View className="mb-4">
+              <Text className="text-sm font-medium text-ink mb-2">Email</Text>
+              <BlurView intensity={20} tint="light" className="rounded-xl overflow-hidden">
+                <TextInput
+                  className="bg-white/70 border border-white/30 rounded-xl px-4 py-4 text-ink text-base"
+                  placeholder="you@example.com"
+                  placeholderTextColor="#9CA3AF"
+                  value={email}
+                  onChangeText={setEmail}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  autoComplete="email"
+                />
+              </BlurView>
+              {errors.email && (
+                <Text className="text-error text-sm mt-1">{errors.email}</Text>
+              )}
+            </View>
 
             {/* Password Input */}
-            <GlassInput
-              label="Password"
-              placeholder="Enter your password"
-              value={password}
-              onChangeText={(text) => {
-                setPassword(text);
-                setPasswordError('');
-              }}
-              error={passwordError}
-              secureTextEntry
-              autoCapitalize="none"
-              autoComplete="password"
-              editable={!loading}
-              className="mb-4"
-            />
-
-            {/* Remember Me & Forgot Password */}
-            <View className="flex-row items-center justify-between mb-6">
-              <GlassSwitch
-                value={rememberMe}
-                onValueChange={setRememberMe}
-                label="Remember me"
-                disabled={loading}
-              />
-
-              <Pressable onPress={handleForgotPassword} disabled={loading}>
-                <Text className="text-primary-400 text-sm font-medium">Forgot Password?</Text>
-              </Pressable>
+            <View className="mb-4">
+              <Text className="text-sm font-medium text-ink mb-2">Password</Text>
+              <BlurView intensity={20} tint="light" className="rounded-xl overflow-hidden">
+                <TextInput
+                  className="bg-white/70 border border-white/30 rounded-xl px-4 py-4 text-ink text-base"
+                  placeholder="Enter your password"
+                  placeholderTextColor="#9CA3AF"
+                  value={password}
+                  onChangeText={setPassword}
+                  secureTextEntry
+                  autoComplete="password"
+                />
+              </BlurView>
+              {errors.password && (
+                <Text className="text-error text-sm mt-1">{errors.password}</Text>
+              )}
             </View>
+
+            {/* Forgot Password Link */}
+            <Link href="/(auth)/forgot-password" asChild>
+              <Pressable className="self-end mb-6">
+                <Text className="text-forest-900 font-medium">Forgot password?</Text>
+              </Pressable>
+            </Link>
 
             {/* Sign In Button */}
-            <GlassButton
-              title="Sign In"
-              variant="primary"
-              size="lg"
+            <Pressable
               onPress={handleSignIn}
-              loading={loading}
               disabled={loading}
-              className="mb-4"
-            />
-
-            {/* Divider */}
-            <View className="flex-row items-center my-4">
-              <View className="flex-1 h-px bg-white/20" />
-              <Text className="text-white/50 px-4 text-sm">Or continue with</Text>
-              <View className="flex-1 h-px bg-white/20" />
-            </View>
-
-            {/* Social Login */}
-            <View className="flex-row gap-3 mb-6">
-              <GlassButton
-                title="Google"
-                variant="secondary"
-                size="md"
-                onPress={() => handleSocialLogin('google')}
-                disabled={loading}
-                className="flex-1"
-              />
-              <GlassButton
-                title="Apple"
-                variant="secondary"
-                size="md"
-                onPress={() => handleSocialLogin('apple')}
-                disabled={loading}
-                className="flex-1"
-              />
-            </View>
-
-            {/* Sign Up Link */}
-            <Pressable onPress={handleSignUp} disabled={loading}>
-              <View className="flex-row items-center justify-center">
-                <Text className="text-white/70 text-sm">Don't have an account? </Text>
-                <Text className="text-primary-400 text-sm font-semibold">Sign Up</Text>
-              </View>
+              className={`bg-forest-900 rounded-xl py-4 items-center ${loading ? 'opacity-70' : 'active:opacity-90 active:scale-[0.98]'}`}
+            >
+              {loading ? (
+                <ActivityIndicator color="white" />
+              ) : (
+                <Text className="text-white font-semibold text-base">Sign In</Text>
+              )}
             </Pressable>
-          </GlassCard>
-        </KeyboardAvoidingView>
-      </SafeAreaView>
-    </ImageBackground>
+          </View>
+
+          {/* Sign Up Link */}
+          <View className="flex-row justify-center mt-8">
+            <Text className="text-ink-light">Don't have an account? </Text>
+            <Link href="/(auth)/sign-up" asChild>
+              <Pressable>
+                <Text className="text-forest-900 font-semibold">Sign Up</Text>
+              </Pressable>
+            </Link>
+          </View>
+        </View>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }

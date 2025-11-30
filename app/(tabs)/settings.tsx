@@ -1,292 +1,262 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, ImageBackground, Pressable, Alert } from 'react-native';
+import { View, Text, ScrollView, Pressable, Alert, Linking } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { router } from 'expo-router';
-import Animated, { FadeInDown } from 'react-native-reanimated';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { GlassCard, GlassButton, GlassSwitch } from '@/components/ui/glass';
-import { useAuth } from '@/lib/hooks/useAuth';
-import { useOnboarding } from '@/lib/hooks/useOnboarding';
-import { useAppStore } from '@/lib/store/appStore';
+import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
+import {
+  Trophy, Mail, User, Bell, Lock, Cloud, Download,
+  HelpCircle, MessageCircle, Star, FileText, Shield, Smartphone, ChevronRight
+} from 'lucide-react-native';
+import { GlassCard } from '@/components/ui/GlassCard';
+import { colors } from '@/lib/design/tokens';
+import { useSubscriptionContext, FREE_SCANS_LIMIT } from '@/lib/providers/SubscriptionProvider';
 
-interface SettingsSection {
-  title: string;
-  items: SettingsItem[];
-}
-
-interface SettingsItem {
-  label: string;
-  type: 'switch' | 'button' | 'info';
-  value?: boolean;
-  onPress?: () => void;
-  onToggle?: (value: boolean) => void;
-  subtitle?: string;
-}
-
-/**
- * Settings Screen - Production-ready app settings
- *
- * Features:
- * - Account management
- * - Notifications toggle
- * - App preferences
- * - Subscription management
- * - Sign out functionality
- * - Clear onboarding (for re-viewing)
- */
 export default function SettingsScreen() {
-  const { signOut, user } = useAuth();
-  const { resetOnboarding } = useOnboarding();
-  const { theme, setTheme } = useAppStore();
+  const { isPro, customerInfo, restorePurchases, freeScansRemaining, presentPaywall } = useSubscriptionContext();
+  const [isRestoring, setIsRestoring] = useState(false);
 
-  const [notifications, setNotifications] = useState(true);
-  const [emailNotifications, setEmailNotifications] = useState(false);
-  const [isSigningOut, setIsSigningOut] = useState(false);
-
-  const handleSignOut = () => {
-    Alert.alert('Sign Out', 'Are you sure you want to sign out?', [
-      { text: 'Cancel', style: 'cancel' },
-      {
-        text: 'Sign Out',
-        style: 'destructive',
-        onPress: async () => {
-          setIsSigningOut(true);
-          try {
-            await signOut();
-            router.replace('/(auth)/sign-in');
-          } catch (error: any) {
-            Alert.alert('Error', error?.message || 'Failed to sign out');
-          } finally {
-            setIsSigningOut(false);
-          }
-        },
-      },
-    ]);
-  };
-
-  const handleClearOnboarding = async () => {
-    Alert.alert(
-      'Reset Onboarding',
-      'This will clear your onboarding status so you can view it again.',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Reset',
-          onPress: async () => {
-            try {
-              await resetOnboarding();
-              Alert.alert('Success', 'Onboarding has been reset. Sign out to see it again.');
-            } catch {
-              Alert.alert('Error', 'Failed to reset onboarding');
-            }
-          },
-        },
-      ]
-    );
-  };
-
-  const handleClearCache = async () => {
-    Alert.alert(
-      'Clear Cache',
-      'This will clear all locally cached data. This action cannot be undone.',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Clear',
-          style: 'destructive',
-          onPress: async () => {
-            try {
-              await AsyncStorage.clear();
-              Alert.alert('Success', 'Cache cleared successfully');
-            } catch {
-              Alert.alert('Error', 'Failed to clear cache');
-            }
-          },
-        },
-      ]
-    );
-  };
-
-  const sections: SettingsSection[] = [
-    {
-      title: 'Account',
-      items: [
-        {
-          label: 'Email',
-          type: 'info',
-          subtitle: user?.email || 'Not signed in',
-        },
-        {
-          label: 'Profile',
-          type: 'button',
-          subtitle: 'View and edit your profile',
-          onPress: () => router.push('/profile'),
-        },
-        {
-          label: 'Subscription',
-          type: 'button',
-          subtitle: 'Manage your subscription',
-          onPress: () => router.push('/subscription'),
-        },
-      ],
-    },
-    {
-      title: 'Notifications',
-      items: [
-        {
-          label: 'Push Notifications',
-          type: 'switch',
-          value: notifications,
-          onToggle: setNotifications,
-        },
-        {
-          label: 'Email Notifications',
-          type: 'switch',
-          value: emailNotifications,
-          onToggle: setEmailNotifications,
-        },
-      ],
-    },
-    {
-      title: 'Preferences',
-      items: [
-        {
-          label: 'Dark Mode',
-          type: 'switch',
-          value: theme === 'dark',
-          onToggle: (value: boolean) => setTheme(value ? 'dark' : 'light'),
-        },
-      ],
-    },
-    {
-      title: 'App',
-      items: [
-        {
-          label: 'App Version',
-          type: 'info',
-          subtitle: '1.0.0',
-        },
-        {
-          label: 'Reset Onboarding',
-          type: 'button',
-          subtitle: 'View onboarding screens again',
-          onPress: handleClearOnboarding,
-        },
-        {
-          label: 'Clear Cache',
-          type: 'button',
-          subtitle: 'Clear all locally stored data',
-          onPress: handleClearCache,
-        },
-      ],
-    },
-    {
-      title: 'Support',
-      items: [
-        {
-          label: 'Help Center',
-          type: 'button',
-          subtitle: 'Get help and support',
-          onPress: () => Alert.alert('Help Center', 'Help center coming soon'),
-        },
-        {
-          label: 'Privacy Policy',
-          type: 'button',
-          subtitle: 'Read our privacy policy',
-          onPress: () => Alert.alert('Privacy Policy', 'Privacy policy coming soon'),
-        },
-        {
-          label: 'Terms of Service',
-          type: 'button',
-          subtitle: 'Read our terms of service',
-          onPress: () => Alert.alert('Terms', 'Terms of service coming soon'),
-        },
-      ],
-    },
-  ];
-
-  const renderSettingsItem = (item: SettingsItem, index: number) => {
-    if (item.type === 'switch') {
-      return (
-        <View key={index} className="py-3 border-b border-white/10">
-          <GlassSwitch
-            value={item.value || false}
-            onValueChange={item.onToggle || (() => {})}
-            label={item.label}
-          />
-          {item.subtitle && (
-            <Text className="text-white/50 text-xs mt-1 ml-12">{item.subtitle}</Text>
-          )}
-        </View>
-      );
+  const handleRestore = async () => {
+    setIsRestoring(true);
+    try {
+      const info = await restorePurchases();
+      if (info?.entitlements.active['pro']) {
+        Alert.alert('Success', 'Your subscription has been restored!');
+      } else {
+        Alert.alert('No Purchases Found', 'We couldn\'t find any previous purchases to restore.');
+      }
+    } catch (error: any) {
+      Alert.alert('Error', error.message || 'Failed to restore purchases.');
+    } finally {
+      setIsRestoring(false);
     }
+  };
 
-    if (item.type === 'button') {
-      return (
-        <Pressable key={index} onPress={item.onPress} className="py-3 border-b border-white/10">
-          <Text className="text-white font-medium mb-1">{item.label}</Text>
-          {item.subtitle && <Text className="text-white/50 text-sm">{item.subtitle}</Text>}
-        </Pressable>
-      );
-    }
-
-    // info type
-    return (
-      <View key={index} className="py-3 border-b border-white/10">
-        <Text className="text-white/70 text-sm mb-1">{item.label}</Text>
-        <Text className="text-white font-medium">{item.subtitle}</Text>
-      </View>
-    );
+  const handleManageSubscription = () => {
+    // Deep link to App Store subscription management
+    Linking.openURL('https://apps.apple.com/account/subscriptions');
   };
 
   return (
-    <ImageBackground
-      source={{ uri: 'https://images.unsplash.com/photo-1557683316-973673baf926' }}
-      className="flex-1"
-      resizeMode="cover"
-    >
-      {/* Dark overlay */}
-      <View className="absolute inset-0 bg-black/60" />
+    <SafeAreaView className="flex-1 bg-zinc-50" edges={['top']}>
+      {/* Header */}
+      <View className="px-6 pt-4 pb-2">
+        <Text className="text-display font-sans-bold text-zinc-900">Settings</Text>
+        <Text className="text-caption text-zinc-500 mt-1">Manage your account</Text>
+      </View>
 
-      <SafeAreaView className="flex-1" edges={['top', 'bottom']}>
-        {/* Header */}
-        <Animated.View entering={FadeInDown.duration(400)} className="px-4 pt-4 pb-6">
-          <Text className="text-4xl font-bold text-white mb-2">Settings</Text>
-          <Text className="text-white/70">Manage your account and preferences</Text>
+      <ScrollView
+        className="flex-1"
+        contentContainerStyle={{ paddingBottom: 40 }}
+        showsVerticalScrollIndicator={false}
+      >
+        {/* Subscription Section */}
+        <Animated.View entering={FadeIn.duration(400)} className="px-4 mb-6">
+          <Text className="text-zinc-400 text-micro font-sans-semibold mb-3 ml-1 tracking-wide">SUBSCRIPTION</Text>
+
+          <GlassCard variant="card" padding="md">
+            {isPro ? (
+              // Pro User
+              <View className="bg-indigo-500 -m-4 p-4 rounded-2xl">
+                <View className="flex-row items-center mb-3">
+                  <View className="w-12 h-12 bg-white/20 rounded-full items-center justify-center mr-3">
+                    <Trophy size={24} color="#FFFFFF" />
+                  </View>
+                  <View className="flex-1">
+                    <Text className="text-white font-sans-bold text-body">StampID Pro</Text>
+                    <Text className="text-white/70 text-caption">Unlimited access</Text>
+                  </View>
+                </View>
+
+                <View className="border-t border-white/20 pt-3 mt-1">
+                  <View className="flex-row items-center justify-between">
+                    <Text className="text-white/70 text-caption">Status</Text>
+                    <View className="bg-teal-400/20 px-2 py-0.5 rounded-full">
+                      <Text className="text-teal-300 text-micro font-sans-semibold">Active</Text>
+                    </View>
+                  </View>
+
+                  {customerInfo?.entitlements.active['pro']?.expirationDate && (
+                    <View className="flex-row items-center justify-between mt-2">
+                      <Text className="text-white/70 text-caption">Renews</Text>
+                      <Text className="text-white text-caption font-sans-medium">
+                        {new Date(customerInfo.entitlements.active['pro'].expirationDate).toLocaleDateString()}
+                      </Text>
+                    </View>
+                  )}
+                </View>
+
+                <Pressable
+                  onPress={handleManageSubscription}
+                  className="bg-white/20 rounded-xl py-3 mt-4 items-center active:bg-white/30"
+                >
+                  <Text className="text-white font-sans-medium">Manage Subscription</Text>
+                </Pressable>
+              </View>
+            ) : (
+              // Free User
+              <View>
+                <View className="flex-row items-center mb-4">
+                  <View className="w-12 h-12 bg-zinc-100 rounded-full items-center justify-center mr-3">
+                    <Mail size={24} color={colors.zinc[400]} />
+                  </View>
+                  <View className="flex-1">
+                    <Text className="text-zinc-900 font-sans-bold text-body">Free Plan</Text>
+                    <Text className="text-zinc-500 text-caption">
+                      {freeScansRemaining}/{FREE_SCANS_LIMIT} scans remaining today
+                    </Text>
+                  </View>
+                </View>
+
+                <Pressable
+                  onPress={presentPaywall}
+                  className="bg-indigo-500 rounded-xl py-3.5 items-center active:opacity-90"
+                >
+                  <Text className="text-white font-sans-semibold">Upgrade to Pro</Text>
+                </Pressable>
+
+                <Pressable
+                  onPress={handleRestore}
+                  disabled={isRestoring}
+                  className="py-3 mt-2 items-center"
+                >
+                  <Text className="text-indigo-500 font-sans-medium">
+                    {isRestoring ? 'Restoring...' : 'Restore Purchases'}
+                  </Text>
+                </Pressable>
+              </View>
+            )}
+          </GlassCard>
         </Animated.View>
 
-        <ScrollView className="flex-1 px-4" showsVerticalScrollIndicator={false}>
-          {sections.map((section, sectionIndex) => (
-            <Animated.View
-              key={sectionIndex}
-              entering={FadeInDown.delay(200 + sectionIndex * 100).duration(600)}
-            >
-              <GlassCard variant="default" intensity={60} className="p-6 mb-4">
-                <Text className="text-white text-lg font-bold mb-4">{section.title}</Text>
-                {section.items.map((item, itemIndex) => renderSettingsItem(item, itemIndex))}
-              </GlassCard>
-            </Animated.View>
-          ))}
+        {/* Account Section */}
+        <Animated.View entering={FadeInDown.delay(100).duration(400)} className="px-4 mb-6">
+          <Text className="text-zinc-400 text-micro font-sans-semibold mb-3 ml-1 tracking-wide">ACCOUNT</Text>
 
-          {/* Sign Out Button */}
-          <Animated.View entering={FadeInDown.delay(200 + sections.length * 100).duration(600)}>
-            <GlassButton
-              title="Sign Out"
-              variant="secondary"
-              size="lg"
-              onPress={handleSignOut}
-              loading={isSigningOut}
-              disabled={isSigningOut}
-              className="mb-8"
+          <GlassCard variant="card" padding="none">
+            <SettingsRow
+              icon={<User size={20} color={colors.zinc[500]} />}
+              title="Profile"
+              onPress={() => {}}
             />
-          </Animated.View>
+            <SettingsRow
+              icon={<Bell size={20} color={colors.zinc[500]} />}
+              title="Notifications"
+              onPress={() => {}}
+            />
+            <SettingsRow
+              icon={<Lock size={20} color={colors.zinc[500]} />}
+              title="Privacy"
+              onPress={() => {}}
+              isLast
+            />
+          </GlassCard>
+        </Animated.View>
 
-          {/* Footer */}
-          <View className="items-center pb-8">
-            <Text className="text-white/40 text-xs">Built with Expo SDK 54 • NativeWind v4</Text>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </ImageBackground>
+        {/* Data Section */}
+        <Animated.View entering={FadeInDown.delay(200).duration(400)} className="px-4 mb-6">
+          <Text className="text-zinc-400 text-micro font-sans-semibold mb-3 ml-1 tracking-wide">DATA</Text>
+
+          <GlassCard variant="card" padding="none">
+            <SettingsRow
+              icon={<Cloud size={20} color={colors.zinc[500]} />}
+              title="Cloud Backup"
+              subtitle={isPro ? 'Enabled' : 'Pro feature'}
+              onPress={() => !isPro && presentPaywall()}
+            />
+            <SettingsRow
+              icon={<Download size={20} color={colors.zinc[500]} />}
+              title="Export Collection"
+              subtitle={isPro ? 'CSV, PDF' : 'Pro feature'}
+              onPress={() => !isPro && presentPaywall()}
+              isLast
+            />
+          </GlassCard>
+        </Animated.View>
+
+        {/* Support Section */}
+        <Animated.View entering={FadeInDown.delay(300).duration(400)} className="px-4 mb-6">
+          <Text className="text-zinc-400 text-micro font-sans-semibold mb-3 ml-1 tracking-wide">SUPPORT</Text>
+
+          <GlassCard variant="card" padding="none">
+            <SettingsRow
+              icon={<HelpCircle size={20} color={colors.zinc[500]} />}
+              title="Help Center"
+              onPress={() => {}}
+            />
+            <SettingsRow
+              icon={<MessageCircle size={20} color={colors.zinc[500]} />}
+              title="Contact Support"
+              onPress={() => {}}
+            />
+            <SettingsRow
+              icon={<Star size={20} color={colors.zinc[500]} />}
+              title="Rate StampID"
+              onPress={() => {}}
+              isLast
+            />
+          </GlassCard>
+        </Animated.View>
+
+        {/* About Section */}
+        <Animated.View entering={FadeInDown.delay(400).duration(400)} className="px-4 mb-6">
+          <Text className="text-zinc-400 text-micro font-sans-semibold mb-3 ml-1 tracking-wide">ABOUT</Text>
+
+          <GlassCard variant="card" padding="none">
+            <SettingsRow
+              icon={<FileText size={20} color={colors.zinc[500]} />}
+              title="Terms of Service"
+              onPress={() => {}}
+            />
+            <SettingsRow
+              icon={<Shield size={20} color={colors.zinc[500]} />}
+              title="Privacy Policy"
+              onPress={() => {}}
+            />
+            <View className="flex-row items-center justify-between p-4 border-t border-zinc-100">
+              <View className="flex-row items-center">
+                <View className="w-9 h-9 rounded-lg bg-zinc-50 items-center justify-center mr-3">
+                  <Smartphone size={20} color={colors.zinc[500]} />
+                </View>
+                <Text className="text-zinc-900 font-sans-medium">App Version</Text>
+              </View>
+              <Text className="text-zinc-400 font-mono-regular">1.0.0</Text>
+            </View>
+          </GlassCard>
+        </Animated.View>
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
+
+function SettingsRow({
+  icon,
+  title,
+  subtitle,
+  onPress,
+  isLast = false,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  subtitle?: string;
+  onPress: () => void;
+  isLast?: boolean;
+}) {
+  return (
+    <Pressable
+      onPress={onPress}
+      className={`flex-row items-center p-4 active:bg-zinc-50 ${
+        !isLast ? 'border-b border-zinc-100' : ''
+      }`}
+    >
+      <View className="w-9 h-9 rounded-lg bg-zinc-50 items-center justify-center mr-3">
+        {icon}
+      </View>
+      <View className="flex-1">
+        <Text className="text-zinc-900 font-sans-medium">{title}</Text>
+        {subtitle && (
+          <Text className="text-zinc-400 text-caption">{subtitle}</Text>
+        )}
+      </View>
+      <ChevronRight size={18} color={colors.zinc[300]} />
+    </Pressable>
   );
 }

@@ -1,317 +1,213 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
-  ImageBackground,
+  TextInput,
+  Pressable,
   KeyboardAvoidingView,
   Platform,
-  Pressable,
+  ActivityIndicator,
   Alert,
   ScrollView,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { router } from 'expo-router';
-import { GlassCard, GlassButton, GlassInput, GlassSwitch } from '@/components/ui/glass';
+import { Link, router } from 'expo-router';
+import { BlurView } from 'expo-blur';
 import { useAuth } from '@/lib/hooks/useAuth';
-import { validateEmail, validatePassword, validatePasswordMatch } from '@/lib/utils/validation';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-/**
- * Sign Up Screen - Production-ready user registration
- *
- * Features:
- * - Supabase authentication integration
- * - Real-time form validation
- * - Password strength indicator
- * - Terms acceptance
- * - Social signup buttons (Apple, Google)
- * - Error handling with user feedback
- */
 export default function SignUpScreen() {
-  const { signUp, loading: authLoading } = useAuth();
-
+  const [displayName, setDisplayName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [acceptTerms, setAcceptTerms] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState<{
+    displayName?: string;
+    email?: string;
+    password?: string;
+    confirmPassword?: string;
+  }>({});
+  const { signUp } = useAuth();
 
-  // Error states
-  const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const [confirmPasswordError, setConfirmPasswordError] = useState('');
+  const validate = () => {
+    const newErrors: typeof errors = {};
 
-  // Real-time validation for email
-  useEffect(() => {
-    if (email.length > 0) {
-      const validation = validateEmail(email);
-      if (!validation.isValid && email.length > 3) {
-        setEmailError(validation.error || '');
-      } else {
-        setEmailError('');
-      }
+    if (!displayName || displayName.trim().length < 2) {
+      newErrors.displayName = 'Name must be at least 2 characters';
     }
-  }, [email]);
 
-  // Real-time validation for password
-  useEffect(() => {
-    if (password.length > 0) {
-      const validation = validatePassword(password);
-      if (!validation.isValid && password.length > 3) {
-        setPasswordError(validation.error || '');
-      } else {
-        setPasswordError('');
-      }
+    if (!email) {
+      newErrors.email = 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      newErrors.email = 'Please enter a valid email';
     }
-  }, [password]);
 
-  // Real-time validation for confirm password
-  useEffect(() => {
-    if (confirmPassword.length > 0) {
-      const validation = validatePasswordMatch(password, confirmPassword);
-      if (!validation.isValid && confirmPassword.length >= password.length) {
-        setConfirmPasswordError(validation.error || '');
-      } else {
-        setConfirmPasswordError('');
-      }
+    if (!password) {
+      newErrors.password = 'Password is required';
+    } else if (password.length < 6) {
+      newErrors.password = 'Password must be at least 6 characters';
     }
-  }, [password, confirmPassword]);
+
+    if (password !== confirmPassword) {
+      newErrors.confirmPassword = 'Passwords do not match';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSignUp = async () => {
-    // Final validation before submission
-    const emailValidation = validateEmail(email);
-    if (!emailValidation.isValid) {
-      setEmailError(emailValidation.error || '');
-      return;
-    }
+    if (!validate()) return;
 
-    const passwordValidation = validatePassword(password);
-    if (!passwordValidation.isValid) {
-      setPasswordError(passwordValidation.error || '');
-      return;
-    }
-
-    const passwordMatchValidation = validatePasswordMatch(password, confirmPassword);
-    if (!passwordMatchValidation.isValid) {
-      setConfirmPasswordError(passwordMatchValidation.error || '');
-      return;
-    }
-
-    if (!acceptTerms) {
-      Alert.alert(
-        'Terms Required',
-        'Please accept the Terms of Service and Privacy Policy to continue.'
-      );
-      return;
-    }
-
-    // Attempt sign up
-    setIsLoading(true);
+    setLoading(true);
     try {
       await signUp(email, password);
       Alert.alert(
-        'Check Your Email',
-        'We sent you a confirmation email. Please check your inbox and click the confirmation link to activate your account.',
-        [
-          {
-            text: 'OK',
-            onPress: () => router.replace('/(auth)/sign-in'),
-          },
-        ]
+        'Check your email',
+        'We sent you a confirmation link. Please verify your email to continue.',
+        [{ text: 'OK', onPress: () => router.replace('/(auth)/sign-in') }]
       );
     } catch (error: any) {
-      // Handle specific Supabase errors
-      const errorMessage = error?.message || 'Failed to create account';
-
-      if (errorMessage.includes('already registered')) {
-        Alert.alert('Account Exists', 'This email is already registered. Please sign in instead.');
-      } else if (errorMessage.includes('Password should be')) {
-        setPasswordError(errorMessage);
-      } else {
-        Alert.alert('Sign Up Failed', errorMessage);
-      }
+      Alert.alert('Sign Up Failed', error.message || 'Please try again');
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
-  const handleSignIn = () => {
-    router.push('/(auth)/sign-in');
-  };
-
-  const handleSocialSignUp = (provider: 'google' | 'apple') => {
-    // TODO: Implement social signup with Supabase
-    Alert.alert(
-      'Social Sign Up',
-      `${provider === 'google' ? 'Google' : 'Apple'} sign-up will be implemented with your Supabase configuration.`,
-      [{ text: 'OK' }]
-    );
-  };
-
-  const loading = isLoading || authLoading;
-
   return (
-    <ImageBackground
-      source={{ uri: 'https://images.unsplash.com/photo-1557683316-973673baf926' }}
-      className="flex-1"
-      resizeMode="cover"
-    >
-      {/* Dark overlay */}
-      <View className="absolute inset-0 bg-black/50" />
-
-      <SafeAreaView className="flex-1" edges={['top', 'bottom']}>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    <SafeAreaView className="flex-1 bg-cream">
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        className="flex-1"
+      >
+        <ScrollView
           className="flex-1"
+          contentContainerStyle={{ flexGrow: 1 }}
+          keyboardShouldPersistTaps="handled"
         >
-          <ScrollView
-            className="flex-1 px-4"
-            contentContainerStyle={{ paddingVertical: 24 }}
-            showsVerticalScrollIndicator={false}
-          >
-            <GlassCard variant="premium" intensity={80} className="p-8">
-              {/* Logo / Title */}
-              <View className="items-center mb-8">
-                <View className="w-16 h-16 bg-primary-500 rounded-2xl items-center justify-center mb-4">
-                  <Text className="text-white text-3xl font-bold">A</Text>
-                </View>
-                <Text className="text-3xl font-bold text-white mb-2">Create Account</Text>
-                <Text className="text-white/70 text-center">Sign up to get started</Text>
+          <View className="flex-1 px-6 justify-center py-10">
+            {/* Header */}
+            <View className="mb-8">
+              <Text className="text-4xl font-bold text-ink mb-2">
+                Create account
+              </Text>
+              <Text className="text-lg text-ink-light">
+                Start building your stamp collection
+              </Text>
+            </View>
+
+            {/* Form */}
+            <View className="space-y-4">
+              {/* Display Name Input */}
+              <View className="mb-4">
+                <Text className="text-sm font-medium text-ink mb-2">Name</Text>
+                <BlurView intensity={20} tint="light" className="rounded-xl overflow-hidden">
+                  <TextInput
+                    className="bg-white/70 border border-white/30 rounded-xl px-4 py-4 text-ink text-base"
+                    placeholder="Your name"
+                    placeholderTextColor="#9CA3AF"
+                    value={displayName}
+                    onChangeText={setDisplayName}
+                    autoComplete="name"
+                  />
+                </BlurView>
+                {errors.displayName && (
+                  <Text className="text-error text-sm mt-1">{errors.displayName}</Text>
+                )}
               </View>
 
               {/* Email Input */}
-              <GlassInput
-                label="Email Address"
-                placeholder="you@example.com"
-                value={email}
-                onChangeText={setEmail}
-                error={emailError}
-                keyboardType="email-address"
-                autoCapitalize="none"
-                autoComplete="email"
-                editable={!loading}
-                className="mb-4"
-              />
+              <View className="mb-4">
+                <Text className="text-sm font-medium text-ink mb-2">Email</Text>
+                <BlurView intensity={20} tint="light" className="rounded-xl overflow-hidden">
+                  <TextInput
+                    className="bg-white/70 border border-white/30 rounded-xl px-4 py-4 text-ink text-base"
+                    placeholder="you@example.com"
+                    placeholderTextColor="#9CA3AF"
+                    value={email}
+                    onChangeText={setEmail}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                    autoComplete="email"
+                  />
+                </BlurView>
+                {errors.email && (
+                  <Text className="text-error text-sm mt-1">{errors.email}</Text>
+                )}
+              </View>
 
               {/* Password Input */}
-              <GlassInput
-                label="Password"
-                placeholder="Create a strong password"
-                value={password}
-                onChangeText={setPassword}
-                error={passwordError}
-                secureTextEntry
-                autoCapitalize="none"
-                autoComplete="password-new"
-                editable={!loading}
-                className="mb-4"
-              />
-
-              {/* Password Requirements */}
-              {password.length > 0 && (
-                <View className="mb-4 px-1">
-                  <Text className="text-white/60 text-xs mb-2">Password must contain:</Text>
-                  <Text
-                    className={`text-xs ${/[A-Z]/.test(password) ? 'text-success-400' : 'text-white/50'}`}
-                  >
-                    • At least one uppercase letter
-                  </Text>
-                  <Text
-                    className={`text-xs ${/[a-z]/.test(password) ? 'text-success-400' : 'text-white/50'}`}
-                  >
-                    • At least one lowercase letter
-                  </Text>
-                  <Text
-                    className={`text-xs ${/\d/.test(password) ? 'text-success-400' : 'text-white/50'}`}
-                  >
-                    • At least one number
-                  </Text>
-                  <Text
-                    className={`text-xs ${password.length >= 8 ? 'text-success-400' : 'text-white/50'}`}
-                  >
-                    • Minimum 8 characters
-                  </Text>
-                </View>
-              )}
+              <View className="mb-4">
+                <Text className="text-sm font-medium text-ink mb-2">Password</Text>
+                <BlurView intensity={20} tint="light" className="rounded-xl overflow-hidden">
+                  <TextInput
+                    className="bg-white/70 border border-white/30 rounded-xl px-4 py-4 text-ink text-base"
+                    placeholder="At least 6 characters"
+                    placeholderTextColor="#9CA3AF"
+                    value={password}
+                    onChangeText={setPassword}
+                    secureTextEntry
+                    autoComplete="new-password"
+                  />
+                </BlurView>
+                {errors.password && (
+                  <Text className="text-error text-sm mt-1">{errors.password}</Text>
+                )}
+              </View>
 
               {/* Confirm Password Input */}
-              <GlassInput
-                label="Confirm Password"
-                placeholder="Re-enter your password"
-                value={confirmPassword}
-                onChangeText={setConfirmPassword}
-                error={confirmPasswordError}
-                secureTextEntry
-                autoCapitalize="none"
-                autoComplete="password-new"
-                editable={!loading}
-                className="mb-6"
-              />
-
-              {/* Terms Acceptance */}
               <View className="mb-6">
-                <GlassSwitch
-                  value={acceptTerms}
-                  onValueChange={setAcceptTerms}
-                  label=""
-                  disabled={loading}
-                />
-                <View className="ml-12 -mt-6">
-                  <Text className="text-white/70 text-sm">
-                    I accept the <Text className="text-primary-400">Terms of Service</Text> and{' '}
-                    <Text className="text-primary-400">Privacy Policy</Text>
-                  </Text>
-                </View>
+                <Text className="text-sm font-medium text-ink mb-2">Confirm Password</Text>
+                <BlurView intensity={20} tint="light" className="rounded-xl overflow-hidden">
+                  <TextInput
+                    className="bg-white/70 border border-white/30 rounded-xl px-4 py-4 text-ink text-base"
+                    placeholder="Confirm your password"
+                    placeholderTextColor="#9CA3AF"
+                    value={confirmPassword}
+                    onChangeText={setConfirmPassword}
+                    secureTextEntry
+                    autoComplete="new-password"
+                  />
+                </BlurView>
+                {errors.confirmPassword && (
+                  <Text className="text-error text-sm mt-1">{errors.confirmPassword}</Text>
+                )}
               </View>
+
+              {/* Terms Notice */}
+              <Text className="text-ink-light text-sm text-center mb-6">
+                By signing up, you agree to our{' '}
+                <Text className="text-forest-900 font-medium">Terms of Service</Text>
+                {' '}and{' '}
+                <Text className="text-forest-900 font-medium">Privacy Policy</Text>
+              </Text>
 
               {/* Sign Up Button */}
-              <GlassButton
-                title="Create Account"
-                variant="primary"
-                size="lg"
+              <Pressable
                 onPress={handleSignUp}
-                loading={loading}
                 disabled={loading}
-                className="mb-4"
-              />
-
-              {/* Divider */}
-              <View className="flex-row items-center my-4">
-                <View className="flex-1 h-px bg-white/20" />
-                <Text className="text-white/50 px-4 text-sm">Or sign up with</Text>
-                <View className="flex-1 h-px bg-white/20" />
-              </View>
-
-              {/* Social Sign Up */}
-              <View className="flex-row gap-3 mb-6">
-                <GlassButton
-                  title="Google"
-                  variant="secondary"
-                  size="md"
-                  onPress={() => handleSocialSignUp('google')}
-                  disabled={loading}
-                  className="flex-1"
-                />
-                <GlassButton
-                  title="Apple"
-                  variant="secondary"
-                  size="md"
-                  onPress={() => handleSocialSignUp('apple')}
-                  disabled={loading}
-                  className="flex-1"
-                />
-              </View>
-
-              {/* Sign In Link */}
-              <Pressable onPress={handleSignIn} disabled={loading}>
-                <View className="flex-row items-center justify-center">
-                  <Text className="text-white/70 text-sm">Already have an account? </Text>
-                  <Text className="text-primary-400 text-sm font-semibold">Sign In</Text>
-                </View>
+                className={`bg-forest-900 rounded-xl py-4 items-center ${loading ? 'opacity-70' : 'active:opacity-90 active:scale-[0.98]'}`}
+              >
+                {loading ? (
+                  <ActivityIndicator color="white" />
+                ) : (
+                  <Text className="text-white font-semibold text-base">Create Account</Text>
+                )}
               </Pressable>
-            </GlassCard>
-          </ScrollView>
-        </KeyboardAvoidingView>
-      </SafeAreaView>
-    </ImageBackground>
+            </View>
+
+            {/* Sign In Link */}
+            <View className="flex-row justify-center mt-8">
+              <Text className="text-ink-light">Already have an account? </Text>
+              <Link href="/(auth)/sign-in" asChild>
+                <Pressable>
+                  <Text className="text-forest-900 font-semibold">Sign In</Text>
+                </Pressable>
+              </Link>
+            </View>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }

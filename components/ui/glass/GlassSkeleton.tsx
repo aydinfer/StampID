@@ -6,7 +6,7 @@
  */
 
 import React from 'react';
-import { View } from 'react-native';
+import { View, DimensionValue } from 'react-native';
 import { BlurView } from 'expo-blur';
 import Animated, {
   useSharedValue,
@@ -17,14 +17,10 @@ import Animated, {
 } from 'react-native-reanimated';
 
 export interface GlassSkeletonProps {
-  /** Width in pixels */
-  width?: number;
-  /** Height in pixels */
-  height?: number;
-  /** Width className (e.g., 'w-full', 'w-1/2') - used when width prop is not provided */
-  widthClass?: string;
-  /** Height className (e.g., 'h-20', 'h-full') - used when height prop is not provided */
-  heightClass?: string;
+  /** Width of skeleton (can be number or string with units) */
+  width?: number | string;
+  /** Height of skeleton */
+  height?: number | string;
   /** Border radius */
   borderRadius?: 'none' | 'sm' | 'md' | 'lg' | 'full';
   /** Disable shimmer animation */
@@ -72,16 +68,14 @@ const variantConfig = {
  * <GlassSkeleton width={50} height={50} borderRadius="full" />
  * ```
  *
- * @example Without animation (using widthClass)
+ * @example Without animation
  * ```tsx
- * <GlassSkeleton widthClass="w-full" height={100} noAnimation />
+ * <GlassSkeleton width="100%" height={100} noAnimation />
  * ```
  */
 export function GlassSkeleton({
-  width,
+  width = '100%',
   height = 20,
-  widthClass = 'w-full',
-  heightClass,
   borderRadius = 'md',
   noAnimation = false,
   variant = 'default',
@@ -92,36 +86,31 @@ export function GlassSkeleton({
 
   React.useEffect(() => {
     if (!noAnimation) {
-      progress.value = withRepeat(withTiming(1, { duration: 1500 }), -1, false);
+      progress.value = withRepeat(
+        withTiming(1, { duration: 1500 }),
+        -1,
+        false
+      );
     }
-  }, [noAnimation, progress]);
+  }, [noAnimation]);
 
   const animatedStyle = useAnimatedStyle(() => {
-    const translateX = interpolate(progress.value, [0, 1], [-200, 200]);
+    const translateX = interpolate(
+      progress.value,
+      [0, 1],
+      [-200, 200]
+    );
 
     return {
       transform: [{ translateX }],
     };
-  }, [progress]);
-
-  // Build inline styles for numeric values
-  const inlineStyle = {
-    ...(width !== undefined && { width }),
-    ...(height !== undefined && { height }),
-  };
-
-  // Build className string
-  const className = [
-    'overflow-hidden',
-    radiusStyle,
-    width === undefined ? widthClass : '',
-    height === undefined && heightClass ? heightClass : '',
-  ]
-    .filter(Boolean)
-    .join(' ');
+  });
 
   return (
-    <View className={className} style={inlineStyle}>
+    <View
+      className={`overflow-hidden ${radiusStyle}`}
+      style={{ width: width as DimensionValue, height: height as DimensionValue }}
+    >
       <BlurView
         intensity={variantStyle.intensity}
         tint="dark"
@@ -159,11 +148,18 @@ export interface GlassSkeletonGroupProps {
   children: React.ReactElement<GlassSkeletonProps>;
 }
 
-export function GlassSkeletonGroup({ count = 3, spacing = 12, children }: GlassSkeletonGroupProps) {
+export function GlassSkeletonGroup({
+  count = 3,
+  spacing = 12,
+  children,
+}: GlassSkeletonGroupProps) {
   return (
     <View>
       {Array.from({ length: count }).map((_, index) => (
-        <View key={index} style={{ marginBottom: index < count - 1 ? spacing : 0 }}>
+        <View
+          key={index}
+          style={{ marginBottom: index < count - 1 ? spacing : 0 }}
+        >
           {React.cloneElement(children)}
         </View>
       ))}
@@ -183,8 +179,8 @@ export function GlassSkeletonListItem() {
     <View className="flex-row items-center gap-3">
       <GlassSkeleton width={48} height={48} borderRadius="full" />
       <View className="flex-1 gap-2">
-        <GlassSkeleton widthClass="w-3/5" height={16} borderRadius="md" />
-        <GlassSkeleton widthClass="w-2/5" height={12} borderRadius="md" />
+        <GlassSkeleton width="60%" height={16} borderRadius="md" />
+        <GlassSkeleton width="40%" height={12} borderRadius="md" />
       </View>
     </View>
   );
@@ -196,11 +192,11 @@ export function GlassSkeletonListItem() {
 export function GlassSkeletonCard() {
   return (
     <View className="gap-3">
-      <GlassSkeleton widthClass="w-full" height={200} borderRadius="lg" />
+      <GlassSkeleton width="100%" height={200} borderRadius="lg" />
       <View className="gap-2">
-        <GlassSkeleton widthClass="w-4/5" height={20} borderRadius="md" />
-        <GlassSkeleton widthClass="w-3/5" height={16} borderRadius="md" />
-        <GlassSkeleton widthClass="w-2/5" height={16} borderRadius="md" />
+        <GlassSkeleton width="80%" height={20} borderRadius="md" />
+        <GlassSkeleton width="60%" height={16} borderRadius="md" />
+        <GlassSkeleton width="40%" height={16} borderRadius="md" />
       </View>
     </View>
   );
@@ -215,7 +211,7 @@ export function GlassSkeletonText({ lines = 3 }: { lines?: number }) {
       {Array.from({ length: lines }).map((_, index) => (
         <GlassSkeleton
           key={index}
-          widthClass={index === lines - 1 ? 'w-[70%]' : 'w-full'}
+          width={index === lines - 1 ? '70%' : '100%'}
           height={14}
           borderRadius="md"
         />
@@ -232,8 +228,8 @@ export function GlassSkeletonProfile() {
     <View className="items-center gap-4">
       <GlassSkeleton width={100} height={100} borderRadius="full" />
       <View className="items-center gap-2 w-full">
-        <GlassSkeleton widthClass="w-1/2" height={24} borderRadius="md" />
-        <GlassSkeleton widthClass="w-[70%]" height={16} borderRadius="md" />
+        <GlassSkeleton width="50%" height={24} borderRadius="md" />
+        <GlassSkeleton width="70%" height={16} borderRadius="md" />
       </View>
     </View>
   );
