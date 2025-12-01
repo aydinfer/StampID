@@ -19,6 +19,7 @@ import Animated, {
   FadeInRight,
   SlideInRight,
 } from 'react-native-reanimated';
+import { XCircle, Search } from 'lucide-react-native';
 import { useStampIdentification } from '@/lib/hooks/useStampIdentification';
 import type { StampIdentificationResult } from '@/lib/api/identify-stamp';
 
@@ -120,7 +121,7 @@ export default function ScanResultScreen() {
       <SafeAreaView className="flex-1 bg-cream">
         <View className="flex-1 items-center justify-center px-6">
           <View className="w-20 h-20 rounded-full bg-error/10 items-center justify-center mb-6">
-            <Text className="text-4xl">❌</Text>
+            <XCircle size={48} color="#EF4444" strokeWidth={1.5} />
           </View>
           <Text className="text-2xl font-bold text-ink text-center mb-3">
             Identification Failed
@@ -145,7 +146,7 @@ export default function ScanResultScreen() {
       <SafeAreaView className="flex-1 bg-cream">
         <View className="flex-1 items-center justify-center px-6">
           <View className="w-20 h-20 rounded-full bg-warning/10 items-center justify-center mb-6">
-            <Text className="text-4xl">🔍</Text>
+            <Search size={48} color="#D97706" strokeWidth={1.5} />
           </View>
           <Text className="text-2xl font-bold text-ink text-center mb-3">
             No Stamps Detected

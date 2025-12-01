@@ -24,6 +24,7 @@ import {
 } from 'lucide-react-native';
 import { useStamps, useCollectionValue } from '@/lib/hooks/useStamps';
 import { useCollections } from '@/lib/hooks/useCollections';
+import { colors } from '@/lib/utils/colors';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -403,14 +404,14 @@ function formatRarity(rarity: string): string {
 function getRarityColor(rarity: string): string {
   switch (rarity) {
     case 'very_rare':
-      return '#9333EA';
+      return colors.violet[600];
     case 'rare':
-      return '#2563EB';
+      return colors.violet[500];
     case 'uncommon':
-      return '#059669';
+      return colors.teal[600];
     case 'common':
     default:
-      return '#1B4332';
+      return colors.indigo[600];
   }
 }
 

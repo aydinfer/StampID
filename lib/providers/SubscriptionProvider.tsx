@@ -63,20 +63,23 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
         return;
       }
 
-      Purchases.configure({ apiKey });
+      // Only configure if we have a valid API key
+      if (apiKey && apiKey.length > 10) {
+        Purchases.configure({ apiKey });
 
-      // Get initial customer info
-      const info = await Purchases.getCustomerInfo();
-      setCustomerInfo(info);
-
-      // Get available offerings
-      const offs = await Purchases.getOfferings();
-      setOfferings(offs);
-
-      // Listen for customer info updates
-      Purchases.addCustomerInfoUpdateListener((info) => {
+        // Get initial customer info
+        const info = await Purchases.getCustomerInfo();
         setCustomerInfo(info);
-      });
+
+        // Get available offerings
+        const offs = await Purchases.getOfferings();
+        setOfferings(offs);
+
+        // Listen for customer info updates
+        Purchases.addCustomerInfoUpdateListener((info) => {
+          setCustomerInfo(info);
+        });
+      }
 
       setIsLoading(false);
     } catch (error) {
@@ -108,6 +111,13 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
   // Present RevenueCat's native paywall (built in their dashboard)
   const presentPaywall = useCallback(async (): Promise<boolean> => {
     try {
+      const apiKey = Platform.OS === 'ios' ? API_KEY_IOS : API_KEY_ANDROID;
+
+      if (!apiKey || apiKey.length < 10) {
+        console.warn('RevenueCat not configured - cannot show paywall');
+        return false;
+      }
+
       const result = await RevenueCatUI.presentPaywall();
 
       // Refresh customer info after paywall closes

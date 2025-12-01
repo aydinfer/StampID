@@ -6,6 +6,7 @@ import { router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { BlurView } from 'expo-blur';
 import Animated, { FadeIn, FadeInUp } from 'react-native-reanimated';
+import { Camera, X, RefreshCw, Image as ImageIcon, Zap } from 'lucide-react-native';
 import { StampMask } from '@/components/StampMask';
 
 export default function CameraScreen() {
@@ -28,7 +29,7 @@ export default function CameraScreen() {
     return (
       <SafeAreaView className="flex-1 bg-cream px-6 justify-center">
         <View className="items-center">
-          <Text className="text-6xl mb-6">📷</Text>
+          <Camera size={64} color="#18181B" strokeWidth={1.5} className="mb-6" />
           <Text className="text-2xl font-bold text-ink text-center mb-3">
             Camera Access Needed
           </Text>
@@ -118,7 +119,7 @@ export default function CameraScreen() {
               onPress={() => router.back()}
               className="w-10 h-10 rounded-full bg-black/30 items-center justify-center"
             >
-              <Text className="text-white text-xl">✕</Text>
+              <X size={24} color="#FFFFFF" />
             </Pressable>
 
             <Text className="text-white font-semibold text-lg">Scan Stamp</Text>
@@ -127,7 +128,7 @@ export default function CameraScreen() {
               onPress={toggleCameraFacing}
               className="w-10 h-10 rounded-full bg-black/30 items-center justify-center"
             >
-              <Text className="text-white text-xl">🔄</Text>
+              <RefreshCw size={20} color="#FFFFFF" />
             </Pressable>
           </Animated.View>
 
@@ -165,7 +166,7 @@ export default function CameraScreen() {
                 onPress={handlePickImage}
                 className="w-14 h-14 rounded-full bg-white/20 items-center justify-center active:bg-white/30"
               >
-                <Text className="text-2xl">🖼️</Text>
+                <ImageIcon size={24} color="#FFFFFF" />
               </Pressable>
 
               {/* Capture Button */}
@@ -190,7 +191,7 @@ export default function CameraScreen() {
               <Pressable
                 className="w-14 h-14 rounded-full bg-white/20 items-center justify-center active:bg-white/30"
               >
-                <Text className="text-2xl">⚡</Text>
+                <Zap size={24} color="#FFFFFF" />
               </Pressable>
             </View>
           </BlurView>

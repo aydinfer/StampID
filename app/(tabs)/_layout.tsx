@@ -9,6 +9,7 @@ import {
   Settings,
 } from 'lucide-react-native';
 import { colors } from '@/lib/design/tokens';
+import { SubscriptionProvider } from '@/lib/providers/SubscriptionProvider';
 
 const ICON_SIZE = 24;
 
@@ -32,67 +33,69 @@ function TabIcon({ Icon, focused }: { Icon: IconComponent; focused: boolean }) {
 
 export default function TabLayout() {
   return (
-    <Tabs
-      screenOptions={{
-        headerShown: false,
-        tabBarActiveTintColor: colors.indigo[500],
-        tabBarInactiveTintColor: colors.zinc[400],
-        tabBarStyle: {
-          backgroundColor: 'rgba(250, 250, 250, 0.95)',
-          borderTopColor: colors.zinc[200],
-          borderTopWidth: 0.5,
-          paddingTop: 8,
-          height: 85,
-        },
-        tabBarLabelStyle: {
-          fontFamily: 'PlusJakartaSans_500Medium',
-          fontSize: 11,
-          marginTop: 4,
-        },
-      }}
-    >
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ focused }) => <TabIcon Icon={Home} focused={focused} />,
+    <SubscriptionProvider>
+      <Tabs
+        screenOptions={{
+          headerShown: false,
+          tabBarActiveTintColor: colors.indigo[500],
+          tabBarInactiveTintColor: colors.zinc[400],
+          tabBarStyle: {
+            backgroundColor: 'rgba(250, 250, 250, 0.95)',
+            borderTopColor: colors.zinc[200],
+            borderTopWidth: 0.5,
+            paddingTop: 8,
+            height: 85,
+          },
+          tabBarLabelStyle: {
+            fontFamily: 'PlusJakartaSans_500Medium',
+            fontSize: 11,
+            marginTop: 4,
+          },
         }}
-      />
-      <Tabs.Screen
-        name="search"
-        options={{
-          title: 'Search',
-          tabBarIcon: ({ focused }) => <TabIcon Icon={Search} focused={focused} />,
-        }}
-      />
-      <Tabs.Screen
-        name="scan"
-        options={{
-          title: 'Scan',
-          tabBarIcon: ({ focused }) => <TabIcon Icon={ScanLine} focused={focused} />,
-        }}
-      />
-      <Tabs.Screen
-        name="discover"
-        options={{
-          title: 'Discover',
-          tabBarIcon: ({ focused }) => <TabIcon Icon={Compass} focused={focused} />,
-        }}
-      />
-      <Tabs.Screen
-        name="collection"
-        options={{
-          title: 'Collection',
-          tabBarIcon: ({ focused }) => <TabIcon Icon={FolderOpen} focused={focused} />,
-        }}
-      />
-      <Tabs.Screen
-        name="settings"
-        options={{
-          title: 'Settings',
-          tabBarIcon: ({ focused }) => <TabIcon Icon={Settings} focused={focused} />,
-        }}
-      />
-    </Tabs>
+      >
+        <Tabs.Screen
+          name="index"
+          options={{
+            title: 'Home',
+            tabBarIcon: ({ focused }) => <TabIcon Icon={Home} focused={focused} />,
+          }}
+        />
+        <Tabs.Screen
+          name="search"
+          options={{
+            title: 'Search',
+            tabBarIcon: ({ focused }) => <TabIcon Icon={Search} focused={focused} />,
+          }}
+        />
+        <Tabs.Screen
+          name="scan"
+          options={{
+            title: 'Scan',
+            tabBarIcon: ({ focused }) => <TabIcon Icon={ScanLine} focused={focused} />,
+          }}
+        />
+        <Tabs.Screen
+          name="discover"
+          options={{
+            title: 'Discover',
+            tabBarIcon: ({ focused }) => <TabIcon Icon={Compass} focused={focused} />,
+          }}
+        />
+        <Tabs.Screen
+          name="collection"
+          options={{
+            title: 'Collection',
+            tabBarIcon: ({ focused }) => <TabIcon Icon={FolderOpen} focused={focused} />,
+          }}
+        />
+        <Tabs.Screen
+          name="settings"
+          options={{
+            title: 'Settings',
+            tabBarIcon: ({ focused }) => <TabIcon Icon={Settings} focused={focused} />,
+          }}
+        />
+      </Tabs>
+    </SubscriptionProvider>
   );
 }

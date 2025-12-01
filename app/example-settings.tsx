@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, ImageBackground, ScrollView, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
+import { ChevronLeft, Moon, Globe, Bell, Mail, Smartphone, User, Lock, HelpCircle, Check, type LucideIcon } from 'lucide-react-native';
 import { GlassCard, GlassButton, GlassSwitch, GlassSheet } from '@/components/ui/glass';
 
 type SettingItem =
@@ -10,7 +11,7 @@ type SettingItem =
       label: string;
       value: boolean;
       onValueChange: (value: boolean) => void;
-      icon: string;
+      icon: LucideIcon;
       disabled?: boolean;
     }
   | {
@@ -18,7 +19,7 @@ type SettingItem =
       label: string;
       value?: string;
       onPress: () => void;
-      icon: string;
+      icon: LucideIcon;
       showArrow?: boolean;
     };
 
@@ -50,14 +51,14 @@ export default function ExampleSettingsScreen() {
           label: 'Dark Mode',
           value: darkMode,
           onValueChange: setDarkMode,
-          icon: '🌙',
+          icon: Moon,
         },
         {
           type: 'action',
           label: 'Language',
           value: selectedLanguage,
           onPress: () => setLanguageSheetVisible(true),
-          icon: '🌐',
+          icon: Globe,
           showArrow: true,
         },
       ],
@@ -70,14 +71,14 @@ export default function ExampleSettingsScreen() {
           label: 'Enable Notifications',
           value: notifications,
           onValueChange: setNotifications,
-          icon: '🔔',
+          icon: Bell,
         },
         {
           type: 'switch',
           label: 'Email Notifications',
           value: emailNotifications,
           onValueChange: setEmailNotifications,
-          icon: '📧',
+          icon: Mail,
           disabled: !notifications,
         },
         {
@@ -85,7 +86,7 @@ export default function ExampleSettingsScreen() {
           label: 'Push Notifications',
           value: pushNotifications,
           onValueChange: setPushNotifications,
-          icon: '📱',
+          icon: Smartphone,
           disabled: !notifications,
         },
       ],
@@ -96,21 +97,21 @@ export default function ExampleSettingsScreen() {
         {
           type: 'action',
           label: 'Edit Profile',
-          icon: '👤',
+          icon: User,
           showArrow: true,
           onPress: () => console.log('Edit profile'),
         },
         {
           type: 'action',
           label: 'Privacy & Security',
-          icon: '🔒',
+          icon: Lock,
           showArrow: true,
           onPress: () => console.log('Privacy'),
         },
         {
           type: 'action',
           label: 'Help & Support',
-          icon: '❓',
+          icon: HelpCircle,
           showArrow: true,
           onPress: () => console.log('Help'),
         },
@@ -135,8 +136,8 @@ export default function ExampleSettingsScreen() {
         >
           {/* Header */}
           <View className="flex-row items-center mb-2">
-            <Pressable onPress={() => router.back()} className="mr-4">
-              <Text className="text-white text-3xl">←</Text>
+            <Pressable onPress={() => router.back()} className="mr-4 p-2">
+              <ChevronLeft size={28} color="#FFFFFF" />
             </Pressable>
             <Text className="text-white text-2xl font-bold">Settings</Text>
           </View>
@@ -160,39 +161,46 @@ export default function ExampleSettingsScreen() {
               <Text className="text-white text-lg font-bold px-2 mb-2">{section.title}</Text>
 
               <GlassCard className="overflow-hidden">
-                {section.items.map((item, itemIndex) => (
-                  <View key={itemIndex}>
-                    {item.type === 'switch' ? (
-                      // Switch item
-                      <View className="px-6 py-4 flex-row items-center">
-                        <Text className="text-2xl mr-3">{item.icon}</Text>
-                        <GlassSwitch
-                          value={item.value}
-                          onValueChange={item.onValueChange}
-                          label={item.label}
-                          disabled={item.disabled}
-                          className="flex-1"
-                        />
-                      </View>
-                    ) : (
-                      // Pressable item
-                      <Pressable
-                        onPress={item.onPress}
-                        className="px-6 py-4 flex-row items-center active:bg-white/5"
-                      >
-                        <Text className="text-2xl mr-3">{item.icon}</Text>
-                        <Text className="text-white text-base flex-1">{item.label}</Text>
-                        {item.value && <Text className="text-white/60 mr-2">{item.value}</Text>}
-                        {item.showArrow && <Text className="text-white/40 text-lg">›</Text>}
-                      </Pressable>
-                    )}
+                {section.items.map((item, itemIndex) => {
+                  const IconComponent = item.icon;
+                  return (
+                    <View key={itemIndex}>
+                      {item.type === 'switch' ? (
+                        // Switch item
+                        <View className="px-6 py-4 flex-row items-center">
+                          <View className="w-8 mr-3">
+                            <IconComponent size={20} color="#FFFFFF" />
+                          </View>
+                          <GlassSwitch
+                            value={item.value}
+                            onValueChange={item.onValueChange}
+                            label={item.label}
+                            disabled={item.disabled}
+                            className="flex-1"
+                          />
+                        </View>
+                      ) : (
+                        // Pressable item
+                        <Pressable
+                          onPress={item.onPress}
+                          className="px-6 py-4 flex-row items-center active:bg-white/5"
+                        >
+                          <View className="w-8 mr-3">
+                            <IconComponent size={20} color="#FFFFFF" />
+                          </View>
+                          <Text className="text-white text-base flex-1">{item.label}</Text>
+                          {item.value && <Text className="text-white/60 mr-2">{item.value}</Text>}
+                          {item.showArrow && <Text className="text-white/40 text-lg">›</Text>}
+                        </Pressable>
+                      )}
 
-                    {/* Divider (except last item) */}
-                    {itemIndex < section.items.length - 1 && (
-                      <View className="h-px bg-white/10 mx-6" />
-                    )}
-                  </View>
-                ))}
+                      {/* Divider (except last item) */}
+                      {itemIndex < section.items.length - 1 && (
+                        <View className="h-px bg-white/10 mx-6" />
+                      )}
+                    </View>
+                  );
+                })}
               </GlassCard>
             </View>
           ))}
@@ -263,7 +271,7 @@ export default function ExampleSettingsScreen() {
               <View className="flex-row items-center justify-between">
                 <Text className="text-white text-lg">{language}</Text>
                 {selectedLanguage === language && (
-                  <Text className="text-primary-400 text-xl">✓</Text>
+                  <Check size={20} color="#818CF8" />
                 )}
               </View>
             </Pressable>

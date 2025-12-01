@@ -20,7 +20,7 @@ import Animated, {
   interpolate,
 } from 'react-native-reanimated';
 import { Camera, Sparkles, FolderOpen, ArrowRight } from 'lucide-react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useOnboarding } from '@/lib/hooks/useOnboarding';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -59,12 +59,11 @@ const SLIDES: OnboardingSlide[] = [
   },
 ];
 
-const ONBOARDING_KEY = '@stampid_onboarding_complete';
-
 export default function OnboardingScreen() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const flatListRef = useRef<FlatList>(null);
   const scrollX = useSharedValue(0);
+  const { completeOnboarding: saveOnboardingComplete } = useOnboarding();
 
   const viewabilityConfig = { viewAreaCoveragePercentThreshold: 50 };
 
@@ -90,7 +89,7 @@ export default function OnboardingScreen() {
 
   const completeOnboarding = async () => {
     try {
-      await AsyncStorage.setItem(ONBOARDING_KEY, 'true');
+      await saveOnboardingComplete();
     } catch (error) {
       console.error('Failed to save onboarding state:', error);
     }

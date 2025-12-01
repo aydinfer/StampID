@@ -5,8 +5,8 @@ import { Stack } from 'expo-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import * as SplashScreen from 'expo-splash-screen';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { SubscriptionProvider } from '@/lib/providers/SubscriptionProvider';
 import { useAppFonts } from '@/lib/design/fonts';
+import { colors } from '@/lib/utils/colors';
 
 // Keep splash screen visible while loading
 SplashScreen.preventAutoHideAsync();
@@ -48,88 +48,79 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }} onLayout={onLayoutRootView}>
       <QueryClientProvider client={queryClient}>
-        <SubscriptionProvider>
-          <Stack
-            screenOptions={{
+        <Stack
+          screenOptions={{
+            headerShown: false,
+            contentStyle: { backgroundColor: colors.zinc[50] },
+            animation: 'slide_from_right',
+          }}
+        >
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+          <Stack.Screen
+            name="stamp/[id]"
+            options={{
               headerShown: false,
-              contentStyle: { backgroundColor: '#FAFAFA' }, // zinc-50
               animation: 'slide_from_right',
             }}
-          >
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-            <Stack.Screen
-              name="onboarding"
-              options={{
-                headerShown: false,
-                animation: 'fade',
-              }}
-            />
-            <Stack.Screen
-              name="stamp/[id]"
-              options={{
-                headerShown: false,
-                animation: 'slide_from_right',
-              }}
-            />
-            <Stack.Screen
-              name="stamp/edit"
-              options={{
-                headerShown: false,
-                presentation: 'modal',
-              }}
-            />
-            <Stack.Screen
-              name="collection/[id]"
-              options={{
-                headerShown: false,
-                animation: 'slide_from_right',
-              }}
-            />
-            <Stack.Screen
-              name="profile"
-              options={{
-                headerShown: false,
-                animation: 'slide_from_right',
-              }}
-            />
-            <Stack.Screen
-              name="stats"
-              options={{
-                headerShown: false,
-                animation: 'slide_from_right',
-              }}
-            />
-            <Stack.Screen
-              name="compare"
-              options={{
-                headerShown: false,
-                animation: 'slide_from_right',
-              }}
-            />
-            <Stack.Screen
-              name="wantlist"
-              options={{
-                headerShown: false,
-                animation: 'slide_from_right',
-              }}
-            />
-            <Stack.Screen
-              name="scan-result"
-              options={{
-                headerShown: false,
-                animation: 'slide_from_bottom',
-              }}
-            />
-            <Stack.Screen
-              name="camera"
-              options={{
-                headerShown: false,
-                animation: 'fade',
-              }}
-            />
-          </Stack>
-        </SubscriptionProvider>
+          />
+          <Stack.Screen
+            name="stamp/edit"
+            options={{
+              headerShown: false,
+              presentation: 'modal',
+            }}
+          />
+          <Stack.Screen
+            name="collection/[id]"
+            options={{
+              headerShown: false,
+              animation: 'slide_from_right',
+            }}
+          />
+          <Stack.Screen
+            name="profile"
+            options={{
+              headerShown: false,
+              animation: 'slide_from_right',
+            }}
+          />
+          <Stack.Screen
+            name="stats"
+            options={{
+              headerShown: false,
+              animation: 'slide_from_right',
+            }}
+          />
+          <Stack.Screen
+            name="compare"
+            options={{
+              headerShown: false,
+              animation: 'slide_from_right',
+            }}
+          />
+          <Stack.Screen
+            name="wantlist"
+            options={{
+              headerShown: false,
+              animation: 'slide_from_right',
+            }}
+          />
+          <Stack.Screen
+            name="scan-result"
+            options={{
+              headerShown: false,
+              animation: 'slide_from_bottom',
+            }}
+          />
+          <Stack.Screen
+            name="camera"
+            options={{
+              headerShown: false,
+              animation: 'fade',
+            }}
+          />
+        </Stack>
       </QueryClientProvider>
     </GestureHandlerRootView>
   );

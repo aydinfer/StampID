@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, ImageBackground, ScrollView, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
+import { ChevronLeft, Settings, Trophy, Flame, Star, Heart, MessageCircle } from 'lucide-react-native';
 import {
   GlassCard,
   GlassButton,
@@ -32,9 +33,9 @@ export default function ExampleProfileScreen() {
   ];
 
   const achievements = [
-    { icon: '🏆', title: 'Top Contributor', description: 'Made 100+ contributions' },
-    { icon: '🔥', title: '30 Day Streak', description: 'Active for 30 days straight' },
-    { icon: '⭐', title: 'Early Adopter', description: 'Joined in the first month' },
+    { icon: Trophy, title: 'Top Contributor', description: 'Made 100+ contributions' },
+    { icon: Flame, title: '30 Day Streak', description: 'Active for 30 days straight' },
+    { icon: Star, title: 'Early Adopter', description: 'Joined in the first month' },
   ];
 
   return (
@@ -54,12 +55,12 @@ export default function ExampleProfileScreen() {
         >
           {/* Header */}
           <View className="flex-row items-center justify-between mb-2">
-            <Pressable onPress={() => router.back()}>
-              <Text className="text-white text-3xl">←</Text>
+            <Pressable onPress={() => router.back()} className="p-2">
+              <ChevronLeft size={28} color="#FFFFFF" />
             </Pressable>
             <Text className="text-white text-lg font-semibold">Profile</Text>
-            <Pressable onPress={() => router.push('/example-settings')}>
-              <Text className="text-white text-2xl">⚙️</Text>
+            <Pressable onPress={() => router.push('/example-settings')} className="p-2">
+              <Settings size={24} color="#FFFFFF" />
             </Pressable>
           </View>
 
@@ -122,8 +123,14 @@ export default function ExampleProfileScreen() {
                   <View className="flex-row items-center justify-between mt-4">
                     <Text className="text-white/50 text-xs">2 hours ago</Text>
                     <View className="flex-row gap-4">
-                      <Text className="text-white/70 text-sm">❤️ 24</Text>
-                      <Text className="text-white/70 text-sm">💬 8</Text>
+                      <View className="flex-row items-center gap-1">
+                        <Heart size={14} color="#FFFFFF" opacity={0.7} />
+                        <Text className="text-white/70 text-sm">24</Text>
+                      </View>
+                      <View className="flex-row items-center gap-1">
+                        <MessageCircle size={14} color="#FFFFFF" opacity={0.7} />
+                        <Text className="text-white/70 text-sm">8</Text>
+                      </View>
                     </View>
                   </View>
                 </GlassCard>
@@ -134,17 +141,22 @@ export default function ExampleProfileScreen() {
           {selectedTab === 1 && (
             <View className="gap-4">
               <Text className="text-white text-xl font-bold px-2">Achievements</Text>
-              {achievements.map((achievement, index) => (
-                <GlassCard key={index} className="p-4">
-                  <View className="flex-row items-center">
-                    <Text className="text-5xl mr-4">{achievement.icon}</Text>
-                    <View className="flex-1">
-                      <Text className="text-white font-bold text-lg mb-1">{achievement.title}</Text>
-                      <Text className="text-white/70 text-sm">{achievement.description}</Text>
+              {achievements.map((achievement, index) => {
+                const IconComponent = achievement.icon;
+                return (
+                  <GlassCard key={index} className="p-4">
+                    <View className="flex-row items-center">
+                      <View className="w-12 h-12 items-center justify-center mr-4">
+                        <IconComponent size={40} color="#FFFFFF" strokeWidth={1.5} />
+                      </View>
+                      <View className="flex-1">
+                        <Text className="text-white font-bold text-lg mb-1">{achievement.title}</Text>
+                        <Text className="text-white/70 text-sm">{achievement.description}</Text>
+                      </View>
                     </View>
-                  </View>
-                </GlassCard>
-              ))}
+                  </GlassCard>
+                );
+              })}
             </View>
           )}
 

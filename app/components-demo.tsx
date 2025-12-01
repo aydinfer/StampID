@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView, ImageBackground } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Palette, Zap, Lock, Rocket } from 'lucide-react-native';
 import { GlassCard, GlassButton, GlassModal, GlassInput } from '@/components/ui/glass';
 
 /**
@@ -179,24 +180,24 @@ export default function ComponentsDemo() {
 
             <View className="flex-row gap-3">
               <GlassCard variant="subtle" className="flex-1 p-4 items-center">
-                <Text className="text-4xl mb-2">🎨</Text>
+                <Palette size={40} color="#FFFFFF" strokeWidth={1.5} className="mb-2" />
                 <Text className="text-white font-semibold">Design</Text>
               </GlassCard>
 
               <GlassCard variant="subtle" className="flex-1 p-4 items-center">
-                <Text className="text-4xl mb-2">⚡</Text>
+                <Zap size={40} color="#FFFFFF" strokeWidth={1.5} className="mb-2" />
                 <Text className="text-white font-semibold">Speed</Text>
               </GlassCard>
             </View>
 
             <View className="flex-row gap-3">
               <GlassCard variant="subtle" className="flex-1 p-4 items-center">
-                <Text className="text-4xl mb-2">🔒</Text>
+                <Lock size={40} color="#FFFFFF" strokeWidth={1.5} className="mb-2" />
                 <Text className="text-white font-semibold">Secure</Text>
               </GlassCard>
 
               <GlassCard variant="subtle" className="flex-1 p-4 items-center">
-                <Text className="text-4xl mb-2">🚀</Text>
+                <Rocket size={40} color="#FFFFFF" strokeWidth={1.5} className="mb-2" />
                 <Text className="text-white font-semibold">Launch</Text>
               </GlassCard>
             </View>

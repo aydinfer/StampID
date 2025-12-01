@@ -3,6 +3,7 @@ import { router } from 'expo-router';
 import { View, ActivityIndicator } from 'react-native';
 import { useAuth } from '@/lib/hooks/useAuth';
 import { useOnboarding } from '@/lib/hooks/useOnboarding';
+import { colors } from '@/lib/utils/colors';
 
 /**
  * Root Index - App Entry Point
@@ -36,7 +37,7 @@ export default function Index() {
   // Show loading screen while checking auth and onboarding status
   return (
     <View className="flex-1 items-center justify-center bg-primary-950">
-      <ActivityIndicator size="large" color="#3b82f6" />
+      <ActivityIndicator size="large" color={colors.indigo[500]} />
     </View>
   );
 }
